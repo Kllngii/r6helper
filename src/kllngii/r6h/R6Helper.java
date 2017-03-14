@@ -92,10 +92,16 @@ public class R6Helper {
 		for(Operator op:model.getAngreifer()){
 			JCheckBox checkBox = new JCheckBox(op.getName());
 			panel_angriff.add(checkBox);
+			checkBox.addActionListener((ActionEvent evt)->{
+				model.toggleSelected(op);
+			});
 		}
 		for(Operator op:model.getVerteidiger()){
 			JCheckBox checkBox = new JCheckBox(op.getName());
 			panel_verteidigung.add(checkBox);
+			checkBox.addActionListener((ActionEvent evt)->{
+				model.toggleSelected(op);
+			});
 		}
 		panel_verteidigung.setVisible(false);
 		
@@ -114,6 +120,7 @@ public class R6Helper {
 		});
 //		panel_angriff.setAlignmentX(0);
 //		panel_verteidigung.setAlignmentX(0);
+		
 		
 	}
 }
