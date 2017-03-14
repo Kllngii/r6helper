@@ -40,6 +40,10 @@ public class Operator {
 	public OperatorTyp getTyp() {
 		return typ;
 	}
+	
+	public boolean isAngreifer() {
+		return typ == OperatorTyp.ANGREIFER;
+	}
 
 	public String getName() {
 		return name;
@@ -52,7 +56,13 @@ public class Operator {
 	public List<Waffe> getSekundärwaffen() {
 		return sekundärwaffen;
 	}
+
+	@Override
+	public String toString() {
+		return name;
+	}
     
+	
     
     
     
