@@ -9,6 +9,9 @@ public enum Waffe {
 	G36C("G36C"), 
 	R4C("R4C"),
 	
+	FMG9("FMG9"),
+	
+	
 	SMG11("SMG 11"),
 	P2_26("P2.26"),
 	_57USG("57USG"), 

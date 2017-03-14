@@ -12,10 +12,19 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
+import kllngii.r6h.model.Operator;
+import kllngii.r6h.model.R6HelperModel;
+
 
 public class R6Helper {
-
+	
 	private JFrame frmRHelper;
+	
+	private R6HelperModel model = new R6HelperModel();
+
+	private JPanel panel_angriff;
+
+	private JPanel panel_verteidigung;
 	
 
 	/**
@@ -63,111 +72,45 @@ public class R6Helper {
 		rdbtnAngreifer.setSelected(true);
 		rdbtnAngreifer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("Angreifer wurde gewählt");
+				panel_angriff.setVisible(true);
+				panel_verteidigung.setVisible(false);
 			}
 		});
+		
 		panel.add(rdbtnAngreifer);
 		
 		JRadioButton rdbtnVerteidiger = new JRadioButton("Verteidiger");
 		panel.add(rdbtnVerteidiger);
 		
+		rdbtnVerteidiger.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				panel_angriff.setVisible(false);
+				panel_verteidigung.setVisible(true);
+			}
+		});
 		ButtonGroup art = new ButtonGroup();
 	    art.add(rdbtnAngreifer);
 	    art.add(rdbtnVerteidiger);
-	        
-		JPanel panel_2 = new JPanel();
-		frmRHelper.getContentPane().add(panel_2);
-		panel_2.setLayout(new BoxLayout(panel_2, BoxLayout.X_AXIS));
+	    
+		panel_angriff = new JPanel();
+		frmRHelper.getContentPane().add(panel_angriff);
 		
-		JPanel panel_1 = new JPanel();
-		frmRHelper.getContentPane().add(panel_1);
+		panel_verteidigung = new JPanel();
+		frmRHelper.getContentPane().add(panel_verteidigung);
 		
-		JLabel lblNewLabel = new JLabel("Operator:");
-		panel_1.add(lblNewLabel);
+		panel_angriff.add(new JLabel("Operator:"));
+		panel_verteidigung.add(new JLabel("Operator:"));
 		
-		String a = null;
-		String b = null;
-		String c = null;
-		String d = null;
-		String e = null;
-		
-		String f = null;
-		String g = null;
-		String h = null;
-		String i = null;
-		String j = null;
-		
-		String k = null;
-		String l = null;
-		String m = null;
-		String n = null;
-		String o = null;
-		
-		if(rdbtnAngreifer.isSelected()){
-			a = "Sledge";
-			b = "Thatcher";
-			c = "Ash";
-			d = "Thermite";
-			e = "Twitch";
-			
-			f = "Montagne";
-			g = "Glaz";
-			h = "Fuze";
-			i = "Blitz";
-			j = "IQ";
-			
-			k = "Buck";
-			l = "Capitao";
-			m = "Hibana";
-			n = "Jackal";
-			o = "Blackbeard";
+		for(Operator op:model.getAngreifer()){
+			JCheckBox checkBox = new JCheckBox(op.getName());
+			panel_angriff.add(checkBox);
 		}
+		for(Operator op:model.getVerteidiger()){
+			JCheckBox checkBox = new JCheckBox(op.getName());
+			panel_verteidigung.add(checkBox);
+		}
+		panel_verteidigung.setVisible(false);
 		
 		
-		
-		JCheckBox checkBox = new JCheckBox(a);
-		panel_1.add(checkBox);
-		
-		JCheckBox checkBox_1 = new JCheckBox(b);
-		panel_1.add(checkBox_1);
-		
-		JCheckBox checkBox_2 = new JCheckBox(c);
-		panel_1.add(checkBox_2);
-		
-		JCheckBox checkBox_3 = new JCheckBox(d);
-		panel_1.add(checkBox_3);
-		
-		JCheckBox checkBox_4 = new JCheckBox(e);
-		panel_1.add(checkBox_4);
-		
-		JCheckBox checkBox_5 = new JCheckBox(f);
-		panel_1.add(checkBox_5);
-		
-		JCheckBox checkBox_6 = new JCheckBox(g);
-		panel_1.add(checkBox_6);
-		
-		JCheckBox checkBox_7 = new JCheckBox(h);
-		panel_1.add(checkBox_7);
-		
-		JCheckBox checkBox_8 = new JCheckBox(i);
-		panel_1.add(checkBox_8);
-		
-		JCheckBox checkBox_9 = new JCheckBox(j);
-		panel_1.add(checkBox_9);
-		
-		JCheckBox checkBox_10 = new JCheckBox(k);
-		panel_1.add(checkBox_10);
-		
-		JCheckBox checkBox_11 = new JCheckBox(l);
-		panel_1.add(checkBox_11);
-		
-		JCheckBox checkBox_12 = new JCheckBox(m);
-		panel_1.add(checkBox_12);
-		
-		JCheckBox checkBox_13 = new JCheckBox(n);
-		panel_1.add(checkBox_13);
-		
-		JCheckBox checkBox_14 = new JCheckBox(o);
-		panel_1.add(checkBox_14);
 	}
 }

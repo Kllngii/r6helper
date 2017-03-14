@@ -23,6 +23,7 @@ public class R6HelperModel {
 		_o.add(new Operator(ANGREIFER, "Thatcher", L85A2, AR33, M590A1, Arrays.asList(P2_26)));
 		_o.add(new Operator(ANGREIFER, "Ash", G36C, R4C, Arrays.asList(_57USG, M45_MEUSOC)));
 		
+		_o.add(new Operator(VERTEIDIGER, "Smoke", FMG9, M590A1, Arrays.asList(SMG11, P2_26)));
 //		_o.add(new Operator(ANGREIFER, "Thermite";
 //			e = "Twitch";
 //			
