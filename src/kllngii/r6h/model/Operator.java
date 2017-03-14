@@ -9,31 +9,31 @@ public class Operator {
     private final OperatorTyp typ;
     private final String name;
     
-    private final List<Waffe> prim‰rwaffen;
-    private final List<Waffe> sekund‰rwaffen;
+    private final List<Waffe> prim√§rwaffen;
+    private final List<Waffe> sekund√§rwaffen;
     
-	public Operator(OperatorTyp typ, String name, List<Waffe> prim‰rwaffen,
-			List<Waffe> sekund‰rwaffen) {
+	public Operator(OperatorTyp typ, String name, List<Waffe> prim√§rwaffen,
+			List<Waffe> sekund√§rwaffen) {
 		super();
 		this.typ = typ;
 		this.name = name;
-		this.prim‰rwaffen = Collections.unmodifiableList(prim‰rwaffen);
-		this.sekund‰rwaffen = Collections.unmodifiableList(sekund‰rwaffen);
+		this.prim√§rwaffen = Collections.unmodifiableList(prim√§rwaffen);
+		this.sekund√§rwaffen = Collections.unmodifiableList(sekund√§rwaffen);
 	}
 	
-	public Operator(OperatorTyp typ, String name, Waffe prim‰rwaffe1,
-			List<Waffe> sekund‰rwaffen) {
-		this(typ, name, Arrays.asList(prim‰rwaffe1), sekund‰rwaffen);
+	public Operator(OperatorTyp typ, String name, Waffe prim√§rwaffe1,
+			List<Waffe> sekund√§rwaffen) {
+		this(typ, name, Arrays.asList(prim√§rwaffe1), sekund√§rwaffen);
 	}
 	
-	public Operator(OperatorTyp typ, String name, Waffe prim‰rwaffe1, Waffe prim‰rwaffe2,
-			List<Waffe> sekund‰rwaffen) {
-		this(typ, name, Arrays.asList(prim‰rwaffe1, prim‰rwaffe2), sekund‰rwaffen);
+	public Operator(OperatorTyp typ, String name, Waffe prim√§rwaffe1, Waffe prim√§rwaffe2,
+			List<Waffe> sekund√§rwaffen) {
+		this(typ, name, Arrays.asList(prim√§rwaffe1, prim√§rwaffe2), sekund√§rwaffen);
 	}
 	
-	public Operator(OperatorTyp typ, String name, Waffe prim‰rwaffe1, Waffe prim‰rwaffe2, Waffe prim‰rwaffe3,
-			List<Waffe> sekund‰rwaffen) {
-		this(typ, name, Arrays.asList(prim‰rwaffe1, prim‰rwaffe2, prim‰rwaffe3), sekund‰rwaffen);
+	public Operator(OperatorTyp typ, String name, Waffe prim√§rwaffe1, Waffe prim√§rwaffe2, Waffe prim√§rwaffe3,
+			List<Waffe> sekund√§rwaffen) {
+		this(typ, name, Arrays.asList(prim√§rwaffe1, prim√§rwaffe2, prim√§rwaffe3), sekund√§rwaffen);
 	}
 
 
@@ -45,12 +45,12 @@ public class Operator {
 		return name;
 	}
 
-	public List<Waffe> getPrim‰rwaffen() {
-		return prim‰rwaffen;
+	public List<Waffe> getPrim√§rwaffen() {
+		return prim√§rwaffen;
 	}
 
-	public List<Waffe> getSekund‰rwaffen() {
-		return sekund‰rwaffen;
+	public List<Waffe> getSekund√§rwaffen() {
+		return sekund√§rwaffen;
 	}
     
     

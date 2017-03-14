@@ -4,10 +4,18 @@ public enum Waffe {
 	_556XI("556 XI"),
 	L85A2("L85A2"),
 	AR33("AR33"),
-	//TODO Name der r‰tselhaften Shotgun ermitteln
+	//TODO Name der r√§tselhaften Shotgun ermitteln
 	M590A1("M590A1"),
 	G36C("G36C"), 
 	R4C("R4C"),
+	M1014("M1014"),
+	F2("Famas"),
+	_417("417"),
+	SG_CQB("SG CQB"),
+	P9("P9"),
+	LFP586("LFP 586"),
+	AUSF_SCHILD("Ausfahrbarer Schild"),
+	
 	
 	FMG9("FMG9"),
 	

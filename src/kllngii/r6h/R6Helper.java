@@ -64,30 +64,18 @@ public class R6Helper {
 		JPanel panel = new JPanel();
 		frmRHelper.getContentPane().add(panel);
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+		//panel.setAlignmentX(0);
 		
 		JLabel lblArt = new JLabel("Gegnerteam:");
 		panel.add(lblArt);
 		
 		JRadioButton rdbtnAngreifer = new JRadioButton("Angreifer");
-		rdbtnAngreifer.setSelected(true);
-		rdbtnAngreifer.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				panel_angriff.setVisible(true);
-				panel_verteidigung.setVisible(false);
-			}
-		});
-		
 		panel.add(rdbtnAngreifer);
+		rdbtnAngreifer.setSelected(true);
 		
 		JRadioButton rdbtnVerteidiger = new JRadioButton("Verteidiger");
 		panel.add(rdbtnVerteidiger);
 		
-		rdbtnVerteidiger.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				panel_angriff.setVisible(false);
-				panel_verteidigung.setVisible(true);
-			}
-		});
 		ButtonGroup art = new ButtonGroup();
 	    art.add(rdbtnAngreifer);
 	    art.add(rdbtnVerteidiger);
@@ -111,6 +99,21 @@ public class R6Helper {
 		}
 		panel_verteidigung.setVisible(false);
 		
+		
+		
+		// Event-Handler für Auswahl Angriff/Verteidigung:
+		rdbtnAngreifer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				panel_angriff.setVisible(true);
+				panel_verteidigung.setVisible(false);
+			}
+		});
+		rdbtnVerteidiger.addActionListener((ActionEvent evt) -> {
+			panel_angriff.setVisible(false);
+			panel_verteidigung.setVisible(true);
+		});
+//		panel_angriff.setAlignmentX(0);
+//		panel_verteidigung.setAlignmentX(0);
 		
 	}
 }

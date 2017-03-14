@@ -16,18 +16,21 @@ public class R6HelperModel {
 	
 	
 	public R6HelperModel() {
-		//FIXME Alle Operatoren mit ihre Eigenschaften definieren
+		//TODO Alle Operatoren mit ihre Eigenschaften definieren
 		List<Operator> _o = new ArrayList<>();
 		
 		_o.add(new Operator(ANGREIFER, "Sledge", L85A2, M590A1, Arrays.asList(SMG11, P2_26)));
 		_o.add(new Operator(ANGREIFER, "Thatcher", L85A2, AR33, M590A1, Arrays.asList(P2_26)));
 		_o.add(new Operator(ANGREIFER, "Ash", G36C, R4C, Arrays.asList(_57USG, M45_MEUSOC)));
+		_o.add(new Operator(ANGREIFER, "Thermite", _556XI, M1014, Arrays.asList(_57USG, M45_MEUSOC)));
+		_o.add(new Operator(ANGREIFER, "Twitch", F2, _417, SG_CQB, Arrays.asList(P9, LFP586)));
+		
+		_o.add(new Operator(ANGREIFER, "Montagne", AUSF_SCHILD, Arrays.asList(P9, LFP586)));
+		
+		
 		
 		_o.add(new Operator(VERTEIDIGER, "Smoke", FMG9, M590A1, Arrays.asList(SMG11, P2_26)));
-//		_o.add(new Operator(ANGREIFER, "Thermite";
-//			e = "Twitch";
-//			
-//			f = "Montagne";
+					
 //			g = "Glaz";
 //			h = "Fuze";
 //			i = "Blitz";
