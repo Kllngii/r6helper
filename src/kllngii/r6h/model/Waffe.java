@@ -15,11 +15,23 @@ public enum Waffe {
 	P9("P9"),
 	LFP586("LFP 586"),
 	AUSF_SCHILD("Ausfahrbarer Schild"),
+	OTS03("OTS-03"),
+	PMM("PMM"),
+	GSH18("GSH-18"),
+	AK12("Ak-12"),
+	_6P41("6P41"),
+	BLSCHILD("Blitz-Schild"),
 	
+	AUGA2("Aug A2"),
+	_552C("552 Commando"),
+	CAMRS("CamRS"),
+	MK17CQB("MK17-CQB"),
+
 	
 	FMG9("FMG9"),
 	
 	
+	P12("P12"),
 	SMG11("SMG 11"),
 	P2_26("P2.26"),
 	_57USG("57USG"), 

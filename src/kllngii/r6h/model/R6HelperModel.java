@@ -33,15 +33,19 @@ public class R6HelperModel {
 		_o.add(new Operator(ANGREIFER, "Twitch", F2, _417, SG_CQB, Arrays.asList(P9, LFP586)));
 		
 		_o.add(new Operator(ANGREIFER, "Montagne", AUSF_SCHILD, Arrays.asList(P9, LFP586)));
+		_o.add(new Operator(ANGREIFER, "Glaz", OTS03, Arrays.asList(GSH18, PMM)));
+		_o.add(new Operator(ANGREIFER, "Fuze", AK12, Arrays.asList(GSH18, PMM)));
+		_o.add(new Operator(ANGREIFER, "Blitz", BLSCHILD, Arrays.asList(P12)));
+		_o.add(new Operator(ANGREIFER, "IQ", AUGA2, _552C, Arrays.asList(P12)));
+		
+		
 		
 		
 		
 		_o.add(new Operator(VERTEIDIGER, "Smoke", FMG9, M590A1, Arrays.asList(SMG11, P2_26)));
 					
-//			g = "Glaz";
-//			h = "Fuze";
-//			i = "Blitz";
-//			j = "IQ";
+
+
 //			
 //			k = "Buck";
 //			l = "Capitao";
@@ -75,16 +79,27 @@ public class R6HelperModel {
 		return angreifer;
 	}
 
-
 	public List<Operator> getVerteidiger() {
 		return verteidiger;
 	}
+	
+	
+	
+	public List<Operator> getSelectedAngreifer() {
+		return selectedAngreifer;
+	}
+
+
+	public List<Operator> getSelectedVerteidiger() {
+		return selectedVerteidiger;
+	}
+
+
 	/**
 	 * Fügt einen {@link Operator} der Liste der ausgewählten Operatoren
 	 * hinzu oder entfernt ihn daraus.
 	 * 
-	 * @throws IllegalArgumentException  Wenn versucht wird, mehr als {@link MAX_TEAMGRÖSSE}
-     *                                   Operators im Team zu haben   
+	 * 
 	 * 
 	 */
 	public void toggleSelected(Operator op) {
@@ -107,9 +122,9 @@ public class R6HelperModel {
 		if(selected.contains(op)){
 			selected.remove(op);
 		}
-		else if(selected.size() >= MAX_TEAMGRÖSSE){
-			throw new IllegalArgumentException("Es dürfen höchstens "+MAX_TEAMGRÖSSE+" Operator gewählt werden.");
-		}
+//		else if(selected.size() >= MAX_TEAMGRÖSSE){
+//			throw new IllegalArgumentException("Es dürfen höchstens "+MAX_TEAMGRÖSSE+" Operator gewählt werden.");
+//		}
 		else{
 			selected.add(op);
 			
