@@ -18,7 +18,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
@@ -78,6 +77,7 @@ public class R6Helper {
 		frmRHelper = new JFrame();
 		frmRHelper.setTitle("R6 Helper");
 		
+		//FIXME Fenstergröße bei 5 Rekruten anpassen
 		Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
 		Dimension size = new Dimension(600, 500);
 		frmRHelper.setSize(size.width, size.height);
@@ -168,6 +168,7 @@ public class R6Helper {
 	}
 	
 	
+	@SuppressWarnings("static-access")
 	private void fillPanelWaffen() {
 		
 		List<Operator> ops = (rdbtnAngreifer.isSelected()) ? model.getSelectedAngreifer() : model.getSelectedVerteidiger();
