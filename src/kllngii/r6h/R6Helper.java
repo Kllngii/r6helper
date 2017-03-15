@@ -234,12 +234,11 @@ public class R6Helper {
 				panel.add(label);
 				
 				JComboBox<Waffe> primW = new JComboBox<>(new Vector<Waffe>((op.getPrimärwaffen())));
-				//FIXME Die ausgewählte Waffe vom letzten Mal wieder einstellen
 				primW.setSelectedItem(op.getSelectedPrimärwaffe());
-				//FIXME Listener dafür, um das Model zu ändern
-//				primW.addActionListener((ActionEvent evt) -> {
-//				    
-//				});
+				primW.addActionListener((ActionEvent evt) -> {
+				    op.setSelectedPrimärwaffe((Waffe)primW.getSelectedItem());
+				    
+				});
 				
 				primW.setPreferredSize(comboPreferredSize);
 				primW.setMaximumSize(maxSize);
@@ -247,11 +246,14 @@ public class R6Helper {
 				
 				panel.add(Box.createHorizontalStrut(lücke));
 				
-//				JComboBox<String> secW = new JComboBox<>(waffennamen(op.getSekundärwaffen()));
+
 				JComboBox<Waffe> secW = new JComboBox<>(new Vector<Waffe>(op.getSekundärwaffen()));
 				secW.setSelectedItem(op.getSelectedSekundärwaffe());
 				secW.setPreferredSize(comboPreferredSize);
 				secW.setMaximumSize(maxSize);
+				secW.addActionListener((ActionEvent evt) -> {
+					op.setSelectedSekundärwaffe((Waffe)primW.getSelectedItem());
+				});
 				panel.add(secW);
 				
 				panel.add(Box.createHorizontalStrut(lücke));
