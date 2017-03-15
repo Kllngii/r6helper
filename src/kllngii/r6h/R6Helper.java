@@ -318,7 +318,7 @@ public class R6Helper {
 	    if (errors.isEmpty())
 	        panel_meldung.setVisible(false);
 	    else {
-	        meldunglabel.setText(String.join("\n", errors.toArray(new String[0])));
+	        meldunglabel.setText("<html>" + String.join("<br>", errors.toArray(new String[0])) + "</html>");
 	        panel_meldung.setVisible(true);
 	    }
 	}
