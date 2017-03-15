@@ -6,7 +6,6 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +27,7 @@ import kllngii.r6h.model.Waffe;
 
 public class R6Helper {
 	
-	private JFrame frmRHelper;
+	private JFrame frame;
 	
 	private R6HelperModel model = new R6HelperModel();
 
@@ -51,13 +50,10 @@ public class R6Helper {
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					R6Helper window = new R6Helper();
-					window.frmRHelper.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+			@SuppressWarnings("unused")
+            @Override
+            public void run() {
+				new R6Helper();
 			}
 		});
 	}
@@ -74,18 +70,18 @@ public class R6Helper {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frmRHelper = new JFrame();
-		frmRHelper.setTitle("R6 Helper");
+		frame = new JFrame();
+		frame.setTitle("R6 Helper");
 		
 		Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
 		Dimension size = new Dimension(700, 600);
-		frmRHelper.setSize(size.width, size.height);
-		frmRHelper.setLocation((screensize.width-size.width)/2, (screensize.height-size.height)/2);
-		frmRHelper.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmRHelper.getContentPane().setLayout(new BoxLayout(frmRHelper.getContentPane(), BoxLayout.Y_AXIS));
+		frame.setSize(size.width, size.height);
+		frame.setLocation((screensize.width-size.width)/2, (screensize.height-size.height)/2);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
 		
 		JPanel panel = new JPanel();
-		frmRHelper.getContentPane().add(panel);
+		frame.getContentPane().add(panel);
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 		//panel.setAlignmentX(0);
 		
@@ -104,10 +100,10 @@ public class R6Helper {
 	    art.add(rdbtnVerteidiger);
 	    
 		panel_angriff = new JPanel();
-		frmRHelper.getContentPane().add(panel_angriff);
+		frame.getContentPane().add(panel_angriff);
 		
 		panel_verteidigung = new JPanel();
-		frmRHelper.getContentPane().add(panel_verteidigung);
+		frame.getContentPane().add(panel_verteidigung);
 		
 		panel_angriff.add(new JLabel("Operator:"));
 		panel_verteidigung.add(new JLabel("Operator:"));
@@ -137,12 +133,10 @@ public class R6Helper {
 		
 		
 		// Event-Handler für Auswahl Angriff/Verteidigung:
-		rdbtnAngreifer.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+		rdbtnAngreifer.addActionListener((ActionEvent evt) -> {
 				panel_angriff.setVisible(true);
 				panel_verteidigung.setVisible(false);
 				fillPanelWaffen();
-			}
 		});
 		rdbtnVerteidiger.addActionListener((ActionEvent evt) -> {
 			panel_angriff.setVisible(false);
@@ -154,16 +148,18 @@ public class R6Helper {
 		
 		panel_waffen = new JPanel();
 		panel_waffen.setLayout(new BoxLayout(panel_waffen, BoxLayout.Y_AXIS));
-		frmRHelper.getContentPane().add(panel_waffen);
+		frame.getContentPane().add(panel_waffen);
 		
 		panel_meldung = new JPanel();
-		frmRHelper.getContentPane().add(panel_meldung);
+		frame.getContentPane().add(panel_meldung);
 		
 		JLabel meldunglabel = new JLabel("Aktiviere höchstens "+R6HelperModel.MAX_TEAMGRÖSSE+" Operator!");
 		meldunglabel.setForeground(Color.RED);
 		meldunglabel.setFont(new Font(Font.DIALOG, Font.BOLD, 20));
 		panel_meldung.add(meldunglabel);
 		panel_meldung.setVisible(false);
+		
+		frame.setVisible(true);
 	}
 	
 	
@@ -205,7 +201,7 @@ public class R6Helper {
 			}
 		}
 		
-		frmRHelper.getContentPane().validate();
+		frame.getContentPane().validate();
 	}
 	
 	private Vector<String> waffennamen(List<Waffe> waffen) {
