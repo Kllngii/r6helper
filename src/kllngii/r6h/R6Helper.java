@@ -19,6 +19,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.UIManager;
 
 import kllngii.r6h.model.Operator;
 import kllngii.r6h.model.R6HelperModel;
@@ -49,6 +50,17 @@ public class R6Helper {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+	    try {
+	        // Set cross-platform Java L&F (also called "Metal")
+	        UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+	        
+//	        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+	    }
+	    catch (Exception ex) {
+	        // Aufgeben...
+	        throw new RuntimeException(ex);
+	    }
+        
 		EventQueue.invokeLater(new Runnable() {
 			@SuppressWarnings("unused")
             @Override
