@@ -22,10 +22,9 @@ public class R6HelperModel {
 	public R6HelperModel() {
 		selectedAngreifer = new ArrayList<>();
 		selectedVerteidiger = new ArrayList<>();
-		
+		//TODO Gadgets hinzufügen
 		//TODO IQ LMG hinzufügen
-		//TODO Alle Operatoren mit ihren Gadgets definieren
-		//TODO Rekrut hinzufügen
+		
 		List<Operator> _o = new ArrayList<>();
 //		Angreifer
 		_o.add(new Operator(ANGREIFER, "Sledge", L85A2, M590A1, Arrays.asList(SMG11, P2_26)));

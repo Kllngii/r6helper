@@ -77,9 +77,8 @@ public class R6Helper {
 		frmRHelper = new JFrame();
 		frmRHelper.setTitle("R6 Helper");
 		
-		//FIXME Fenstergröße bei 5 Rekruten anpassen
 		Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
-		Dimension size = new Dimension(600, 500);
+		Dimension size = new Dimension(700, 600);
 		frmRHelper.setSize(size.width, size.height);
 		frmRHelper.setLocation((screensize.width-size.width)/2, (screensize.height-size.height)/2);
 		frmRHelper.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
