@@ -50,6 +50,8 @@ public class R6Helper {
 	private JRadioButton rdbtnAngreifer;
 	
 	private final int lücke = 12;
+
+	private JLabel meldunglabel;
 	
 
 	/**
@@ -193,7 +195,7 @@ public class R6Helper {
 		panel_meldung = new JPanel();
 		root.add(panel_meldung);
 		
-		JLabel meldunglabel = new JLabel("Aktiviere höchstens "+R6HelperModel.MAX_TEAMGRÖSSE+" Operator!");
+		meldunglabel = new JLabel("");
 		meldunglabel.setForeground(Color.RED);
 		meldunglabel.setFont(new Font(Font.DIALOG, Font.BOLD, 20));
 		panel_meldung.add(meldunglabel);
@@ -210,12 +212,10 @@ public class R6Helper {
 		
 		List<Operator> ops = (rdbtnAngreifer.isSelected()) ? model.getSelectedAngreifer() : model.getSelectedVerteidiger();
 		if (ops.size() > model.MAX_TEAMGRÖSSE) {
-			panel_meldung.setVisible(true);
-			panel_waffen.setVisible(false);
+			showError("Aktiviere höchstens "+R6HelperModel.MAX_TEAMGRÖSSE+" Operator!");
 		}
 		else {
-			panel_meldung.setVisible(false);
-			panel_waffen.setVisible(true);
+			hideError();
 
 			panel_waffen.removeAll();
 			
@@ -261,10 +261,20 @@ public class R6Helper {
 				panel.add(Box.createHorizontalStrut(lücke));
 				
 				if (op instanceof Rekrut) {
+					Rekrut rekrut = (Rekrut) op;
 					// Checkboxen, um *2* Gadgets auszuwählen
 					for (Gadget gadget : op.getGadgets()) {
 						JCheckBox cb = new JCheckBox(gadget.getName());
+						cb.addActionListener((ActionEvent evt)-> {
+							rekrut.toggleGadget(cb.getText());
+							if (rekrut.getSelectedGadgets().size() > Rekrut.MAX_GADGETS){
+								showError("Ein Rekrut darf höchstens " + Rekrut.MAX_GADGETS + " Gadgets haben!");
+							}
+							else
+								hideError();
+						});
 						panel.add(cb);
+						
 					}
 				}
 				else {
@@ -292,6 +302,17 @@ public class R6Helper {
 		}
 		
 		frame.getContentPane().validate();
+	}
+
+	private void showError(String msg) {
+		//TODO Liste von Fehlermeldungen anzeigen, statt nur 1 Meldung
+		meldunglabel.setText(msg);
+		
+		panel_meldung.setVisible(true);
+	}
+	
+	private void hideError() {
+		panel_meldung.setVisible(false);
 	}
 	
 

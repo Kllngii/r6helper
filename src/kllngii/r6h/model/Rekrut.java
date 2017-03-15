@@ -14,6 +14,10 @@ import java.util.Set;
 
 public class Rekrut extends Operator {
 	
+	public static final int MAX_GADGETS = 2;
+	
+	private final List<Gadget> selectedGadgets = new ArrayList<>();
+	
 	public static final EnumSet<Gadget> ANGREIFER_GADGETS = 
 			EnumSet.of(SPL_GRANATE, STU_GRANATE, RAU_GRANATE, SPRENGLADUNG, CLAYMORE);
 	public static final Set<Gadget> VERTEIDIGER_GADGETS = 
@@ -22,6 +26,44 @@ public class Rekrut extends Operator {
 	public Rekrut(OperatorTyp typ, String name, List<Waffe> primärwaffen,
 			List<Waffe> sekundärwaffen, Collection<Gadget> gadgets) {
 		super(typ, name, primärwaffen, sekundärwaffen, new ArrayList<>(gadgets));
+	}
+	
+	
+
+	/**
+	 * Nicht unterstützt, benutze stattdessen {@link #toggleGadget(String)}
+	 * und {@link #getSelectedGadgets()} (Plural!).
+     */
+ 	@Override
+	public Gadget getSelectedGadget() {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * Nicht unterstützt, benutze stattdessen {@link #toggleGadget(String)}
+	 * und {@link #getSelectedGadgets()} (Plural!).
+	 * 
+	 * @param selectedGadget  Ungenutzt
+	 */
+	@Override
+	public void setSelectedGadget(Gadget selectedGadget) {
+		throw new UnsupportedOperationException();
+	}
+
+
+
+	public List<Gadget> getSelectedGadgets() {
+		return selectedGadgets;
+	}
+
+	public void toggleGadget(String text) {
+		Gadget gadget = Gadget.findByName(text);
+		if(selectedGadgets.contains(gadget)){
+			selectedGadgets.remove(gadget);
+		}
+		else{
+			selectedGadgets.add(gadget);
+		}
 	}
 
 }
