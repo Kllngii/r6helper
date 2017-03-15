@@ -23,8 +23,10 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.UIManager;
 
+import kllngii.r6h.model.Gadget;
 import kllngii.r6h.model.Operator;
 import kllngii.r6h.model.R6HelperModel;
+import kllngii.r6h.model.Rekrut;
 import kllngii.r6h.model.Waffe;
 
 
@@ -90,7 +92,7 @@ public class R6Helper {
 		frame.setTitle("R6 Helper");
 		
 		Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
-		Dimension size = new Dimension(700, 600);
+		Dimension size = new Dimension(1000, 600);
 		frame.setSize(size.width, size.height);
 		frame.setLocation((screensize.width-size.width)/2, (screensize.height-size.height)/2);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -252,9 +254,30 @@ public class R6Helper {
 				secW.setPreferredSize(comboPreferredSize);
 				secW.setMaximumSize(maxSize);
 				secW.addActionListener((ActionEvent evt) -> {
-					op.setSelectedSekundärwaffe((Waffe)primW.getSelectedItem());
+					op.setSelectedSekundärwaffe((Waffe)secW.getSelectedItem());
 				});
 				panel.add(secW);
+				
+				panel.add(Box.createHorizontalStrut(lücke));
+				
+				if (op instanceof Rekrut) {
+					// Checkboxen, um *2* Gadgets auszuwählen
+					for (Gadget gadget : op.getGadgets()) {
+						JCheckBox cb = new JCheckBox(gadget.getName());
+						panel.add(cb);
+					}
+				}
+				else {
+					// Combobox, um *1* Gadget auszuwählen
+					JComboBox<Gadget> gad = new JComboBox<>(new Vector<Gadget>(op.getGadgets()));
+					gad.setSelectedItem(op.getSelectedGadget());
+					gad.setPreferredSize(comboPreferredSize);
+					gad.setMaximumSize(maxSize);
+					gad.addActionListener((ActionEvent evt) -> {
+						op.setSelectedGadget((Gadget)gad.getSelectedItem());
+					});
+					panel.add(gad);
+				}
 				
 				panel.add(Box.createHorizontalStrut(lücke));
 				panel.add(Box.createHorizontalGlue());
