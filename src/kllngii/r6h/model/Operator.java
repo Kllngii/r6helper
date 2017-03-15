@@ -12,6 +12,10 @@ public class Operator {
     private final List<Waffe> primärwaffen;
     private final List<Waffe> sekundärwaffen;
     
+    private Waffe selectedPrimärwaffe;
+    private Waffe selectedSekundärwaffe;
+    
+    
 	public Operator(OperatorTyp typ, String name, List<Waffe> primärwaffen,
 			List<Waffe> sekundärwaffen) {
 		super();
@@ -69,9 +73,21 @@ public class Operator {
 	public String toString() {
 		return name;
 	}
-    
-	
-    
-    
+
+    public Waffe getSelectedPrimärwaffe() {
+        return selectedPrimärwaffe;
+    }
+
+    public void setSelectedPrimärwaffe(Waffe selectedPrimärwaffe) {
+        this.selectedPrimärwaffe = selectedPrimärwaffe;
+    }
+
+    public Waffe getSelectedSekundärwaffe() {
+        return selectedSekundärwaffe;
+    }
+
+    public void setSelectedSekundärwaffe(Waffe selectedSekundärwaffe) {
+        this.selectedSekundärwaffe = selectedSekundärwaffe;
+    }
     
 }
