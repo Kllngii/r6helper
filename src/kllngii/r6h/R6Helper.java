@@ -1,6 +1,7 @@
 package kllngii.r6h;
 
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
@@ -36,7 +38,7 @@ public class R6Helper {
 	
 	private JPanel panel_verteidigung;
 	
-	private JPanel panel_waffen;
+	private Box panel_waffen;
 	
 	private JPanel panel_meldung;
 	
@@ -44,6 +46,8 @@ public class R6Helper {
 	private Map<JCheckBox, Operator> verteidigungCheckboxen;
 
 	private JRadioButton rdbtnAngreifer;
+	
+	private final int lücke = 12;
 	
 
 	/**
@@ -90,10 +94,16 @@ public class R6Helper {
 		frame.setSize(size.width, size.height);
 		frame.setLocation((screensize.width-size.width)/2, (screensize.height-size.height)/2);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
+		Container root = frame.getContentPane();
+		root.setLayout(new BoxLayout(root, BoxLayout.Y_AXIS));
+		
+		
+		//// Ebene 1 ////
+		
+		root.add(Box.createVerticalStrut(lücke));
 		
 		JPanel panel = new JPanel();
-		frame.getContentPane().add(panel);
+		root.add(panel);
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 		//panel.setAlignmentX(0);
 		
@@ -110,18 +120,31 @@ public class R6Helper {
 		ButtonGroup art = new ButtonGroup();
 	    art.add(rdbtnAngreifer);
 	    art.add(rdbtnVerteidiger);
+
+	    
+        //// Ebene 2 ////
+        
+        root.add(Box.createVerticalStrut(lücke));
 	    
 		panel_angriff = new JPanel();
-		frame.getContentPane().add(panel_angriff);
+//		panel_angriff.setBorder(new LineBorder(Color.BLACK));
+		panel_angriff.setMaximumSize(new Dimension(999999, 120));
+		panel_angriff.setPreferredSize(new Dimension(size.width, 120));
+		root.add(panel_angriff);
 		
 		panel_verteidigung = new JPanel();
-		frame.getContentPane().add(panel_verteidigung);
+		panel_verteidigung.setMaximumSize(new Dimension(999999, 120));
+		panel_verteidigung.setPreferredSize(new Dimension(size.width, 120));
+		root.add(panel_verteidigung);
 		
+		panel_angriff.add(Box.createHorizontalStrut(lücke));
 		panel_angriff.add(new JLabel("Operator:"));
+		
+		panel_verteidigung.add(Box.createHorizontalStrut(lücke));
 		panel_verteidigung.add(new JLabel("Operator:"));
 		
 		angriffCheckboxen = new HashMap<>();
-		for(Operator op:model.getAngreifer()){
+		for (Operator op : model.getAngreifer()) {
 			JCheckBox checkBox = new JCheckBox(op.getName());
 			angriffCheckboxen.put(checkBox, op);
 			panel_angriff.add(checkBox);
@@ -131,7 +154,7 @@ public class R6Helper {
 			});
 		}
 		verteidigungCheckboxen = new HashMap<>();
-		for(Operator op:model.getVerteidiger()){
+		for (Operator op : model.getVerteidiger()) {
 			JCheckBox checkBox = new JCheckBox(op.getName());
 			verteidigungCheckboxen.put(checkBox, op);
 			panel_verteidigung.add(checkBox);
@@ -155,21 +178,26 @@ public class R6Helper {
 			panel_verteidigung.setVisible(true);
 			fillPanelWaffen();
 		});
-//		panel_angriff.setAlignmentX(0);
-//		panel_verteidigung.setAlignmentX(0);
+
 		
-		panel_waffen = new JPanel();
-		panel_waffen.setLayout(new BoxLayout(panel_waffen, BoxLayout.Y_AXIS));
-		frame.getContentPane().add(panel_waffen);
+        //// Ebene 3 ////
+        
+        root.add(Box.createVerticalStrut(lücke));
+
+		panel_waffen = new Box(BoxLayout.Y_AXIS);
+//		panel_waffen.setBorder(new LineBorder(Color.BLACK));
+		root.add(panel_waffen);
 		
 		panel_meldung = new JPanel();
-		frame.getContentPane().add(panel_meldung);
+		root.add(panel_meldung);
 		
 		JLabel meldunglabel = new JLabel("Aktiviere höchstens "+R6HelperModel.MAX_TEAMGRÖSSE+" Operator!");
 		meldunglabel.setForeground(Color.RED);
 		meldunglabel.setFont(new Font(Font.DIALOG, Font.BOLD, 20));
 		panel_meldung.add(meldunglabel);
 		panel_meldung.setVisible(false);
+		
+		root.add(Box.createVerticalGlue());
 		
 		frame.setVisible(true);
 	}
@@ -190,27 +218,45 @@ public class R6Helper {
 			panel_waffen.removeAll();
 			
 			for (Operator op : ops) {
-				JPanel panel = new JPanel();
-				panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+                Dimension labelPreferredSize = new Dimension(100, 24);
+                Dimension comboPreferredSize = new Dimension(150, 24);
+                Dimension maxSize = new Dimension(250, 22);
+			    
+				Box panel = new Box(BoxLayout.X_AXIS);
+//				panel.setBorder(new LineBorder(Color.RED));
+				panel.setMaximumSize(new Dimension(999999, 22));
 				
-				Dimension dim = new Dimension(100, 32);
+				panel.add(Box.createHorizontalStrut(lücke));
 				
 				JLabel label = new JLabel(op.getName());
-				label.setPreferredSize(dim);
+				label.setPreferredSize(labelPreferredSize);
+				label.setMaximumSize(maxSize);
 				panel.add(label);
 				
 				JComboBox<String> primW = new JComboBox<>( waffennamen(op.getPrimärwaffen()));
-				primW.setPreferredSize(dim);
+				primW.setPreferredSize(comboPreferredSize);
+				primW.setMaximumSize(maxSize);
 				//FIXME Die ausgewählte Waffe vom letzten Mal wieder einstellen
 				//FIXME ChangeListener dafür, um das Model zu ändern
 				panel.add(primW);
 				
+				panel.add(Box.createHorizontalStrut(lücke));
+				
 				JComboBox<String> secW = new JComboBox<>(waffennamen(op.getSekundärwaffen()));
-				secW.setPreferredSize(dim);
+				secW.setPreferredSize(comboPreferredSize);
+				secW.setMaximumSize(maxSize);
 				panel.add(secW);
 				
+				panel.add(Box.createHorizontalStrut(lücke));
+				panel.add(Box.createHorizontalGlue());
+				
 				panel_waffen.add(panel);
+				
+				// Lücke zwischen den Operatoren
+				panel_waffen.add(Box.createVerticalStrut(lücke/2));
 			}
+			
+			panel_waffen.add(Box.createVerticalGlue());
 		}
 		
 		frame.getContentPane().validate();
