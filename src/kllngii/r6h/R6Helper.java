@@ -10,7 +10,10 @@ import java.awt.event.ActionEvent;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.Vector;
+import java.util.function.BooleanSupplier;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -52,6 +55,8 @@ public class R6Helper {
 	private final int lücke = 12;
 
 	private JLabel meldunglabel;
+	
+	private SortedSet<String> errors = new TreeSet<>();
 	
 
 	/**
@@ -209,111 +214,119 @@ public class R6Helper {
 	
 	@SuppressWarnings("static-access")
 	private void fillPanelWaffen() {
+	    
+	    clearErrors();
 		
 		List<Operator> ops = (rdbtnAngreifer.isSelected()) ? model.getSelectedAngreifer() : model.getSelectedVerteidiger();
-		if (ops.size() > model.MAX_TEAMGRÖSSE) {
-			showError("Aktiviere höchstens "+R6HelperModel.MAX_TEAMGRÖSSE+" Operator!");
-		}
-		else {
-			hideError();
+		showErrorIf(() -> ops.size() > model.MAX_TEAMGRÖSSE,
+		        "Aktiviere höchstens "+R6HelperModel.MAX_TEAMGRÖSSE+" Operator!");
 
-			panel_waffen.removeAll();
-			
-			for (Operator op : ops) {
-                Dimension labelPreferredSize = new Dimension(100, 24);
-                Dimension comboPreferredSize = new Dimension(150, 24);
-                Dimension maxSize = new Dimension(250, 22);
-			    
-				Box panel = new Box(BoxLayout.X_AXIS);
+		panel_waffen.removeAll();
+		
+		for (Operator op : ops) {
+            Dimension labelPreferredSize = new Dimension(100, 24);
+            Dimension comboPreferredSize = new Dimension(150, 24);
+            Dimension maxSize = new Dimension(250, 22);
+		    
+			Box panel = new Box(BoxLayout.X_AXIS);
 //				panel.setBorder(new LineBorder(Color.RED));
-				panel.setMaximumSize(new Dimension(999999, 22));
-				
-				panel.add(Box.createHorizontalStrut(lücke));
-				
-				JLabel label = new JLabel(op.getName());
-				label.setPreferredSize(labelPreferredSize);
-				label.setMaximumSize(maxSize);
-				panel.add(label);
-				
-				JComboBox<Waffe> primW = new JComboBox<>(new Vector<Waffe>((op.getPrimärwaffen())));
-				primW.setSelectedItem(op.getSelectedPrimärwaffe());
-				primW.addActionListener((ActionEvent evt) -> {
-				    op.setSelectedPrimärwaffe((Waffe)primW.getSelectedItem());
-				    
-				});
-				
-				primW.setPreferredSize(comboPreferredSize);
-				primW.setMaximumSize(maxSize);
-				panel.add(primW);
-				
-				panel.add(Box.createHorizontalStrut(lücke));
-				
+			panel.setMaximumSize(new Dimension(999999, 22));
+			
+			panel.add(Box.createHorizontalStrut(lücke));
+			
+			JLabel label = new JLabel(op.getName());
+			label.setPreferredSize(labelPreferredSize);
+			label.setMaximumSize(maxSize);
+			panel.add(label);
+			
+			JComboBox<Waffe> primW = new JComboBox<>(new Vector<Waffe>((op.getPrimärwaffen())));
+			primW.setSelectedItem(op.getSelectedPrimärwaffe());
+			primW.addActionListener((ActionEvent evt) -> {
+			    op.setSelectedPrimärwaffe((Waffe)primW.getSelectedItem());
+			    
+			});
+			
+			primW.setPreferredSize(comboPreferredSize);
+			primW.setMaximumSize(maxSize);
+			panel.add(primW);
+			
+			panel.add(Box.createHorizontalStrut(lücke));
+			
 
-				JComboBox<Waffe> secW = new JComboBox<>(new Vector<Waffe>(op.getSekundärwaffen()));
-				secW.setSelectedItem(op.getSelectedSekundärwaffe());
-				secW.setPreferredSize(comboPreferredSize);
-				secW.setMaximumSize(maxSize);
-				secW.addActionListener((ActionEvent evt) -> {
-					op.setSelectedSekundärwaffe((Waffe)secW.getSelectedItem());
-				});
-				panel.add(secW);
-				
-				panel.add(Box.createHorizontalStrut(lücke));
-				
-				if (op instanceof Rekrut) {
-					Rekrut rekrut = (Rekrut) op;
-					// Checkboxen, um *2* Gadgets auszuwählen
-					for (Gadget gadget : op.getGadgets()) {
-						JCheckBox cb = new JCheckBox(gadget.getName());
-						cb.addActionListener((ActionEvent evt)-> {
-							rekrut.toggleGadget(cb.getText());
-							if (rekrut.getSelectedGadgets().size() > Rekrut.MAX_GADGETS){
-								showError("Ein Rekrut darf höchstens " + Rekrut.MAX_GADGETS + " Gadgets haben!");
-							}
-							else
-								hideError();
-						});
-						panel.add(cb);
-						
-					}
-				}
-				else {
-					// Combobox, um *1* Gadget auszuwählen
-					JComboBox<Gadget> gad = new JComboBox<>(new Vector<Gadget>(op.getGadgets()));
-					gad.setSelectedItem(op.getSelectedGadget());
-					gad.setPreferredSize(comboPreferredSize);
-					gad.setMaximumSize(maxSize);
-					gad.addActionListener((ActionEvent evt) -> {
-						op.setSelectedGadget((Gadget)gad.getSelectedItem());
+			JComboBox<Waffe> secW = new JComboBox<>(new Vector<Waffe>(op.getSekundärwaffen()));
+			secW.setSelectedItem(op.getSelectedSekundärwaffe());
+			secW.setPreferredSize(comboPreferredSize);
+			secW.setMaximumSize(maxSize);
+			secW.addActionListener((ActionEvent evt) -> {
+				op.setSelectedSekundärwaffe((Waffe)secW.getSelectedItem());
+			});
+			panel.add(secW);
+			
+			panel.add(Box.createHorizontalStrut(lücke));
+			
+			if (op instanceof Rekrut) {
+				Rekrut rekrut = (Rekrut) op;
+				// Checkboxen, um *2* Gadgets auszuwählen
+				for (Gadget gadget : rekrut.getGadgets()) {
+					JCheckBox cb = new JCheckBox(gadget.getName());
+					cb.setSelected(rekrut.getSelectedGadgets().contains(gadget));
+					cb.addActionListener((ActionEvent evt)-> {
+						rekrut.toggleGadget(cb.getText());
+						showErrorIf(() -> rekrut.getSelectedGadgets().size() > Rekrut.MAX_GADGETS,
+						        "Ein Rekrut darf höchstens " + Rekrut.MAX_GADGETS + " Gadgets haben!");
 					});
-					panel.add(gad);
+					
+                    showErrorIf(() -> rekrut.getSelectedGadgets().size() > Rekrut.MAX_GADGETS,
+                            "Ein Rekrut darf höchstens " + Rekrut.MAX_GADGETS + " Gadgets haben!");
+
+					panel.add(cb);
+					
 				}
-				
-				panel.add(Box.createHorizontalStrut(lücke));
-				panel.add(Box.createHorizontalGlue());
-				
-				panel_waffen.add(panel);
-				
-				// Lücke zwischen den Operatoren
-				panel_waffen.add(Box.createVerticalStrut(lücke/2));
+			}
+			else {
+				// Combobox, um *1* Gadget auszuwählen
+				JComboBox<Gadget> gad = new JComboBox<>(new Vector<Gadget>(op.getGadgets()));
+				gad.setSelectedItem(op.getSelectedGadget());
+				gad.setPreferredSize(comboPreferredSize);
+				gad.setMaximumSize(maxSize);
+				gad.addActionListener((ActionEvent evt) -> {
+					op.setSelectedGadget((Gadget)gad.getSelectedItem());
+				});
+				panel.add(gad);
 			}
 			
-			panel_waffen.add(Box.createVerticalGlue());
+			panel.add(Box.createHorizontalStrut(lücke));
+			panel.add(Box.createHorizontalGlue());
+			
+			panel_waffen.add(panel);
+			
+			// Lücke zwischen den Operatoren
+			panel_waffen.add(Box.createVerticalStrut(lücke/2));
 		}
+		
+		panel_waffen.add(Box.createVerticalGlue());
 		
 		frame.getContentPane().validate();
 	}
 
-	private void showError(String msg) {
-		//TODO Liste von Fehlermeldungen anzeigen, statt nur 1 Meldung
-		meldunglabel.setText(msg);
-		
-		panel_meldung.setVisible(true);
+	private void showErrorIf(BooleanSupplier condition, String msg) {
+	    if (condition.getAsBoolean())
+	        errors.add(msg);
+	    else
+	        errors.remove(msg);
+	    
+	    if (errors.isEmpty())
+	        panel_meldung.setVisible(false);
+	    else {
+	        meldunglabel.setText(String.join("\n", errors.toArray(new String[0])));
+	        panel_meldung.setVisible(true);
+	    }
 	}
 	
-	private void hideError() {
-		panel_meldung.setVisible(false);
+	
+	private void clearErrors() {
+	    errors.clear();
+	    panel_meldung.setVisible(false);
 	}
 	
-
 }
