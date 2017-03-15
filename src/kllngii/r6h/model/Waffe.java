@@ -93,4 +93,19 @@ public enum Waffe {
 	public String getName() {
 		return name;
 	}
+	
+	@Override
+	public String toString() {
+	    return name;
+	}
+	
+	public static Waffe findByName(String name) {
+	    if (name == null)
+	        return null;
+	    for (Waffe waffe : Waffe.values()) {
+	        if (waffe.getName().equals(name))
+	            return waffe;
+	    }
+	    return null;
+	}
 }

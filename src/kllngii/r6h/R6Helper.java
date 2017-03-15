@@ -233,7 +233,7 @@ public class R6Helper {
 				label.setMaximumSize(maxSize);
 				panel.add(label);
 				
-				JComboBox<String> primW = new JComboBox<>( waffennamen(op.getPrimärwaffen()));
+				JComboBox<Waffe> primW = new JComboBox<>(new Vector<Waffe>((op.getPrimärwaffen())));
 				primW.setPreferredSize(comboPreferredSize);
 				primW.setMaximumSize(maxSize);
 				//FIXME Die ausgewählte Waffe vom letzten Mal wieder einstellen
@@ -242,7 +242,8 @@ public class R6Helper {
 				
 				panel.add(Box.createHorizontalStrut(lücke));
 				
-				JComboBox<String> secW = new JComboBox<>(waffennamen(op.getSekundärwaffen()));
+//				JComboBox<String> secW = new JComboBox<>(waffennamen(op.getSekundärwaffen()));
+				JComboBox<Waffe> secW = new JComboBox<>(new Vector<Waffe>(op.getSekundärwaffen()));
 				secW.setPreferredSize(comboPreferredSize);
 				secW.setMaximumSize(maxSize);
 				panel.add(secW);
@@ -262,10 +263,5 @@ public class R6Helper {
 		frame.getContentPane().validate();
 	}
 	
-	private Vector<String> waffennamen(List<Waffe> waffen) {
-		Vector<String> namen = new Vector<>(waffen.size());
-		for (Waffe waffe : waffen)
-			namen.add(waffe.getName());
-		return namen;
-	}
+
 }
