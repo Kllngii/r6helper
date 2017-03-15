@@ -50,7 +50,20 @@ public enum Waffe {
 	SMG11("SMG 11"),
 	P2_26("P226 MK 25"),
 	_57USG("57USG"), 
-	M45_MEUSOC("M45-MEUSOC")
+	M45_MEUSOC("M45-MEUSOC"),
+	SASG12("SASG12"),
+	_9X19VSN("9X19VSN"),
+	MP7("MP-7"),
+	MPX("MP-X"),
+	M870("M870"),
+	_416("M-416"),
+	_9mmC1("9mm-C1"),
+	SUPER90("Super90"),
+	SPAS12("Spas-12"),
+	M12("M12"),
+	SPAS15("Spas-15"),
+	MP5SD("MP5SD"),
+	VECTOR45("Vector.45"),
 	;
 	
 	

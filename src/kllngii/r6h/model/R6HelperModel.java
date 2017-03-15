@@ -59,13 +59,17 @@ public class R6HelperModel {
 		_o.add(new Operator(VERTEIDIGER, "Doc", P90, MP5, SG_CQB, Arrays.asList(LFP586, P9)));
 		
 		_o.add(new Operator(VERTEIDIGER, "Rook", P90, MP5, SG_CQB, Arrays.asList(LFP586, P9)));
-		//_o.add(new Operator(VERTEIDIGER, "Doc", P90, MP5, SG_CQB, Arrays.asList(LFP586, P9)));
+		_o.add(new Operator(VERTEIDIGER, "Kapkan", SASG12, _9X19VSN, Arrays.asList(GSH18, PMM)));
+		_o.add(new Operator(VERTEIDIGER, "Tachanka", SASG12, _9X19VSN, Arrays.asList(GSH18, PMM)));
+		_o.add(new Operator(VERTEIDIGER, "Bandit", MP7, M870, Arrays.asList(P12)));
+		_o.add(new Operator(VERTEIDIGER, "Jäger", _416, M870, Arrays.asList(P12)));
 		
-//			k = "Buck";
-//			l = "Capitao";
-//			m = "Hibana";
-//			n = "Jackal";
-//			o = "Blackbeard";
+		_o.add(new Operator(VERTEIDIGER, "Frost",_9mmC1, SUPER90, Arrays.asList(MK19MM)));
+		_o.add(new Operator(VERTEIDIGER, "Valkyrie",MPX, SPAS12, Arrays.asList(D50)));
+		_o.add(new Operator(VERTEIDIGER, "Caveira",M12, SPAS15, Arrays.asList(PRB92)));
+		_o.add(new Operator(VERTEIDIGER, "Echo",MP5SD, SUPERNOVA, Arrays.asList(P229, BEARING9)));
+		_o.add(new Operator(VERTEIDIGER, "Mira",VECTOR45, ITA12L, Arrays.asList(USP40,ITA12S)));
+		
 		
 		
 		operatoren = Collections.unmodifiableList(_o);
