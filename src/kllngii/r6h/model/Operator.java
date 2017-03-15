@@ -35,7 +35,15 @@ public class Operator {
 			List<Waffe> sekundärwaffen) {
 		this(typ, name, Arrays.asList(primärwaffe1, primärwaffe2, primärwaffe3), sekundärwaffen);
 	}
-
+	public Operator(OperatorTyp typ, String name, Waffe primärwaffe1, Waffe primärwaffe2, Waffe primärwaffe3,
+			Waffe primärwaffe4, Waffe primärwaffe5,
+			Waffe primärwaffe6, Waffe primärwaffe7, Waffe primärwaffe8, Waffe primärwaffe9, Waffe primärwaffe10,
+			Waffe primärwaffe11, Waffe primärwaffe12, Waffe primärwaffe13, Waffe primärwaffe14,
+			List<Waffe> sekundärwaffen) {
+		this(typ, name, Arrays.asList(primärwaffe1, primärwaffe2, primärwaffe3, primärwaffe4, primärwaffe5,
+				primärwaffe6, primärwaffe7, primärwaffe8, primärwaffe9, primärwaffe10,
+				primärwaffe11, primärwaffe12, primärwaffe13, primärwaffe14), sekundärwaffen);
+	}
 
 	public OperatorTyp getTyp() {
 		return typ;
