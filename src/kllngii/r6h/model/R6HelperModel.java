@@ -4,14 +4,17 @@ import static kllngii.r6h.model.OperatorTyp.*;
 import static kllngii.r6h.model.Waffe.*;
 import static kllngii.r6h.model.Gadget.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class R6HelperModel {
+public class R6HelperModel implements Serializable {
 	
-	public static final int MAX_TEAMGRÖSSE = 5;
+    private static final long serialVersionUID = -2815739085224590803L;
+
+    public static final int MAX_TEAMGRÖSSE = 5;
 
 	private final List<Operator> operatoren;
 	private final List<Operator> angreifer;
@@ -132,8 +135,8 @@ public class R6HelperModel {
 		else
 			toggleSelected(selectedVerteidiger, op);
 		
-		System.out.println("Angreifer ausgewählt:    "+selectedAngreifer);
-		System.out.println("Verteidigier ausgewählt: "+selectedVerteidiger);
+//		System.out.println("Angreifer ausgewählt:    "+selectedAngreifer);
+//		System.out.println("Verteidiger ausgewählt:  "+selectedVerteidiger);
 
 	}
 

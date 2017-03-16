@@ -1,10 +1,13 @@
 package kllngii.r6h.model;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class Operator {
+public class Operator implements Serializable {
+    
+    private static final long serialVersionUID = 6997857670655689520L;
     
     private final OperatorTyp typ;
     private final String name;

@@ -7,6 +7,7 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,7 @@ import java.util.function.BooleanSupplier;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -25,6 +27,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.UIManager;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
+
+import com.sun.istack.internal.logging.Logger;
 
 import kllngii.r6h.model.Gadget;
 import kllngii.r6h.model.Operator;
@@ -34,6 +40,8 @@ import kllngii.r6h.model.Waffe;
 
 
 public class R6Helper {
+    
+    private final Logger log = Logger.getLogger(getClass());
 	
 	private JFrame frame;
 	
@@ -56,7 +64,9 @@ public class R6Helper {
 
 	private JLabel meldunglabel;
 	
-	private SortedSet<String> errors = new TreeSet<>();
+	private final SortedSet<String> errors = new TreeSet<>();
+	
+	private final SpeicherService speicherService = new SpeicherService();
 	
 
 	/**
@@ -111,24 +121,52 @@ public class R6Helper {
 		
 		root.add(Box.createVerticalStrut(lücke));
 		
-		JPanel panel = new JPanel();
-		root.add(panel);
-		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-		//panel.setAlignmentX(0);
+		JPanel avPanel = new JPanel();
+		avPanel.setLayout(new BoxLayout(avPanel, BoxLayout.X_AXIS));
+		root.add(avPanel);
 		
 		JLabel lblArt = new JLabel("Gegnerteam:");
-		panel.add(lblArt);
+		avPanel.add(lblArt);
 		
 		rdbtnAngreifer = new JRadioButton("Angreifer");
-		panel.add(rdbtnAngreifer);
+		avPanel.add(rdbtnAngreifer);
 		rdbtnAngreifer.setSelected(true);
 		
 		JRadioButton rdbtnVerteidiger = new JRadioButton("Verteidiger");
-		panel.add(rdbtnVerteidiger);
+		avPanel.add(rdbtnVerteidiger);
 		
 		ButtonGroup art = new ButtonGroup();
 	    art.add(rdbtnAngreifer);
 	    art.add(rdbtnVerteidiger);
+	    
+	    //TODO Vorläufig: Buttons zum Laden und Speichern
+	    JPanel speichernPanel = new JPanel();
+	    speichernPanel.setLayout(new BoxLayout(speichernPanel, BoxLayout.X_AXIS));
+	    speichernPanel.setBorder(padding(0, lücke, 0, lücke));
+	    avPanel.add(speichernPanel);
+	    
+	    JButton ladenButton = new JButton("Laden");
+	    ladenButton.addActionListener((ActionEvent evt) -> {
+	        R6HelperModel oldModel = speicherService.ladeAusPreferences();
+	        if (oldModel != null)
+	            model = oldModel;
+	    });
+	    speichernPanel.add(ladenButton);
+	    
+	    JPanel speichernButtonPadded = new JPanel(); 
+	    JButton speichernButton = new JButton("Speichern");
+	    speichernButtonPadded.setLayout(new BoxLayout(speichernButtonPadded, BoxLayout.X_AXIS));
+	    speichernButtonPadded.add(speichernButton);
+	    speichernButtonPadded.setBorder(paddingLeft(lücke/2));
+	    speichernButton.addActionListener((ActionEvent evt) -> {
+	        try {
+	            speicherService.speichereInPreferences(model);
+	        }
+	        catch (IOException ex) {
+	            log.severe("Fehler beim Speichern!", ex);
+	        }
+        });
+	    speichernPanel.add(speichernButtonPadded);
 
 	    
         //// Ebene 2 ////
@@ -327,6 +365,21 @@ public class R6Helper {
 	private void clearErrors() {
 	    errors.clear();
 	    panel_meldung.setVisible(false);
+	}
+
+	private Border padding(int top, int right, int bottom, int left) {
+	        return new EmptyBorder(top, left, bottom, right);
+	}
+    private Border paddingLeft(int padding) {
+        return new EmptyBorder(0, padding, 0, 0);
+    }
+	@SuppressWarnings("unused")
+    private Border padding(int topAndBottom, int leftAndRight) {
+	        return new EmptyBorder(topAndBottom, leftAndRight, topAndBottom, leftAndRight);
+	}
+	@SuppressWarnings("unused")
+    private Border padding(int allSides) {
+	    return new EmptyBorder(allSides, allSides, allSides, allSides);
 	}
 	
 }

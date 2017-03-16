@@ -14,7 +14,9 @@ import java.util.Set;
 
 public class Rekrut extends Operator {
 	
-	public static final int MAX_GADGETS = 2;
+    private static final long serialVersionUID = -5375903106008752408L;
+
+    public static final int MAX_GADGETS = 2;
 	
 	private final List<Gadget> selectedGadgets = new ArrayList<>();
 	
