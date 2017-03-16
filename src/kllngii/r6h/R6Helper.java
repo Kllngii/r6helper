@@ -147,9 +147,16 @@ public class R6Helper {
 	    
 	    JButton ladenButton = new JButton("Laden");
 	    ladenButton.addActionListener((ActionEvent evt) -> {
-	        R6HelperModel oldModel = speicherService.ladeAusPreferences();
-	        if (oldModel != null)
-	            model = oldModel;
+	        try {
+	            R6HelperModel oldModel = speicherService.ladeAusPreferences();
+	            if (oldModel != null) {
+	                model = oldModel;
+	                fillPanelWaffen();  // Änderungen sichtbar machen
+	            }
+            }
+            catch (IOException ex) {
+                log.severe("Fehler beim Laden des Models aus den Preferences!", ex);
+            }
 	    });
 	    speichernPanel.add(ladenButton);
 	    
