@@ -27,8 +27,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.UIManager;
-import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
 
 import com.sun.istack.internal.logging.Logger;
 
@@ -39,7 +37,7 @@ import kllngii.r6h.model.Rekrut;
 import kllngii.r6h.model.Waffe;
 
 
-public class R6Helper {
+public class R6Helper extends KllngiiApplication {
     
     private final Logger log = Logger.getLogger(getClass());
 	
@@ -142,8 +140,7 @@ public class R6Helper {
 	    //TODO Vorläufig: Buttons zum Laden und Speichern
 	    JPanel speichernPanel = new JPanel();
 	    speichernPanel.setLayout(new BoxLayout(speichernPanel, BoxLayout.X_AXIS));
-	    speichernPanel.setBorder(padding(0, lücke, 0, lücke));
-	    avPanel.add(speichernPanel);
+	    avPanel.add( padding(speichernPanel, 0, lücke) );
 	    
 	    JButton ladenButton = new JButton("Laden");
 	    ladenButton.addActionListener((ActionEvent evt) -> {
@@ -160,11 +157,14 @@ public class R6Helper {
 	    });
 	    speichernPanel.add(ladenButton);
 	    
-	    JPanel speichernButtonPadded = new JPanel(); 
+//	    JPanel speichernButtonPadded = new JPanel(); 
 	    JButton speichernButton = new JButton("Speichern");
-	    speichernButtonPadded.setLayout(new BoxLayout(speichernButtonPadded, BoxLayout.X_AXIS));
-	    speichernButtonPadded.add(speichernButton);
-	    speichernButtonPadded.setBorder(paddingLeft(lücke/2));
+	    if (speichernButton.getBorder() != null) {
+	        log.info("Button hat als Border eine " + speichernButton.getBorder());
+	        log.info("Insets: " + speichernButton.getBorder().getBorderInsets(speichernButton));
+	    }
+	    log.info("Button hat als Border eine " + speichernButton.getBorder());
+	    log.info("Insets: " + speichernButton.getBorder().getBorderInsets(speichernButton));
 	    speichernButton.addActionListener((ActionEvent evt) -> {
 	        try {
 	            speicherService.speichereInPreferences(model);
@@ -173,7 +173,7 @@ public class R6Helper {
 	            log.severe("Fehler beim Speichern!", ex);
 	        }
         });
-	    speichernPanel.add(speichernButtonPadded);
+	    speichernPanel.add( paddingLeft(speichernButton, lücke/2) );
 
 	    
         //// Ebene 2 ////
@@ -372,21 +372,6 @@ public class R6Helper {
 	private void clearErrors() {
 	    errors.clear();
 	    panel_meldung.setVisible(false);
-	}
-
-	private Border padding(int top, int right, int bottom, int left) {
-	        return new EmptyBorder(top, left, bottom, right);
-	}
-    private Border paddingLeft(int padding) {
-        return new EmptyBorder(0, padding, 0, 0);
-    }
-	@SuppressWarnings("unused")
-    private Border padding(int topAndBottom, int leftAndRight) {
-	        return new EmptyBorder(topAndBottom, leftAndRight, topAndBottom, leftAndRight);
-	}
-	@SuppressWarnings("unused")
-    private Border padding(int allSides) {
-	    return new EmptyBorder(allSides, allSides, allSides, allSides);
 	}
 	
 }
