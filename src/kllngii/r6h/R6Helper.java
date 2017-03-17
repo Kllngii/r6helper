@@ -28,7 +28,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.UIManager;
 
-import com.sun.istack.internal.logging.Logger;
+import org.apache.log4j.Logger;
 
 import kllngii.r6h.model.Gadget;
 import kllngii.r6h.model.Operator;
@@ -154,7 +154,7 @@ public class R6Helper extends KllngiiApplication {
 	            }
             }
             catch (IOException ex) {
-                log.severe("Fehler beim Laden des Models aus den Preferences!", ex);
+                log.error("Fehler beim Laden des Models aus den Preferences!", ex);
             }
 	    });
 	    speichernPanel.add(ladenButton);
@@ -172,7 +172,7 @@ public class R6Helper extends KllngiiApplication {
 	            speicherService.speichereInPreferences(model);
 	        }
 	        catch (IOException ex) {
-	            log.severe("Fehler beim Speichern!", ex);
+	            log.error("Fehler beim Speichern!", ex);
 	        }
         });
 	    speichernPanel.add( paddingLeft(speichernButton, lücke/2) );
