@@ -46,9 +46,38 @@ public class Operator implements Serializable {
 			List<Waffe> sekundärwaffen, List<Gadget> gadgets) {
 		this(typ, name, Arrays.asList(primärwaffe1, primärwaffe2, primärwaffe3), sekundärwaffen, gadgets);
 	}
+	
 
 
-	public List<Gadget> getGadgets() {
+	@Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + ((typ == null) ? 0 : typ.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Operator other = (Operator) obj;
+        if (name == null) {
+            if (other.name != null)
+                return false;
+        } else if (!name.equals(other.name))
+            return false;
+        if (typ != other.typ)
+            return false;
+        return true;
+    }
+
+    public List<Gadget> getGadgets() {
 		return gadgets;
 	}
 

@@ -53,8 +53,8 @@ public class R6Helper extends KllngiiApplication {
 	
 	private JPanel panel_meldung;
 	
-	private Map<JCheckBox, Operator> angriffCheckboxen;
-	private Map<JCheckBox, Operator> verteidigungCheckboxen;
+	private Map<Operator, JCheckBox> angriffCheckboxen;
+	private Map<Operator, JCheckBox> verteidigungCheckboxen;
 
 	private JRadioButton rdbtnAngreifer;
 	
@@ -148,6 +148,8 @@ public class R6Helper extends KllngiiApplication {
 	            R6HelperModel oldModel = speicherService.ladeAusPreferences();
 	            if (oldModel != null) {
 	                model = oldModel;
+	                
+	                setAVCheckboxes();  // Checkboxen passend zum Model setzen
 	                fillPanelWaffen();  // Änderungen sichtbar machen
 	            }
             }
@@ -200,7 +202,7 @@ public class R6Helper extends KllngiiApplication {
 		angriffCheckboxen = new HashMap<>();
 		for (Operator op : model.getAngreifer()) {
 			JCheckBox checkBox = new JCheckBox(op.getName());
-			angriffCheckboxen.put(checkBox, op);
+			angriffCheckboxen.put(op, checkBox);
 			panel_angriff.add(checkBox);
 			checkBox.addActionListener((ActionEvent evt)->{
 				model.toggleSelected(op);
@@ -210,7 +212,7 @@ public class R6Helper extends KllngiiApplication {
 		verteidigungCheckboxen = new HashMap<>();
 		for (Operator op : model.getVerteidiger()) {
 			JCheckBox checkBox = new JCheckBox(op.getName());
-			verteidigungCheckboxen.put(checkBox, op);
+			verteidigungCheckboxen.put(op, checkBox);
 			panel_verteidigung.add(checkBox);
 			checkBox.addActionListener((ActionEvent evt)->{
 				model.toggleSelected(op);
@@ -372,6 +374,30 @@ public class R6Helper extends KllngiiApplication {
 	private void clearErrors() {
 	    errors.clear();
 	    panel_meldung.setVisible(false);
+	}
+	
+	
+	/**
+	 * (Ent)markiert die Angreifer- und Verteidiger-Checkboxen passend zum Model.
+	 */
+	private void setAVCheckboxes() {
+	    // Erst alle entmarkieren:
+	    for (JCheckBox cb : angriffCheckboxen.values())
+	        cb.setSelected(false);
+        for (JCheckBox cb : verteidigungCheckboxen.values())
+            cb.setSelected(false);
+        
+        // Nun diejenigen markieren, die auch im Model ausgewählt sind:
+        for (Operator op : model.getSelectedAngreifer()) {
+            JCheckBox cb = angriffCheckboxen.get(op);
+            if (cb != null)
+                cb.setSelected(true);
+        }
+        for (Operator op : model.getSelectedVerteidiger()) {
+            JCheckBox cb = verteidigungCheckboxen.get(op);
+            if (cb != null)
+                cb.setSelected(true);
+        }
 	}
 	
 }
