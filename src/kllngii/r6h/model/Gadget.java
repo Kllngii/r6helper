@@ -9,7 +9,7 @@ public enum Gadget {
 	
 	KON_GRANATE("Kontaktgranate"),
 	C4("Nitro-Handy"),
-	SDRAHT("Stacheldraht"),
+	STA_DRAHT("Stacheldraht"),
 	MOBI("Mobiler Schild")
 	;
 	
