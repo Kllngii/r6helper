@@ -183,6 +183,10 @@ public class R6Helper extends KllngiiApplication  {
 	            if (oldModel != null) {
 	                model = oldModel;
 	                
+	                rdbtnAngreifer.setSelected(model.isGegnerteamAngreifer());
+	                panel_angriff.setVisible(model.isGegnerteamAngreifer());
+	                rdbtnVerteidiger.setSelected(!model.isGegnerteamAngreifer());
+	                panel_verteidigung.setVisible(!model.isGegnerteamAngreifer());
 	                setAVCheckboxes();  // Checkboxen passend zum Model setzen
 	                fillPanelWaffen();  // Änderungen sichtbar machen
 	            }
@@ -195,12 +199,6 @@ public class R6Helper extends KllngiiApplication  {
 	    
 //	    JPanel speichernButtonPadded = new JPanel(); 
 	    JButton speichernButton = new JButton("Speichern");
-	    if (speichernButton.getBorder() != null) {
-	        log.info("Button hat als Border eine " + speichernButton.getBorder());
-	        log.info("Insets: " + speichernButton.getBorder().getBorderInsets(speichernButton));
-	    }
-	    log.info("Button hat als Border eine " + speichernButton.getBorder());
-	    log.info("Insets: " + speichernButton.getBorder().getBorderInsets(speichernButton));
 	    speichernButton.addActionListener((ActionEvent evt) -> {
 	        try {
 	            speicherService.speichereInPreferences(model);
@@ -210,6 +208,18 @@ public class R6Helper extends KllngiiApplication  {
 	        }
         });
 	    speichernPanel.add( paddingLeft(speichernButton, lückeKlein) );
+	    
+       JButton jsonButton = new JButton("Test - JSON");
+       jsonButton.addActionListener((ActionEvent evt) -> {
+            try {
+                speicherService.createJson(model, errors);
+            }
+            catch (Exception ex) {
+                log.error("Fehler beim Erzeugen des JSON!", ex);
+            }
+        });
+        speichernPanel.add( paddingLeft(jsonButton, lückeKlein) );
+
 
 	    
         //// Ebene 2 ////
@@ -259,11 +269,13 @@ public class R6Helper extends KllngiiApplication  {
 		
 		// Event-Handler für Auswahl Angriff/Verteidigung:
 		rdbtnAngreifer.addActionListener((ActionEvent evt) -> {
-				panel_angriff.setVisible(true);
-				panel_verteidigung.setVisible(false);
-				fillPanelWaffen();
+		    model.setGegnerteamAngreifer(true);
+			panel_angriff.setVisible(true);
+			panel_verteidigung.setVisible(false);
+			fillPanelWaffen();
 		});
 		rdbtnVerteidiger.addActionListener((ActionEvent evt) -> {
+		    model.setGegnerteamAngreifer(false);
 			panel_angriff.setVisible(false);
 			panel_verteidigung.setVisible(true);
 			fillPanelWaffen();

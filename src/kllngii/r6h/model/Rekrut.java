@@ -54,6 +54,7 @@ public class Rekrut extends Operator {
 
 
 
+	@Override
 	public List<Gadget> getSelectedGadgets() {
 		return selectedGadgets;
 	}

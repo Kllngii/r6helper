@@ -5,11 +5,19 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Collection;
+import java.util.List;
 import java.util.prefs.Preferences;
+import java.util.stream.Collectors;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
+import kllngii.r6h.model.Operator;
 import kllngii.r6h.model.R6HelperModel;
+import kllngii.r6h.model.Waffe;
 
 /**
  * Service, um das Model {@link R6HelperModel} über den Lauf des Programmes hinaus zu speichern und wieder zu laden.
@@ -69,5 +77,51 @@ public class SpeicherService {
             log.info("Preferences enthalten noch kein gespeichertes Model");
         return model;
     }
-
+    
+    
+    /**
+     * Wandelt ein {@link R6HelperModel} (den Zustand dieser Applikation) in einen JSON-String um.
+     */
+    public String createJson(R6HelperModel model, Collection<String> errors) {
+        JSONObject json = new JSONObject();
+        
+        json.put("gegnerteamAngreifer", model.isGegnerteamAngreifer());
+        final List<Operator> gegnerteam = model.isGegnerteamAngreifer() ? model.getSelectedAngreifer() : model.getSelectedVerteidiger();
+        JSONArray geg = new JSONArray();
+        for (Operator gegner : gegnerteam)
+            geg.put(toJson(gegner));
+        json.put("gegnerteam", geg);
+        
+        if (CollectionUtils.isNotEmpty(errors)) {
+            JSONArray fehler = new JSONArray();
+            for (String error : errors)
+                fehler.put(error);
+            json.put("fehler", fehler);
+        }
+        
+        String result = json.toString(4);
+        log.info("JSON:\n" + result);
+        return result;
+    }
+    
+    private JSONObject toJson(Operator op) {
+        JSONObject trg = new JSONObject();
+        trg.put("name", op.getName());
+        if (op.getSelectedPrimärwaffe() != null)
+            trg.put("primärwaffe", toJson(op.getSelectedPrimärwaffe()));
+        if (op.getSelectedSekundärwaffe() != null)
+            trg.put("sekundärwaffe", toJson(op.getSelectedSekundärwaffe()));
+        if (CollectionUtils.isNotEmpty(op.getSelectedGadgets()))
+            trg.put("gadgets", new JSONArray(
+                op.getSelectedGadgets().stream().map(g -> g.getName()).collect(Collectors.toList())));
+        return trg;
+    }
+    
+    private JSONObject toJson(Waffe w) {
+        JSONObject trg = new JSONObject();
+        trg.put("name", w.getName());
+        trg.put("typ", w.getTyp());
+        return trg;
+    }
+    
 }

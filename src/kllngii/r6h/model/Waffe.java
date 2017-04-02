@@ -85,13 +85,13 @@ public enum Waffe {
 	;
 	
 	
-    private final Waffentyp wTyp;
+    private final Waffentyp typ;
 	private final String name;
 	
 	
 	private Waffe(String name, Waffentyp typ) {
 		this.name = name;
-		this.wTyp = typ;
+		this.typ = typ;
 		
 	}
 
@@ -99,11 +99,13 @@ public enum Waffe {
 		return name;
 	}
 	
-	public Waffentyp getwTyp() {
-		return wTyp;
-	}
+	
+	
+	public Waffentyp getTyp() {
+        return typ;
+    }
 
-	@Override
+    @Override
 	public String toString() {
 	    return name;
 	}

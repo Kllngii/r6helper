@@ -17,9 +17,9 @@ public class R6HelperModel implements Serializable {
 	
     private static final long serialVersionUID = -2815739085224590803L;
     
-    private final Logger log = Logger.getLogger(getClass());
-
     public static final int MAX_TEAMGRÖSSE = 5;
+    
+    private boolean gegnerteamAngreifer = true;
 
 	private final List<Operator> operatoren;
 	private final List<Operator> angreifer;
@@ -29,6 +29,8 @@ public class R6HelperModel implements Serializable {
 	
 	//MSG Model für Waffenart (wTyp) fertig
 	public R6HelperModel() {
+	    gegnerteamAngreifer = true;
+	    
 		selectedAngreifer = new ArrayList<>();
 		selectedVerteidiger = new ArrayList<>();
 		
@@ -136,8 +138,9 @@ public class R6HelperModel implements Serializable {
 		else
 			toggleSelected(selectedVerteidiger, op);
 		
-		log.info("Angreifer ausgewählt:    "+selectedAngreifer);
-		log.info("Verteidiger ausgewählt:  "+selectedVerteidiger);
+		//TODO Logger nachrüsten; muss "transient" sein und nach dem Laden hergestellt werden
+//		log.info("Angreifer ausgewählt:    "+selectedAngreifer);
+//		log.info("Verteidiger ausgewählt:  "+selectedVerteidiger);
 	}
 
 
@@ -153,5 +156,14 @@ public class R6HelperModel implements Serializable {
 			
 		}
 	}
-	
+
+
+    public boolean isGegnerteamAngreifer() {
+        return gegnerteamAngreifer;
+    }
+
+
+    public void setGegnerteamAngreifer(boolean gegnerteamAngreifer) {
+        this.gegnerteamAngreifer = gegnerteamAngreifer;
+    }
 }

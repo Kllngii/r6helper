@@ -129,5 +129,12 @@ public class Operator implements Serializable {
 	public void setSelectedGadget(Gadget selectedGadget) {
 		this.selectedGadget = selectedGadget;
 	}
+	
+	public List<Gadget> getSelectedGadgets() {
+	    if (selectedGadget == null)
+	        return Collections.emptyList();
+	    else
+	        return Arrays.asList(selectedGadget);
+	}
     
 }
