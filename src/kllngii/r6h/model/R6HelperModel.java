@@ -10,10 +10,14 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 
 public class R6HelperModel implements Serializable {
 	
     private static final long serialVersionUID = -2815739085224590803L;
+    
+    private final Logger log = Logger.getLogger(getClass());
 
     public static final int MAX_TEAMGRÖSSE = 5;
 
@@ -121,9 +125,6 @@ public class R6HelperModel implements Serializable {
 	/**
 	 * Fügt einen {@link Operator} der Liste der ausgewählten Operatoren
 	 * hinzu oder entfernt ihn daraus.
-	 * 
-	 * 
-	 * 
 	 */
 	public void toggleSelected(Operator op) {
 		if(op==null){
@@ -135,9 +136,8 @@ public class R6HelperModel implements Serializable {
 		else
 			toggleSelected(selectedVerteidiger, op);
 		
-		System.out.println("Angreifer ausgewählt:    "+selectedAngreifer);
-		System.out.println("Verteidiger ausgewählt:  "+selectedVerteidiger);
-
+		log.info("Angreifer ausgewählt:    "+selectedAngreifer);
+		log.info("Verteidiger ausgewählt:  "+selectedVerteidiger);
 	}
 
 
