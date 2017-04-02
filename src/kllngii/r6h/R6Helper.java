@@ -2,12 +2,17 @@ package kllngii.r6h;
 
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +42,7 @@ import kllngii.r6h.model.Rekrut;
 import kllngii.r6h.model.Waffe;
 
 //TODO View und Controller für Waffenart(wTyp)
-public class R6Helper extends KllngiiApplication {
+public class R6Helper extends KllngiiApplication  {
     
     private final Logger log = Logger.getLogger(getClass());
 	
@@ -48,15 +53,15 @@ public class R6Helper extends KllngiiApplication {
 	private JPanel panel_angriff;
 	
 	private JPanel panel_verteidigung;
-	
+	private URL url;
 	private Box panel_waffen;
 	
 	private JPanel panel_meldung;
-	
 	private Map<Operator, JCheckBox> angriffCheckboxen;
 	private Map<Operator, JCheckBox> verteidigungCheckboxen;
 
 	private JRadioButton rdbtnAngreifer;
+	private JButton btnWeb;
 	
 	private final int lücke = 12;
 
@@ -114,9 +119,39 @@ public class R6Helper extends KllngiiApplication {
 		Container root = frame.getContentPane();
 		root.setLayout(new BoxLayout(root, BoxLayout.Y_AXIS));
 		
+		//// Ebene 0 ////
+		root.add(Box.createVerticalStrut(lücke));
 		
+		JPanel panel_options = new JPanel();
+		panel_options.setLayout(new BoxLayout(panel_options, BoxLayout.X_AXIS));
+		root.add(panel_options);
+		
+		JLabel lblweb = new JLabel("Map:");
+		panel_options.add(lblweb);
+		
+		setBtnWeb(new JButton("öffnen"));
+		btnWeb.setEnabled(true);
+		panel_options.add(btnWeb);
+		btnWeb.addActionListener((ActionEvent evt) -> {
+			URL url = null;
+	        try {
+	            url = new URL("http://www.r6maps.com/");
+	        } catch (MalformedURLException e) {
+	            e.printStackTrace();
+	        }
+	        if(Desktop.isDesktopSupported()){
+	            try {
+	                Desktop.getDesktop().browse(url.toURI());
+	            } catch (IOException e) {
+	                e.printStackTrace();
+	            } catch (URISyntaxException e) {
+	                e.printStackTrace();
+	            }
+	        }
+	 
+	    });
 		//// Ebene 1 ////
-		
+
 		root.add(Box.createVerticalStrut(lücke));
 		
 		JPanel avPanel = new JPanel();
@@ -235,7 +270,7 @@ public class R6Helper extends KllngiiApplication {
 			fillPanelWaffen();
 		});
 
-		
+
         //// Ebene 3 ////
         
         root.add(Box.createVerticalStrut(lücke));
@@ -259,6 +294,11 @@ public class R6Helper extends KllngiiApplication {
 	}
 	
 	
+	private ActionListener WebAction() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	@SuppressWarnings("static-access")
 	private void fillPanelWaffen() {
 	    
@@ -399,5 +439,24 @@ public class R6Helper extends KllngiiApplication {
                 cb.setSelected(true);
         }
 	}
+
+	public JButton getBtnWeb() {
+		return btnWeb;
+	}
+
+	public void setBtnWeb(JButton btnWeb) {
+		this.btnWeb = btnWeb;
+	}
+
+    public void WebAction(ActionEvent a) throws MalformedURLException, IOException, URISyntaxException{
+    	if(a.getSource()== btnWeb){
+    		Desktop desktop = Desktop.getDesktop();
+    		desktop.browse(new URL("www.r6maps.com").toURI());
+    	}
+    	else{
+    		return;
+    	}
+    }
+
 	
 }
