@@ -8,7 +8,6 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
@@ -64,6 +63,7 @@ public class R6Helper extends KllngiiApplication  {
 	private JButton btnWeb;
 	
 	private final int lücke = 12;
+	private final int lückeKlein = lücke/2;
 
 	private JLabel meldunglabel;
 	
@@ -127,28 +127,27 @@ public class R6Helper extends KllngiiApplication  {
 		root.add(panel_options);
 		
 		JLabel lblweb = new JLabel("Map:");
-		panel_options.add(lblweb);
+		panel_options.add(paddingRight(lblweb, lücke));
 		
-		setBtnWeb(new JButton("öffnen"));
+		btnWeb = new JButton("Öffnen");
 		btnWeb.setEnabled(true);
 		panel_options.add(btnWeb);
 		btnWeb.addActionListener((ActionEvent evt) -> {
 			URL url = null;
 	        try {
 	            url = new URL("http://www.r6maps.com/");
+	            if (Desktop.isDesktopSupported()){  //FIXME Das vorher abfragen. Falls false, dann den Button gar nicht erst anzeigen, oder ihn ausgrauen
+	                try {
+	                    Desktop.getDesktop().browse(url.toURI());
+	                } catch (IOException e) {
+	                    e.printStackTrace();
+	                } catch (URISyntaxException e) {
+	                    e.printStackTrace();
+	                }
+	            }
 	        } catch (MalformedURLException e) {
 	            e.printStackTrace();
 	        }
-	        if(Desktop.isDesktopSupported()){
-	            try {
-	                Desktop.getDesktop().browse(url.toURI());
-	            } catch (IOException e) {
-	                e.printStackTrace();
-	            } catch (URISyntaxException e) {
-	                e.printStackTrace();
-	            }
-	        }
-	 
 	    });
 		//// Ebene 1 ////
 
@@ -159,7 +158,7 @@ public class R6Helper extends KllngiiApplication  {
 		root.add(avPanel);
 		
 		JLabel lblArt = new JLabel("Gegnerteam:");
-		avPanel.add(lblArt);
+		avPanel.add(paddingRight(lblArt, lückeKlein));
 		
 		rdbtnAngreifer = new JRadioButton("Angreifer");
 		avPanel.add(rdbtnAngreifer);
@@ -210,7 +209,7 @@ public class R6Helper extends KllngiiApplication  {
 	            log.error("Fehler beim Speichern!", ex);
 	        }
         });
-	    speichernPanel.add( paddingLeft(speichernButton, lücke/2) );
+	    speichernPanel.add( paddingLeft(speichernButton, lückeKlein) );
 
 	    
         //// Ebene 2 ////
@@ -229,10 +228,10 @@ public class R6Helper extends KllngiiApplication  {
 		root.add(panel_verteidigung);
 		
 		panel_angriff.add(Box.createHorizontalStrut(lücke));
-		panel_angriff.add(new JLabel("Operator:"));
+		panel_angriff.add(paddingRight(new JLabel("Operator:"), lückeKlein));
 		
 		panel_verteidigung.add(Box.createHorizontalStrut(lücke));
-		panel_verteidigung.add(new JLabel("Operator:"));
+		panel_verteidigung.add(paddingRight(new JLabel("Operator:"), lückeKlein));
 		
 		angriffCheckboxen = new HashMap<>();
 		for (Operator op : model.getAngreifer()) {
@@ -294,11 +293,6 @@ public class R6Helper extends KllngiiApplication  {
 	}
 	
 	
-	private ActionListener WebAction() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	@SuppressWarnings("static-access")
 	private void fillPanelWaffen() {
 	    
@@ -388,7 +382,7 @@ public class R6Helper extends KllngiiApplication  {
 			panel_waffen.add(panel);
 			
 			// Lücke zwischen den Operatoren
-			panel_waffen.add(Box.createVerticalStrut(lücke/2));
+			panel_waffen.add(Box.createVerticalStrut(lückeKlein));
 		}
 		
 		panel_waffen.add(Box.createVerticalGlue());
@@ -439,24 +433,6 @@ public class R6Helper extends KllngiiApplication  {
                 cb.setSelected(true);
         }
 	}
-
-	public JButton getBtnWeb() {
-		return btnWeb;
-	}
-
-	public void setBtnWeb(JButton btnWeb) {
-		this.btnWeb = btnWeb;
-	}
-
-    public void WebAction(ActionEvent a) throws MalformedURLException, IOException, URISyntaxException{
-    	if(a.getSource()== btnWeb){
-    		Desktop desktop = Desktop.getDesktop();
-    		desktop.browse(new URL("www.r6maps.com").toURI());
-    	}
-    	else{
-    		return;
-    	}
-    }
 
 	
 }
