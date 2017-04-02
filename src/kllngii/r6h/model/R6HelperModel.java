@@ -134,8 +134,8 @@ public class R6HelperModel implements Serializable {
 		else
 			toggleSelected(selectedVerteidiger, op);
 		
-//		System.out.println("Angreifer ausgewählt:    "+selectedAngreifer);
-//		System.out.println("Verteidiger ausgewählt:  "+selectedVerteidiger);
+		System.out.println("Angreifer ausgewählt:    "+selectedAngreifer);
+		System.out.println("Verteidiger ausgewählt:  "+selectedVerteidiger);
 
 	}
 
