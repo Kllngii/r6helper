@@ -36,7 +36,7 @@ import kllngii.r6h.model.R6HelperModel;
 import kllngii.r6h.model.Rekrut;
 import kllngii.r6h.model.Waffe;
 
-
+//TODO View und Controller für Waffenart(wTyp)
 public class R6Helper extends KllngiiApplication {
     
     private final Logger log = Logger.getLogger(getClass());

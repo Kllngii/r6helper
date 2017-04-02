@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+
 public class R6HelperModel implements Serializable {
 	
     private static final long serialVersionUID = -2815739085224590803L;
@@ -22,11 +23,11 @@ public class R6HelperModel implements Serializable {
 	private final List<Operator> selectedAngreifer;
 	private final List<Operator> selectedVerteidiger;
 	
-	
+	//MSG Model für Waffenart (wTyp) fertig
 	public R6HelperModel() {
 		selectedAngreifer = new ArrayList<>();
 		selectedVerteidiger = new ArrayList<>();
-		//TODO Gadgets hinzufügen
+		
 		
 		List<Operator> _o = new ArrayList<>();
 //		Angreifer
