@@ -52,7 +52,7 @@ public class R6Helper extends KllngiiApplication  {
 	private JPanel panel_angriff;
 	
 	private JPanel panel_verteidigung;
-	private URL url;
+
 	private Box panel_waffen;
 	
 	private JPanel panel_meldung;
