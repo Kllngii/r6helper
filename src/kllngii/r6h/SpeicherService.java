@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.prefs.Preferences;
@@ -107,6 +108,43 @@ public class SpeicherService {
         return result;
     }
     
+    private R6HelperModel getModel(JSONObject json) {
+        R6HelperModel model = new R6HelperModel();
+        
+        model.setGegnerteamAngreifer(json.getBoolean("gegnerteamAngreifer"));
+        
+        if (json.has("gegnerteam")) {
+            for (Object gegnerObject : json.getJSONArray("gegnerteam")) {
+                Operator gegner = operator(model, (JSONObject) gegnerObject);
+                model.toggleSelected(gegner);
+            }
+        }
+        
+        return model;
+    }
+    
+    private Operator operator(R6HelperModel model, JSONObject json) {
+        String name = json.getString("name");
+        
+        // Operator zum Namen finden:
+        Operator op = null;
+        for (Operator _o : model.getOperatoren()) {
+            if (_o.getName().equals(name)) {
+                op = _o;
+                break;
+            }
+        }
+        if (op == null)
+            throw new IllegalArgumentException("Unbekannter Operator: " + name);
+        
+        //FIXME Weitere Keys auslesen:
+        // primärwaffe
+        // sekundärwaffe
+        // gadgets
+        
+        return op;
+    }
+    
     private JSONObject toJson(Operator op) {
         JSONObject trg = new JSONObject();
         trg.put("name", op.getName());
@@ -126,6 +164,16 @@ public class SpeicherService {
         trg.put("typ", w.getTyp());
         return trg;
     }
+    
+
+    
+    private List<String> getErrors(JSONObject json) {
+        List<String> errors = new ArrayList<>(3);
+        if (json.has("fehler"))
+            json.getJSONArray("fehler").forEach(it -> errors.add(it.toString()));
+        return errors;
+    }
+    
     public void speichereJson(R6HelperModel model, Collection<String> errors, File datei) throws IOException{
     	String json = createJson(model, errors);
     	FileUtils.writeStringToFile(datei, json, StandardCharsets.UTF_8);
