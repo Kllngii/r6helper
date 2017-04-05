@@ -2,15 +2,18 @@ package kllngii.r6h;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.List;
 import java.util.prefs.Preferences;
 import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -122,6 +125,10 @@ public class SpeicherService {
         trg.put("name", w.getName());
         trg.put("typ", w.getTyp());
         return trg;
+    }
+    public void speichereJson(R6HelperModel model, Collection<String> errors, File datei) throws IOException{
+    	String json = createJson(model, errors);
+    	FileUtils.writeStringToFile(datei, json, StandardCharsets.UTF_8);
     }
     
 }

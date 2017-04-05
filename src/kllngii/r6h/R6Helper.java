@@ -8,6 +8,7 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
@@ -43,8 +44,11 @@ import kllngii.r6h.model.Waffe;
 //TODO View und Controller für Waffenart(wTyp)
 public class R6Helper extends KllngiiApplication  {
     
+	private static final File DATEI = new File("/tmp/r6helper.json");
+	
     private final Logger log = Logger.getLogger(getClass());
 	
+    private final boolean readWrite;
 	private JFrame frame;
 	
 	private R6HelperModel model = new R6HelperModel();
@@ -76,6 +80,12 @@ public class R6Helper extends KllngiiApplication  {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		// Nur-Lese-Modus kann über den ersten Parameter
+		// angefordert werden
+		boolean readWrite = true;
+		if (args != null && args.length >= 1)
+			readWrite = Boolean.valueOf(args[0]);
+		
 	    try {
 	        // Set cross-platform Java L&F (also called "Metal")
 	        UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
@@ -87,11 +97,12 @@ public class R6Helper extends KllngiiApplication  {
 	        throw new RuntimeException(ex);
 	    }
         
+	    final boolean _readWrite = readWrite;
 		EventQueue.invokeLater(new Runnable() {
 			@SuppressWarnings("unused")
             @Override
             public void run() {
-				new R6Helper();
+				new R6Helper(_readWrite);
 			}
 		});
 	}
@@ -99,7 +110,8 @@ public class R6Helper extends KllngiiApplication  {
 	/**
 	 * Create the application.
 	 */
-	public R6Helper() {
+	public R6Helper(boolean readWrite) {
+		this.readWrite = readWrite;
 		initialize();
 		
 	}
@@ -163,9 +175,11 @@ public class R6Helper extends KllngiiApplication  {
 		rdbtnAngreifer = new JRadioButton("Angreifer");
 		avPanel.add(rdbtnAngreifer);
 		rdbtnAngreifer.setSelected(true);
+		rdbtnAngreifer.setEnabled(readWrite);
 		
 		JRadioButton rdbtnVerteidiger = new JRadioButton("Verteidiger");
 		avPanel.add(rdbtnVerteidiger);
+		rdbtnVerteidiger.setEnabled(readWrite);
 		
 		ButtonGroup art = new ButtonGroup();
 	    art.add(rdbtnAngreifer);
@@ -197,28 +211,29 @@ public class R6Helper extends KllngiiApplication  {
 	    });
 	    speichernPanel.add(ladenButton);
 	    
-//	    JPanel speichernButtonPadded = new JPanel(); 
-	    JButton speichernButton = new JButton("Speichern");
-	    speichernButton.addActionListener((ActionEvent evt) -> {
-	        try {
-	            speicherService.speichereInPreferences(model);
-	        }
-	        catch (IOException ex) {
-	            log.error("Fehler beim Speichern!", ex);
-	        }
-        });
-	    speichernPanel.add( paddingLeft(speichernButton, lückeKlein) );
+	    if (readWrite) {
+		    JButton speichernButton = new JButton("Speichern");
+		    speichernButton.addActionListener((ActionEvent evt) -> {
+		        try {
+		            speicherService.speichereInPreferences(model);
+		        }
+		        catch (IOException ex) {
+		            log.error("Fehler beim Speichern!", ex);
+		        }
+	        });
+		    speichernPanel.add( paddingLeft(speichernButton, lückeKlein) );
 	    
-       JButton jsonButton = new JButton("Test - JSON");
-       jsonButton.addActionListener((ActionEvent evt) -> {
-            try {
-                speicherService.createJson(model, errors);
-            }
-            catch (Exception ex) {
-                log.error("Fehler beim Erzeugen des JSON!", ex);
-            }
-        });
-        speichernPanel.add( paddingLeft(jsonButton, lückeKlein) );
+	       JButton jsonButton = new JButton("Json speichern");
+	       jsonButton.addActionListener((ActionEvent evt) -> {
+	            try {
+	                speicherService.speichereJson(model, errors, DATEI);
+	            }
+	            catch (Exception ex) {
+	                log.error("Fehler beim Erzeugen des JSON!", ex);
+	            }
+	        });
+	        speichernPanel.add( paddingLeft(jsonButton, lückeKlein) );
+	    }
 
 
 	    
@@ -246,6 +261,7 @@ public class R6Helper extends KllngiiApplication  {
 		angriffCheckboxen = new HashMap<>();
 		for (Operator op : model.getAngreifer()) {
 			JCheckBox checkBox = new JCheckBox(op.getName());
+			checkBox.setEnabled(readWrite);
 			angriffCheckboxen.put(op, checkBox);
 			panel_angriff.add(checkBox);
 			checkBox.addActionListener((ActionEvent evt)->{
@@ -256,6 +272,7 @@ public class R6Helper extends KllngiiApplication  {
 		verteidigungCheckboxen = new HashMap<>();
 		for (Operator op : model.getVerteidiger()) {
 			JCheckBox checkBox = new JCheckBox(op.getName());
+			checkBox.setEnabled(readWrite);
 			verteidigungCheckboxen.put(op, checkBox);
 			panel_verteidigung.add(checkBox);
 			checkBox.addActionListener((ActionEvent evt)->{
@@ -332,16 +349,20 @@ public class R6Helper extends KllngiiApplication  {
 			label.setMaximumSize(maxSize);
 			panel.add(label);
 			
-			JComboBox<Waffe> primW = new JComboBox<>(new Vector<Waffe>((op.getPrimärwaffen())));
-			primW.setSelectedItem(op.getSelectedPrimärwaffe());
-			primW.addActionListener((ActionEvent evt) -> {
-			    op.setSelectedPrimärwaffe((Waffe)primW.getSelectedItem());
-			    
-			});
-			
-			primW.setPreferredSize(comboPreferredSize);
-			primW.setMaximumSize(maxSize);
-			panel.add(primW);
+			if (readWrite) {
+				JComboBox<Waffe> primW = new JComboBox<>(new Vector<Waffe>((op.getPrimärwaffen())));
+				primW.setSelectedItem(op.getSelectedPrimärwaffe());
+				primW.addActionListener((ActionEvent evt) -> {
+				    op.setSelectedPrimärwaffe((Waffe)primW.getSelectedItem());
+				    
+				});
+				primW.setPreferredSize(comboPreferredSize);
+				primW.setMaximumSize(maxSize);
+				panel.add(primW);
+			}
+			else {
+				panel.add(new JLabel(op.getSelectedPrimärwaffe().getName()));
+			}
 			
 			panel.add(Box.createHorizontalStrut(lücke));
 			
