@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -34,6 +35,23 @@ public class SpeicherService {
     private static final String MODEL_KEY = "model";
 
     private final Logger log = Logger.getLogger(getClass());
+    
+    public static class ModelWithErrors {
+    	private final R6HelperModel model;
+    	private final Collection<String> errors;
+    	
+		public ModelWithErrors(R6HelperModel model, Collection<String> errors) {
+			super();
+			this.model = model;
+			this.errors = errors;
+		}
+		public R6HelperModel getModel() {
+			return model;
+		}
+		public Collection<String> getErrors() {
+			return errors;
+		}
+    }
 
     private Preferences getRoot() {
         return Preferences.userRoot().node(_ROOT_KEY);
@@ -178,5 +196,26 @@ public class SpeicherService {
     	String json = createJson(model, errors);
     	FileUtils.writeStringToFile(datei, json, StandardCharsets.UTF_8);
     }
+    
+    /**
+     * Lädt ein gespeichertes Model sowie die Fehlermeldungen im JSON-Format aus einer Datei.
+     * @throws IOException  Wenn die Datei nicht gelesen werden konnte
+     * @throws IllegalArgumentException  Wenn etwas mit dem JSON nicht stimmt
+     */
+    public ModelWithErrors ladeJson(File datei) throws IOException, IllegalArgumentException {
+    	String jsonString = FileUtils.readFileToString(datei, StandardCharsets.UTF_8);
+    	if (StringUtils.isBlank(jsonString))
+    		throw new IllegalArgumentException("Die Datei enthält kein gültiges JSON!");
+    	JSONObject json = new JSONObject(jsonString);
+    	
+    	//TODO JSON wieder in ein Model umsetzen
+    	R6HelperModel model = new R6HelperModel();
+    	List<String> errors = new ArrayList<>();
+//    	json.optJSONArray(key)
+    	
+    	return new ModelWithErrors(model, errors);
+    }
+    
+    
     
 }
