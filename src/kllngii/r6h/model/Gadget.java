@@ -32,9 +32,9 @@ public enum Gadget {
 	public static Gadget findByName(String name) {
 	    if (name == null)
 	        return null;
-	    for (Gadget waffe : Gadget.values()) {
-	        if (waffe.getName().equals(name))
-	            return waffe;
+	    for (Gadget gadget : Gadget.values()) {
+	        if (gadget.getName().equals(name))
+	            return gadget;
 	    }
 	    return null;
 	}

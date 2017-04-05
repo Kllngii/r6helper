@@ -20,6 +20,7 @@ import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import kllngii.r6h.model.Gadget;
 import kllngii.r6h.model.Operator;
 import kllngii.r6h.model.R6HelperModel;
 import kllngii.r6h.model.Waffe;
@@ -126,6 +127,9 @@ public class SpeicherService {
         return result;
     }
     
+    /**
+     * Setzt JSON wieder in ein {@link R6HelperModel} um.
+     */
     private R6HelperModel getModel(JSONObject json) {
         R6HelperModel model = new R6HelperModel();
         
@@ -142,23 +146,46 @@ public class SpeicherService {
     }
     
     private Operator operator(R6HelperModel model, JSONObject json) {
-        String name = json.getString("name");
+        String opName = json.getString("name");
         
         // Operator zum Namen finden:
         Operator op = null;
         for (Operator _o : model.getOperatoren()) {
-            if (_o.getName().equals(name)) {
+            if (_o.getName().equals(opName)) {
                 op = _o;
                 break;
             }
         }
         if (op == null)
-            throw new IllegalArgumentException("Unbekannter Operator: " + name);
+            throw new IllegalArgumentException("Unbekannter Operator '" + opName + "'");
         
         //FIXME Weitere Keys auslesen:
-        // primärwaffe
-        // sekundärwaffe
-        // gadgets
+        if (json.has("primärwaffe")) {
+            String name = json.getJSONObject("primärwaffe").getString("name");
+            Waffe waffe = Waffe.findByName(name);
+            if (waffe == null)
+                throw new IllegalArgumentException("Unbekannte Primärwaffe '" + name + "'");
+            op.setSelectedPrimärwaffe(waffe);
+        }
+        if (json.has("sekundärwaffe")) {
+            String name = json.getJSONObject("sekundärwaffe").getString("name");
+            Waffe waffe = Waffe.findByName(name);
+            if (waffe == null)
+                throw new IllegalArgumentException("Unbekannte Sekundärwaffe '" + name + "'");
+            op.setSelectedSekundärwaffe(waffe);
+        }
+        if (json.has("gadgets")) {
+            JSONArray gadgetList = json.getJSONArray("gadgets");
+            List<Gadget> selectedGadgets = new ArrayList<>();
+            for (int i = 0; i < gadgetList.length(); i++) {
+                String name = gadgetList.getString(i);
+                Gadget gadget = Gadget.findByName(name);
+                if (gadget == null)
+                    throw new IllegalArgumentException("Unbekanntes Gadget '" + name + "'");
+                selectedGadgets.add(gadget);
+            }
+            op.setSelectedGadgets(selectedGadgets);
+        }
         
         return op;
     }
@@ -208,12 +235,7 @@ public class SpeicherService {
     		throw new IllegalArgumentException("Die Datei enthält kein gültiges JSON!");
     	JSONObject json = new JSONObject(jsonString);
     	
-    	//TODO JSON wieder in ein Model umsetzen
-    	R6HelperModel model = new R6HelperModel();
-    	List<String> errors = new ArrayList<>();
-//    	json.optJSONArray(key)
-    	
-    	return new ModelWithErrors(model, errors);
+    	return new ModelWithErrors(getModel(json), getErrors(json));
     }
     
     

@@ -33,6 +33,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.UIManager;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import kllngii.r6h.model.Gadget;
@@ -64,6 +65,7 @@ public class R6Helper extends KllngiiApplication  {
 	private Map<Operator, JCheckBox> verteidigungCheckboxen;
 
 	private JRadioButton rdbtnAngreifer;
+	private JRadioButton rdbtnVerteidiger;
 	private JButton btnWeb;
 	
 	private final int lücke = 12;
@@ -177,7 +179,7 @@ public class R6Helper extends KllngiiApplication  {
 		rdbtnAngreifer.setSelected(true);
 		rdbtnAngreifer.setEnabled(readWrite);
 		
-		JRadioButton rdbtnVerteidiger = new JRadioButton("Verteidiger");
+		rdbtnVerteidiger = new JRadioButton("Verteidiger");
 		avPanel.add(rdbtnVerteidiger);
 		rdbtnVerteidiger.setEnabled(readWrite);
 		
@@ -196,13 +198,7 @@ public class R6Helper extends KllngiiApplication  {
 	            R6HelperModel oldModel = speicherService.ladeAusPreferences();
 	            if (oldModel != null) {
 	                model = oldModel;
-	                
-	                rdbtnAngreifer.setSelected(model.isGegnerteamAngreifer());
-	                panel_angriff.setVisible(model.isGegnerteamAngreifer());
-	                rdbtnVerteidiger.setSelected(!model.isGegnerteamAngreifer());
-	                panel_verteidigung.setVisible(!model.isGegnerteamAngreifer());
-	                setAVCheckboxes();  // Checkboxen passend zum Model setzen
-	                fillPanelWaffen();  // Änderungen sichtbar machen
+	                refreshView();
 	            }
             }
             catch (IOException ex) {
@@ -223,16 +219,34 @@ public class R6Helper extends KllngiiApplication  {
 	        });
 		    speichernPanel.add( paddingLeft(speichernButton, lückeKlein) );
 	    
-	       JButton jsonButton = new JButton("Json speichern");
-	       jsonButton.addActionListener((ActionEvent evt) -> {
+           JButton jsonLoadButton = new JButton("Json laden");
+           jsonLoadButton.addActionListener((ActionEvent evt) -> {
+                try {
+                    SpeicherService.ModelWithErrors mwe = speicherService.ladeJson(DATEI);
+                    model = mwe.getModel();
+                    errors.clear();
+                    errors.addAll(mwe.getErrors());
+                    
+                    refreshView();
+                }
+                catch (Exception ex) {
+                    log.error("Fehler beim Laden des JSON!", ex);
+                    showError("Fehler beim Laden des JSON: " + StringUtils.defaultIfEmpty(ex.getMessage(), ex.toString()));
+                }
+            });
+            speichernPanel.add( paddingLeft(jsonLoadButton, lückeKlein) );
+            
+	       JButton jsonSaveButton = new JButton("Json speichern");
+	       jsonSaveButton.addActionListener((ActionEvent evt) -> {
 	            try {
 	                speicherService.speichereJson(model, errors, DATEI);
 	            }
 	            catch (Exception ex) {
-	                log.error("Fehler beim Erzeugen des JSON!", ex);
+	                log.error("Fehler beim Speichern des JSON!", ex);
+	                showError("Fehler beim Speichern des JSON: " + StringUtils.defaultIfEmpty(ex.getMessage(), ex.toString()));
 	            }
 	        });
-	        speichernPanel.add( paddingLeft(jsonButton, lückeKlein) );
+	        speichernPanel.add( paddingLeft(jsonSaveButton, lückeKlein) );
 	    }
 
 
@@ -423,12 +437,21 @@ public class R6Helper extends KllngiiApplication  {
 		frame.getContentPane().validate();
 	}
 
+	private void showError(String msg) {
+	    errors.add(msg);
+	    refreshErrors();
+	}
+	
 	private void showErrorIf(BooleanSupplier condition, String msg) {
 	    if (condition.getAsBoolean())
 	        errors.add(msg);
 	    else
 	        errors.remove(msg);
 	    
+	    refreshErrors();
+	}
+	
+	private void refreshErrors() {
 	    if (errors.isEmpty())
 	        panel_meldung.setVisible(false);
 	    else {
@@ -465,6 +488,20 @@ public class R6Helper extends KllngiiApplication  {
             if (cb != null)
                 cb.setSelected(true);
         }
+	}
+	
+	
+	/**
+	 * Aktualisiert den gesamten View; notwendig z.B. nach dem Laden des Models aus einer Datei.
+	 */
+	private void refreshView() {
+        rdbtnAngreifer.setSelected(model.isGegnerteamAngreifer());
+        panel_angriff.setVisible(model.isGegnerteamAngreifer());
+        rdbtnVerteidiger.setSelected(!model.isGegnerteamAngreifer());
+        panel_verteidigung.setVisible(!model.isGegnerteamAngreifer());
+        setAVCheckboxes();  // Checkboxen passend zum Model setzen
+        fillPanelWaffen();  // Änderungen sichtbar machen
+        refreshErrors();
 	}
 
 	

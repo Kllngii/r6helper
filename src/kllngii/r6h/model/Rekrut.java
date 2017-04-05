@@ -58,6 +58,14 @@ public class Rekrut extends Operator {
 	public List<Gadget> getSelectedGadgets() {
 		return selectedGadgets;
 	}
+	
+	@Override
+	public void setSelectedGadgets(List<Gadget> gadgets) {
+	    if (gadgets == null)
+	        gadgets = new ArrayList<>();
+	    selectedGadgets.clear();
+	    selectedGadgets.addAll(gadgets);
+	}
 
 	public void toggleGadget(String text) {
 		Gadget gadget = Gadget.findByName(text);
