@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
@@ -230,6 +232,14 @@ public class SpeicherService {
      */
     public ModelWithErrors ladeJson(File datei) throws IOException, IllegalArgumentException {
     	String jsonString = FileUtils.readFileToString(datei, StandardCharsets.UTF_8);
+    	return ladeJson(jsonString);
+    }
+    public ModelWithErrors ladeJson(URI uri) throws IOException, IllegalArgumentException {
+        String jsonString = IOUtils.toString(uri, StandardCharsets.UTF_8);
+        return ladeJson(jsonString);
+    }
+    
+    public ModelWithErrors ladeJson(String jsonString) throws IllegalArgumentException {
     	if (StringUtils.isBlank(jsonString))
     		throw new IllegalArgumentException("Die Datei enthält kein gültiges JSON!");
     	JSONObject json = new JSONObject(jsonString);

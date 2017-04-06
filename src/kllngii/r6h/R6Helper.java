@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.HashMap;
@@ -46,7 +47,18 @@ import kllngii.r6h.model.Waffe;
 //TODO View und Controller für Waffenart(wTyp)
 public class R6Helper extends KllngiiApplication  {
     
-	private static final File DATEI = new File("/tmp/r6helper.json");
+	private static final File DATEI_OUTPUT = new File("/Users/kellingc/Dropbox/Texte von Lasse/r6helper.json");  //new File("/tmp/r6helper.json");
+	private static final URI URI_INPUT = newURI("https://www.dropbox.com/s/qg32536wsqswir5/r6helper.json?dl=1");
+	
+	private static URI newURI(String url) {
+	    try {
+	        return new URI(url);
+	    }
+	    catch (Exception ex) {
+	        throw new RuntimeException(ex);
+	    }
+	}
+	
 	
     private final Logger log = Logger.getLogger(getClass());
 	
@@ -223,7 +235,7 @@ public class R6Helper extends KllngiiApplication  {
            JButton jsonLoadButton = new JButton("Json laden");
            jsonLoadButton.addActionListener((ActionEvent evt) -> {
                 try {
-                    SpeicherService.ModelWithErrors mwe = speicherService.ladeJson(DATEI);
+                    SpeicherService.ModelWithErrors mwe = speicherService.ladeJson(URI_INPUT);
                     model = mwe.getModel();
                     errors.clear();
                     errors.addAll(mwe.getErrors());
@@ -240,7 +252,7 @@ public class R6Helper extends KllngiiApplication  {
 	       JButton jsonSaveButton = new JButton("Json speichern");
 	       jsonSaveButton.addActionListener((ActionEvent evt) -> {
 	            try {
-	                speicherService.speichereJson(model, errors, DATEI);
+	                speicherService.speichereJson(model, errors, DATEI_OUTPUT);
 	            }
 	            catch (Exception ex) {
 	                log.error("Fehler beim Speichern des JSON!", ex);
