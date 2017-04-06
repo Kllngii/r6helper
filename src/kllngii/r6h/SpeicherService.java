@@ -159,7 +159,6 @@ public class SpeicherService {
         if (op == null)
             throw new IllegalArgumentException("Unbekannter Operator '" + opName + "'");
         
-        //FIXME Weitere Keys auslesen:
         if (json.has("primärwaffe")) {
             String name = json.getJSONObject("primärwaffe").getString("name");
             Waffe waffe = Waffe.findByName(name);

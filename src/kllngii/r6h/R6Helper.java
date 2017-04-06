@@ -20,6 +20,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.Vector;
 import java.util.function.BooleanSupplier;
+import java.util.function.Predicate;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -341,13 +342,19 @@ public class R6Helper extends KllngiiApplication  {
 	    
 	    clearErrors();
 		
-		List<Operator> ops = (rdbtnAngreifer.isSelected()) ? model.getSelectedAngreifer() : model.getSelectedVerteidiger();
-		showErrorIf(() -> ops.size() > model.MAX_TEAMGRÖSSE,
+		List<Operator> selectedOps = (rdbtnAngreifer.isSelected()) ? model.getSelectedAngreifer() : model.getSelectedVerteidiger();
+		showErrorIf(() -> selectedOps.size() > model.MAX_TEAMGRÖSSE,
 		        "Aktiviere höchstens "+R6HelperModel.MAX_TEAMGRÖSSE+" Operator!");
+		
+		// Hat einer zu viele Gadgets?
+		final Predicate<List<Operator>> einRekrutHatZuVieleGadgets = (_ops) -> _ops.stream().filter(o -> o instanceof Rekrut)
+                .anyMatch(r -> r.getSelectedGadgets().size() > Rekrut.MAX_GADGETS);
+        showErrorIf(() -> einRekrutHatZuVieleGadgets.test(selectedOps),
+                "Ein Rekrut darf höchstens " + Rekrut.MAX_GADGETS + " Gadgets haben!");
 
 		panel_waffen.removeAll();
 		
-		for (Operator op : ops) {
+		for (Operator op : selectedOps) {
             Dimension labelPreferredSize = new Dimension(100, 24);
             Dimension comboPreferredSize = new Dimension(150, 24);
             Dimension maxSize = new Dimension(250, 22);
@@ -400,13 +407,12 @@ public class R6Helper extends KllngiiApplication  {
 					cb.setSelected(rekrut.getSelectedGadgets().contains(gadget));
 					cb.addActionListener((ActionEvent evt)-> {
 						rekrut.toggleGadget(cb.getText());
-						showErrorIf(() -> rekrut.getSelectedGadgets().size() > Rekrut.MAX_GADGETS,
+						
+					    List<Operator> _ops = (rdbtnAngreifer.isSelected()) ? model.getSelectedAngreifer() : model.getSelectedVerteidiger();
+						showErrorIf(() -> einRekrutHatZuVieleGadgets.test(_ops),
 						        "Ein Rekrut darf höchstens " + Rekrut.MAX_GADGETS + " Gadgets haben!");
 					});
 					
-                    showErrorIf(() -> rekrut.getSelectedGadgets().size() > Rekrut.MAX_GADGETS,
-                            "Ein Rekrut darf höchstens " + Rekrut.MAX_GADGETS + " Gadgets haben!");
-
 					panel.add(cb);
 					
 				}
