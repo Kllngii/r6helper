@@ -44,6 +44,7 @@ import kllngii.r6h.model.R6HelperModel;
 import kllngii.r6h.model.Rekrut;
 import kllngii.r6h.model.Waffe;
 
+
 //TODO View und Controller für Waffenart(wTyp)
 public class R6Helper extends KllngiiApplication  {
     
@@ -64,6 +65,7 @@ public class R6Helper extends KllngiiApplication  {
 	
     private final boolean readWrite;
 	private JFrame frame;
+	
 	
 	private R6HelperModel model = new R6HelperModel();
 
@@ -147,6 +149,7 @@ public class R6Helper extends KllngiiApplication  {
 		root.setLayout(new BoxLayout(root, BoxLayout.Y_AXIS));
 		
 		//// Ebene 0 ////
+		
 		root.add(Box.createVerticalStrut(lücke));
 		
 		JPanel panel_options = new JPanel();
@@ -157,13 +160,18 @@ public class R6Helper extends KllngiiApplication  {
 		panel_options.add(paddingRight(lblweb, lücke));
 		
 		btnWeb = new JButton("Öffnen");
-		btnWeb.setEnabled(true);
+		if (Desktop.isDesktopSupported()){
+			btnWeb.setEnabled(true);
+		}
+		else{
+			btnWeb.setEnabled(false);
+		}
 		panel_options.add(btnWeb);
 		btnWeb.addActionListener((ActionEvent evt) -> {
 			URL url = null;
 	        try {
 	            url = new URL("http://www.r6maps.com/");
-	            if (Desktop.isDesktopSupported()){  //FIXME Das vorher abfragen. Falls false, dann den Button gar nicht erst anzeigen, oder ihn ausgrauen
+	            
 	                try {
 	                    Desktop.getDesktop().browse(url.toURI());
 	                } catch (IOException e) {
@@ -172,7 +180,7 @@ public class R6Helper extends KllngiiApplication  {
 	                    e.printStackTrace();
 	                }
 	            }
-	        } catch (MalformedURLException e) {
+	         catch (MalformedURLException e) {
 	            e.printStackTrace();
 	        }
 	    });
@@ -200,7 +208,7 @@ public class R6Helper extends KllngiiApplication  {
 	    art.add(rdbtnAngreifer);
 	    art.add(rdbtnVerteidiger);
 	    
-	    //TODO Vorläufig: Buttons zum Laden und Speichern
+
 	    JPanel speichernPanel = new JPanel();
 	    speichernPanel.setLayout(new BoxLayout(speichernPanel, BoxLayout.X_AXIS));
 	    avPanel.add( padding(speichernPanel, 0, lücke) );
@@ -261,9 +269,17 @@ public class R6Helper extends KllngiiApplication  {
 	        });
 	        speichernPanel.add( paddingLeft(jsonSaveButton, lückeKlein) );
 	    }
-
-
-	    
+	    JButton settings = new JButton("Einstellungen");
+	    settings.addActionListener((ActionEvent evt) -> {
+            try {
+                EinstellungsFrame.main(null);
+            }
+            catch (Exception ex) {
+                log.error("Einstellungen konnten nicht geöffnet werden!", ex);
+                showError("Einstellungen konnten nicht geöffnet werden: " + StringUtils.defaultIfEmpty(ex.getMessage(), ex.toString()));
+            }
+        });
+	    speichernPanel.add( paddingLeft(settings, lückeKlein) );
         //// Ebene 2 ////
         
         root.add(Box.createVerticalStrut(lücke));
@@ -453,6 +469,7 @@ public class R6Helper extends KllngiiApplication  {
 		panel_waffen.add(Box.createVerticalGlue());
 		
 		frame.getContentPane().validate();
+		 
 	}
 
 	private void showError(String msg) {
