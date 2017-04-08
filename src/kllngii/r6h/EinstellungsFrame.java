@@ -2,6 +2,7 @@ package kllngii.r6h;
 
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
+import java.awt.Toolkit;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -15,7 +16,15 @@ import javax.swing.JTextField;
 
 public class EinstellungsFrame {
 
-	private JFrame frame;
+	public JFrame eFrame;
+	public JFrame geteFrame() {
+		return eFrame;
+	}
+
+	public void seteFrame(JFrame eFrame) {
+		this.eFrame = eFrame;
+	}
+
 	private JPasswordField passwordField;
 	private JTextField txtAdresse;
 
@@ -24,11 +33,11 @@ public class EinstellungsFrame {
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
-			@SuppressWarnings("synthetic-access")
+			@Override
 			public void run() {
 				try {
 					EinstellungsFrame window = new EinstellungsFrame();
-					window.frame.setVisible(true);
+					window.eFrame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -47,11 +56,14 @@ public class EinstellungsFrame {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		eFrame = new JFrame();
+		Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
+		Dimension size = new Dimension(100, 100);
+		eFrame.setSize(size.width, size.height);
+		eFrame.setLocation((screensize.width-size.width)/2, (screensize.height-size.height)/2);
+		eFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		Container _root = frame.getContentPane();
+		Container _root = eFrame.getContentPane();
 //		_root.setLayout(new BoxLayout(_root, BoxLayout.X_AXIS));
 		_root.setLayout(new FlowLayout(FlowLayout.LEADING));
 		
