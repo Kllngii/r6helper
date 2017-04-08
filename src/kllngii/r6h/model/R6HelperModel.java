@@ -25,7 +25,7 @@ public class R6HelperModel implements Serializable {
 	private final List<Operator> selectedAngreifer;
 	private final List<Operator> selectedVerteidiger;
 	
-	//MSG Model für Waffenart (wTyp) fertig
+	
 	public R6HelperModel() {
 	    gegnerteamAngreifer = true;
 	    
