@@ -399,7 +399,7 @@ public class R6Helper extends KllngiiApplication  {
 	}
 	
 	
-	private void setWArt() {
+	private void showWaffentyp() {
 		if(rdbtnAngreifer.isSelected()){
 			lblP.setVisible(true);
 			lblShot.setVisible(true);
@@ -525,7 +525,7 @@ public class R6Helper extends KllngiiApplication  {
 		
 		frame.getContentPane().validate();
 		
-		 setWArt();
+		 showWaffentyp();
 	}
 
 	private void showError(String msg) {
