@@ -43,7 +43,6 @@ import kllngii.r6h.model.Operator;
 import kllngii.r6h.model.R6HelperModel;
 import kllngii.r6h.model.Rekrut;
 import kllngii.r6h.model.Waffe;
-import kllngii.r6h.model.Waffentyp;
 
 
 //TODO View und Controller für Waffenart(wTyp)
@@ -91,7 +90,7 @@ public class R6Helper extends KllngiiApplication  {
 	private JLabel lblSturm;
 	private JLabel lblLMG;
 	private JLabel lblDMR;
-	private JLabel lblShotgun;
+	private JLabel lblShot;
 	private JLabel lblP;
 	private JLabel lblMP;
 	private final SortedSet<String> errors = new TreeSet<>();
@@ -197,24 +196,24 @@ public class R6Helper extends KllngiiApplication  {
 			wArt.setLayout(new BoxLayout(wArt, BoxLayout.X_AXIS));
 			root.add(wArt);
 			
-			JLabel lblSturm = new JLabel("Sturmgewehre:");
+			lblSturm = new JLabel("Sturmgewehre:");
 			wArt.add(paddingRight(lblSturm, lückeKlein));
 			
-			JLabel lblShotgun = new JLabel("Shotguns:");
-			wArt.add(paddingRight(lblShotgun, lückeKlein));
+			lblShot = new JLabel("Shotguns:");
+			wArt.add(paddingRight(lblShot, lückeKlein));
 			
-			JLabel lblLMG = new JLabel("LMGs:");
+			 lblLMG = new JLabel("LMGs:");
 			wArt.add(paddingRight(lblLMG, lückeKlein));
 			
-			JLabel lblDMR = new JLabel("DMRs:");
+			 lblDMR = new JLabel("DMRs:");
 			wArt.add(paddingRight(lblDMR, lückeKlein));
 			
-			JLabel lblMP = new JLabel("MPs:");
+			lblMP = new JLabel("MPs:");
 			wArt.add(paddingRight(lblMP, lückeKlein));
 			
-			JLabel lblP = new JLabel("Pistolen:");
+			lblP = new JLabel("Pistolen:");
 			wArt.add(paddingRight(lblP, lückeKlein));
-//			setWArt();
+			
 		//// Ebene 1 ////
 
 		root.add(Box.createVerticalStrut(lücke));
@@ -402,12 +401,20 @@ public class R6Helper extends KllngiiApplication  {
 	
 	private void setWArt() {
 		if(rdbtnAngreifer.isSelected()){
+			lblP.setVisible(true);
+			lblShot.setVisible(true);
 			lblMP.setVisible(false);
+			lblSturm.setVisible(true);
+			lblDMR.setVisible(true);
+			lblLMG.setVisible(true);
 		}
 		else{
+			lblMP.setVisible(true);
 			lblSturm.setVisible(false);
 			lblDMR.setVisible(false);
 			lblLMG.setVisible(false);
+			lblP.setVisible(true);
+			lblShot.setVisible(true);
 		}
 		
 	}
@@ -511,13 +518,14 @@ public class R6Helper extends KllngiiApplication  {
 			
 			// Lücke zwischen den Operatoren
 			panel_waffen.add(Box.createVerticalStrut(lückeKlein));
+			
 		}
 		
 		panel_waffen.add(Box.createVerticalGlue());
 		
 		frame.getContentPane().validate();
 		
-		 
+		 setWArt();
 	}
 
 	private void showError(String msg) {
