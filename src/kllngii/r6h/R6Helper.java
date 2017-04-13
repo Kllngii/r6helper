@@ -43,6 +43,7 @@ import kllngii.r6h.model.Operator;
 import kllngii.r6h.model.R6HelperModel;
 import kllngii.r6h.model.Rekrut;
 import kllngii.r6h.model.Waffe;
+import kllngii.r6h.model.Waffentyp;
 
 
 //TODO View und Controller für Waffenart(wTyp)
@@ -87,7 +88,12 @@ public class R6Helper extends KllngiiApplication  {
 	private final int lückeKlein = lücke/2;
 
 	private JLabel meldunglabel;
-	
+	private JLabel lblSturm;
+	private JLabel lblLMG;
+	private JLabel lblDMR;
+	private JLabel lblShotgun;
+	private JLabel lblP;
+	private JLabel lblMP;
 	private final SortedSet<String> errors = new TreeSet<>();
 	
 	private final SpeicherService speicherService = new SpeicherService();
@@ -184,6 +190,31 @@ public class R6Helper extends KllngiiApplication  {
 	            e.printStackTrace();
 	        }
 	    });
+	//// Ebene 0.5 ////
+			root.add(Box.createVerticalStrut(lücke));
+			//TODO wArt
+			JPanel wArt = new JPanel();
+			wArt.setLayout(new BoxLayout(wArt, BoxLayout.X_AXIS));
+			root.add(wArt);
+			
+			JLabel lblSturm = new JLabel("Sturmgewehre:");
+			wArt.add(paddingRight(lblSturm, lückeKlein));
+			
+			JLabel lblShotgun = new JLabel("Shotguns:");
+			wArt.add(paddingRight(lblShotgun, lückeKlein));
+			
+			JLabel lblLMG = new JLabel("LMGs:");
+			wArt.add(paddingRight(lblLMG, lückeKlein));
+			
+			JLabel lblDMR = new JLabel("DMRs:");
+			wArt.add(paddingRight(lblDMR, lückeKlein));
+			
+			JLabel lblMP = new JLabel("MPs:");
+			wArt.add(paddingRight(lblMP, lückeKlein));
+			
+			JLabel lblP = new JLabel("Pistolen:");
+			wArt.add(paddingRight(lblP, lückeKlein));
+//			setWArt();
 		//// Ebene 1 ////
 
 		root.add(Box.createVerticalStrut(lücke));
@@ -361,10 +392,26 @@ public class R6Helper extends KllngiiApplication  {
 		
 		root.add(Box.createVerticalGlue());
 		
+		
+		
+		
+		
 		frame.setVisible(true);
 	}
 	
 	
+	private void setWArt() {
+		if(rdbtnAngreifer.isSelected()){
+			lblMP.setVisible(false);
+		}
+		else{
+			lblSturm.setVisible(false);
+			lblDMR.setVisible(false);
+			lblLMG.setVisible(false);
+		}
+		
+	}
+
 	@SuppressWarnings("static-access")
 	private void fillPanelWaffen() {
 	    
@@ -469,6 +516,7 @@ public class R6Helper extends KllngiiApplication  {
 		panel_waffen.add(Box.createVerticalGlue());
 		
 		frame.getContentPane().validate();
+		
 		 
 	}
 
