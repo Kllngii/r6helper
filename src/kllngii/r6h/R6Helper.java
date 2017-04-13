@@ -14,7 +14,10 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
@@ -43,6 +46,7 @@ import kllngii.r6h.model.Operator;
 import kllngii.r6h.model.R6HelperModel;
 import kllngii.r6h.model.Rekrut;
 import kllngii.r6h.model.Waffe;
+import kllngii.r6h.model.Waffentyp;
 
 
 //TODO View und Controller für Waffenart(wTyp)
@@ -95,8 +99,26 @@ public class R6Helper extends KllngiiApplication  {
 	private JLabel lblMP;
 	private final SortedSet<String> errors = new TreeSet<>();
 	
+	private final Map<Waffentyp, WaffenTypLabel> waffenTypMap = new LinkedHashMap<>();
+	
 	private final SpeicherService speicherService = new SpeicherService();
 	
+	private static class WaffenTypLabel{
+		private final String text;
+		private final JLabel label;
+		public WaffenTypLabel(JLabel label) {
+			this.text = label.getText();
+			this.label = label;
+		}
+		public String getText() {
+			return text;
+		}
+		public JLabel getLabel() {
+			return label;
+		}
+		
+		
+	}
 
 	/**
 	 * Launch the application.
@@ -197,21 +219,27 @@ public class R6Helper extends KllngiiApplication  {
 			root.add(wArt);
 			
 			lblSturm = new JLabel("Sturmgewehre:");
+			waffenTypMap.put(Waffentyp.STURM, new WaffenTypLabel(lblSturm));
 			wArt.add(paddingRight(lblSturm, lückeKlein));
 			
 			lblShot = new JLabel("Shotguns:");
+			waffenTypMap.put(Waffentyp.SHOTGUN, new WaffenTypLabel(lblShot));
 			wArt.add(paddingRight(lblShot, lückeKlein));
 			
-			 lblLMG = new JLabel("LMGs:");
+			lblLMG = new JLabel("LMGs:");
+			waffenTypMap.put(Waffentyp.LMG, new WaffenTypLabel(lblLMG));
 			wArt.add(paddingRight(lblLMG, lückeKlein));
 			
-			 lblDMR = new JLabel("DMRs:");
+			lblDMR = new JLabel("DMRs:");
+			waffenTypMap.put(Waffentyp.DMR, new WaffenTypLabel(lblDMR));
 			wArt.add(paddingRight(lblDMR, lückeKlein));
 			
 			lblMP = new JLabel("MPs:");
+			waffenTypMap.put(Waffentyp.MP, new WaffenTypLabel(lblMP));
 			wArt.add(paddingRight(lblMP, lückeKlein));
 			
 			lblP = new JLabel("Pistolen:");
+			waffenTypMap.put(Waffentyp.PISTOLE, new WaffenTypLabel(lblP));
 			wArt.add(paddingRight(lblP, lückeKlein));
 			
 		//// Ebene 1 ////
@@ -400,23 +428,55 @@ public class R6Helper extends KllngiiApplication  {
 	
 	
 	private void showWaffentyp() {
-		if(rdbtnAngreifer.isSelected()){
-			lblP.setVisible(true);
-			lblShot.setVisible(true);
-			lblMP.setVisible(false);
-			lblSturm.setVisible(true);
-			lblDMR.setVisible(true);
-			lblLMG.setVisible(true);
+		EnumSet<Waffentyp> interessierendeTypen;
+		List<Operator> selectedOperators;
+		
+		if(rdbtnAngreifer.isSelected()) {
+			interessierendeTypen = EnumSet.of(Waffentyp.PISTOLE, Waffentyp.REIHEN, Waffentyp.SHOTGUN, Waffentyp.STURM, Waffentyp.DMR, Waffentyp.LMG);
+			selectedOperators = model.getSelectedAngreifer();
 		}
 		else{
-			lblMP.setVisible(true);
-			lblSturm.setVisible(false);
-			lblDMR.setVisible(false);
-			lblLMG.setVisible(false);
-			lblP.setVisible(true);
-			lblShot.setVisible(true);
+			interessierendeTypen = EnumSet.of(Waffentyp.PISTOLE, Waffentyp.REIHEN, Waffentyp.SHOTGUN, Waffentyp.MP);
+			selectedOperators = model.getSelectedVerteidiger();
 		}
 		
+		
+		
+		// Zählen der Anzahl Waffen pro Typ
+		Map<Waffentyp, Integer> anzahlByWaffentyp = new HashMap<>();
+		for(Waffentyp typ : Waffentyp.values()){
+			anzahlByWaffentyp.put(typ, 0);
+		}
+		for (Operator op : selectedOperators) {
+			List<Waffe> waffen = Arrays.asList(op.getSelectedPrimärwaffe(), op.getSelectedSekundärwaffe());
+			for (Waffe waffe : waffen) {
+				if (waffe != null && interessierendeTypen.contains(waffe.getTyp())) {
+					// Waffe ist ausgewählt und interessiert hier
+					
+					// Sonderfall: Reihe zählt als Pistole
+					Waffentyp typ = waffe.getTyp();
+					if (typ == Waffentyp.REIHEN)
+						typ = Waffentyp.PISTOLE;
+					
+					Integer anzahl = anzahlByWaffentyp.get(typ);
+					anzahl++;
+					anzahlByWaffentyp.put(typ, anzahl);
+				}
+			}
+		}
+		log.info(anzahlByWaffentyp);
+		
+		// Ändern der Texte an den Labeln
+		
+		for (Waffentyp waffentyp : Waffentyp.values()) {
+			WaffenTypLabel wtl = waffenTypMap.get(waffentyp);
+				if (wtl == null)
+					continue;
+				wtl.getLabel().setText(waffentyp+":"+anzahlByWaffentyp.get(waffentyp));
+			// Label sichtbar oder unsichtbar machen:
+				
+				wtl.getLabel().setVisible(interessierendeTypen.contains(waffentyp));
+				}
 	}
 
 	@SuppressWarnings("static-access")
@@ -457,6 +517,7 @@ public class R6Helper extends KllngiiApplication  {
 				primW.setSelectedItem(op.getSelectedPrimärwaffe());
 				primW.addActionListener((ActionEvent evt) -> {
 				    op.setSelectedPrimärwaffe((Waffe)primW.getSelectedItem());
+				    showWaffentyp();
 				    
 				});
 				primW.setPreferredSize(comboPreferredSize);
@@ -476,6 +537,7 @@ public class R6Helper extends KllngiiApplication  {
 			secW.setMaximumSize(maxSize);
 			secW.addActionListener((ActionEvent evt) -> {
 				op.setSelectedSekundärwaffe((Waffe)secW.getSelectedItem());
+				showWaffentyp();
 			});
 			panel.add(secW);
 			
