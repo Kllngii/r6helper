@@ -23,6 +23,7 @@ import java.util.TreeSet;
 import java.util.Vector;
 import java.util.function.BooleanSupplier;
 import java.util.function.Predicate;
+import java.util.prefs.BackingStoreException;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -145,6 +146,14 @@ public class R6Helper extends KllngiiApplication  {
 	 */
 	public R6Helper(boolean readWrite) {
 		this.readWrite = readWrite;
+		
+		// Einstellungen laden:
+		try {
+            new EinstellungenService().ladeAusPreferences(einstellungen);
+        } catch (BackingStoreException e) {
+            log.warn("Alte Einstellungen können nicht aus den Preferences geladen werden!", e);
+        }
+		
 		initialize();
 		
 	}
@@ -319,7 +328,7 @@ public class R6Helper extends KllngiiApplication  {
 	    JButton settings = new JButton("Einstellungen");
 	    settings.addActionListener((ActionEvent evt) -> {
 	        if (einstellungsFrame == null)
-	            einstellungsFrame = new EinstellungsFrame();
+	            einstellungsFrame = new EinstellungsFrame(einstellungen);
 	        einstellungsFrame.setVisible(true);
 	        einstellungsFrame.toFront();
         });

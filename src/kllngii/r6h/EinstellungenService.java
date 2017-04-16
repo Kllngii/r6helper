@@ -1,10 +1,9 @@
 package kllngii.r6h;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
 import org.apache.log4j.Logger;
@@ -26,6 +25,9 @@ public class EinstellungenService {
     private Preferences getRoot() {
         return Preferences.userRoot().node(Konst.PREFERENCES_ROOT_KEY);
     }
+    private Preferences getNode() {
+        return getRoot().node(KEY);
+    }
 
     /**
      * Speichert die übergebenen Einstellungen in den Java-Preferences, also auf diesem Computer und für diesen Benutzer eindeutig. Es wird
@@ -34,41 +36,63 @@ public class EinstellungenService {
      * @param e
      *            Wird in den Preferences gespeichert.
      */
-    public void speichereInPreferences(Einstellungen e) throws IOException {
+    public void speichereInPreferences(Einstellungen e) {
         log.info("Speichere die Einstellungen in den Preferences");
         
-        //FIXME Stabiler gegen Änderungen des Models machen -> einzelne Keys speichern, statt eines serialisierten Objektes
-
-        try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                ObjectOutputStream oos = new ObjectOutputStream(bos)) {
-            oos.writeObject(e);
-            byte[] bytes = bos.toByteArray();
-
-            getRoot().putByteArray(KEY, bytes);
-            log.debug("Einstellungen mit " + bytes.length + " Bytes wurde gespeichert im Node " + getRoot().node(KEY));
-        }
+        // Stabiler gegen Änderungen des Models machen -> 
+        // einzelne Keys speichern, statt eines serialisierten Objektes
+        final Preferences node = getNode();
+        
+        // -- Lesen
+        node.put("uriInput", e.getUriInput().toString());
+        node.putBoolean("ftpInput", e.isFtpInput());
+        
+        // -- Schreiben
+        node.put("dateiOutput", e.getDateiOutput().toString());
+        node.putBoolean("ftpOutput", e.isFtpOutput());
+        node.put("ftpHost", e.getFtpHost());
+        node.put("ftpUser", e.getFtpUser());
+        node.put("ftpPwd", e.getFtpPwd());
     }
 
     /**
      * Gegenstück zu {@link #speichereInPreferences(Einstellungen)}
      * 
-     * @return Die Einstellungen, die in den Preferences gespeichert waren, oder {@code null}
+     * @param e  Wird mit den Einstellungen, die in den Preferences gespeichert waren, initialisiert
      */
-    public Einstellungen ladeAusPreferences() throws IOException {
-        Einstellungen e = null;
-        byte[] bytes = getRoot().getByteArray(KEY, null);
-        if (bytes != null) {
-            try (ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
-                    ObjectInputStream ois = new ObjectInputStream(bis)) {
-                e = (Einstellungen) ois.readObject();
-                log.debug("Einstellungen wurden aus den Preferences geholt.");
-            } catch (ClassNotFoundException ex) {
-                // Sollte nicht vorkommen. Falls doch: Umkippen in IOException
-                throw new IOException(ex);
+    public void ladeAusPreferences(Einstellungen e) throws BackingStoreException {
+        
+        if (getRoot().nodeExists(KEY)) {
+            log.info("Lade die Einstellungen aus den Preferences");
+            final Preferences node = getNode();
+            
+            
+            // -- Lesen
+            final String fallback = "http://www.example.com";
+            URI uriInput;
+            try {
+                uriInput = new URI(node.get("uriInput", fallback));
             }
-        } else
-            log.info("Einstellungen enthalten noch kein gespeichertes Model");
-        return e;
+            catch (URISyntaxException ex) {
+                try {
+                    uriInput = new URI(fallback);
+                }
+                catch (URISyntaxException ex2) {
+                    // Kann jetzt nicht mehr auftreten
+                    throw new RuntimeException(ex2);
+                }
+            }
+            e.setUriInput(uriInput);
+            e.setFtpInput(node.getBoolean("ftpInput", false));
+            
+            
+            // -- Schreiben
+            e.setDateiOutput(new File(node.get("dateiOutput", "r6helper.json")));
+            e.setFtpOutput(node.getBoolean("ftpOutput", false));
+            e.setFtpHost(node.get("ftpHost", ""));
+            e.setFtpUser(node.get("ftpUser", ""));
+            e.setFtpPwd(node.get("ftpPwd", ""));
+        }
     }
     
  
