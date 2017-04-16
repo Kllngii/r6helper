@@ -34,7 +34,6 @@ import kllngii.r6h.model.Waffe;
  */
 public class SpeicherService {
 
-    private static final String _ROOT_KEY = "/kllngii/r6h";
     private static final String MODEL_KEY = "model";
 
     private final Logger log = Logger.getLogger(getClass());
@@ -57,7 +56,7 @@ public class SpeicherService {
     }
 
     private Preferences getRoot() {
-        return Preferences.userRoot().node(_ROOT_KEY);
+        return Preferences.userRoot().node(Konst.PREFERENCES_ROOT_KEY);
     }
 
     /**
