@@ -43,23 +43,6 @@ public class EinstellungsFrame extends JFrame {
 		setLocation((screensize.width-size.width)/2, (screensize.height-size.height)/2);
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		
-			/*
-		 * * <pre>
- *     .columns("pref, $lcgap, %sdlu, p, p", "50")  // Format string
- *     .columnGroup(4, 5)                           // Grouping short hand
- *     .debug(true)                                 // Installs FormDebugPanel
- * 
- *     .add("Title:")         .xy(1, 1)             // Implicitly created label
- *     .add("&Price:")        .xy(1, 1)             // Label with mnemonic
- * 
- *     .add(hasCountry, combo).xy(3, 1)             // Conditional adding
- * 
- *     .add(aTable)           .xywh(1, 1, 3, 5)    // Auto-wrapped with scrollpane
- *     .addScrolled(aTextArea).xywh(1, 1, 1, 3)    // scrollpane shorthand
- * 
- *     .addBar(newBtn, editBtn, deleteBtn).xy(1, 5) // button bar
- *     .addBar(landscapeRadio, portraitRadio).xy(1, 1) // Radio button bar
-		 */
 		
 		FormBuilder builder = FormBuilder.create()
 		        .columns("left:pref, 3dlu, pref, 3dlu, 200dlu")
