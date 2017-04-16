@@ -8,10 +8,8 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Arrays;
@@ -41,6 +39,7 @@ import javax.swing.UIManager;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
+import kllngii.r6h.model.Einstellungen;
 import kllngii.r6h.model.Gadget;
 import kllngii.r6h.model.Operator;
 import kllngii.r6h.model.R6HelperModel;
@@ -52,21 +51,9 @@ import kllngii.r6h.model.Waffentyp;
 //TODO View und Controller für Waffenart(wTyp)
 public class R6Helper extends KllngiiApplication  {
     
-	private static final File DATEI_OUTPUT = new File("/Users/kellingc/Dropbox/Texte von Lasse/r6helper.json");  //new File("/tmp/r6helper.json");
-	private static final URI URI_INPUT = newURI("https://www.dropbox.com/s/qg32536wsqswir5/r6helper.json?dl=1");
-	
-	private static URI newURI(String url) {
-	    try {
-	        return new URI(url);
-	    }
-	    catch (Exception ex) {
-	        throw new RuntimeException(ex);
-	    }
-	}
-	
-	
     private final Logger log = Logger.getLogger(getClass());
 	
+    private final Einstellungen einstellungen = new Einstellungen();
     private final boolean readWrite;
 	private JFrame frame;
 	
@@ -301,7 +288,7 @@ public class R6Helper extends KllngiiApplication  {
            JButton jsonLoadButton = new JButton("Json laden");
            jsonLoadButton.addActionListener((ActionEvent evt) -> {
                 try {
-                    SpeicherService.ModelWithErrors mwe = speicherService.ladeJson(URI_INPUT);
+                    SpeicherService.ModelWithErrors mwe = speicherService.ladeJson(einstellungen.getUriInput());
                     model = mwe.getModel();
                     errors.clear();
                     errors.addAll(mwe.getErrors());
@@ -318,7 +305,7 @@ public class R6Helper extends KllngiiApplication  {
 	       JButton jsonSaveButton = new JButton("Json speichern");
 	       jsonSaveButton.addActionListener((ActionEvent evt) -> {
 	            try {
-	                speicherService.speichereJson(model, errors, DATEI_OUTPUT);
+	                speicherService.speichereJson(model, errors, einstellungen.getDateiOutput());
 	            }
 	            catch (Exception ex) {
 	                log.error("Fehler beim Speichern des JSON!", ex);
@@ -468,15 +455,15 @@ public class R6Helper extends KllngiiApplication  {
 		
 		// Ändern der Texte an den Labeln
 		
-		for (Waffentyp waffentyp : Waffentyp.values()) {
-			WaffenTypLabel wtl = waffenTypMap.get(waffentyp);
-				if (wtl == null)
-					continue;
-				wtl.getLabel().setText(waffentyp+":"+anzahlByWaffentyp.get(waffentyp));
-			// Label sichtbar oder unsichtbar machen:
-				
-				wtl.getLabel().setVisible(interessierendeTypen.contains(waffentyp));
-				}
+        for (Waffentyp waffentyp : Waffentyp.values()) {
+            WaffenTypLabel wtl = waffenTypMap.get(waffentyp);
+            if (wtl == null)
+                continue;
+            wtl.getLabel().setText(wtl.getText() + anzahlByWaffentyp.get(waffentyp));
+
+            // Label sichtbar oder unsichtbar machen:
+            wtl.getLabel().setVisible(interessierendeTypen.contains(waffentyp));
+        }
 	}
 
 	@SuppressWarnings("static-access")
