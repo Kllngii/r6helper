@@ -13,13 +13,18 @@ public class EinstellungsFrame extends JFrame {
 
     private static final long serialVersionUID = 4749625493367013570L;
 
-    private JRadioButton rbLesenAusUri = new JRadioButton("aus URI");
-    private JRadioButton rbLesenPerFtp = new JRadioButton("per FTP (siehe unten)");
+    private JRadioButton rbLesenAusUri = new JRadioButton("URI");
+    private JRadioButton rbLesenPerFtp = new JRadioButton("FTP");
 	
 	private JTextField uriInput = new JTextField();
 
-	private JRadioButton rbSchreibenInDatei = new JRadioButton("in Datei");
+	private JRadioButton rbSchreibenInDatei = new JRadioButton("Datei");
+	private JRadioButton rbSchreibenPerFtp = new JRadioButton("FTP-Server");
+	
 	private JTextField dateiOutput = new JTextField();
+	private JTextField ftpHost = new JTextField();
+	private JTextField ftpUser = new JTextField();
+	private JTextField ftpPwd = new JTextField();
 
 	/**
 	 * Create the application.
@@ -57,22 +62,23 @@ public class EinstellungsFrame extends JFrame {
 		 */
 		
 		FormBuilder builder = FormBuilder.create()
-		        .columns("left:90dlu, $lcgap, 200dlu")
-		        .rows("p, $pgap, p, $lgap, p, $pgap, p, 20dlu, " +
-		              "p, $pgap, p, $lgap, p, $lgap, p, $pgap, p, $lgap, p, $lgap, p, $lgap")
+		        .columns("left:70dlu, $lcgap, 200dlu")
+		        .rows("p, $pgap, p, $lgap, p, 20dlu, " +
+		              "p, $pgap, p, $pgap, p, $lgap, p, $lgap, p, $lgap, p, $lgap, p, $lgap")
 		        .debug(false)
 		        .padding("6dlu, 6dlu, 6dlu, 6dlu")
 		        
 		        // -- Lesen
 		        .addSeparator("Lesen").xyw(1, 1, 3)
-		        .add(rbLesenAusUri).xy(1, 3)
-		        .addLabel("URI").xy(1, 5).add(uriInput).xy(3, 5)
-		        .add(rbLesenPerFtp).xy(1, 7)
+		        .add(rbLesenAusUri).xy(1, 3).add(uriInput).xy(3, 3)
+		        .add(rbLesenPerFtp).xy(1, 5).addLabel("gleicher Server wie unten").xy(3, 5)
 		        
 		        // -- Schreiben
-		        .addSeparator("Schreiben").xyw(1, 9, 3)
-		        .add(rbSchreibenInDatei).xy(1, 11)
-		        .addLabel("Datei").xy(1, 13).add(dateiOutput).xy(3, 13);
+		        .addSeparator("Schreiben").xyw(1, 7, 3)
+		        .add(rbSchreibenInDatei).xy(1, 9).add(dateiOutput).xy(3, 9)
+        		.add(rbSchreibenPerFtp).xy(1, 11).add(ftpHost).xy(3, 11)
+        		    .add(ftpUser).xy(3, 13)
+        		    .add(ftpPwd).xy(3, 15)
 		        ;
 		        
 		getContentPane().add(builder.build());
