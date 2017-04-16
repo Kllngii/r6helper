@@ -53,9 +53,11 @@ public class R6Helper extends KllngiiApplication  {
     
     private final Logger log = Logger.getLogger(getClass());
 	
-    private final Einstellungen einstellungen = new Einstellungen();
     private final boolean readWrite;
 	private JFrame frame;
+	
+	private final Einstellungen einstellungen = new Einstellungen();
+	private EinstellungsFrame einstellungsFrame = null;  // wird bei Bedarf erzeugt
 	
 	
 	private R6HelperModel model = new R6HelperModel();
@@ -316,13 +318,10 @@ public class R6Helper extends KllngiiApplication  {
 	    }
 	    JButton settings = new JButton("Einstellungen");
 	    settings.addActionListener((ActionEvent evt) -> {
-            try {
-                EinstellungsFrame.main(null);
-            }
-            catch (Exception ex) {
-                log.error("Einstellungen konnten nicht geöffnet werden!", ex);
-                showError("Einstellungen konnten nicht geöffnet werden: " + StringUtils.defaultIfEmpty(ex.getMessage(), ex.toString()));
-            }
+	        if (einstellungsFrame == null)
+	            einstellungsFrame = new EinstellungsFrame();
+	        einstellungsFrame.setVisible(true);
+	        einstellungsFrame.toFront();
         });
 	    speichernPanel.add( paddingLeft(settings, lückeKlein) );
         //// Ebene 2 ////

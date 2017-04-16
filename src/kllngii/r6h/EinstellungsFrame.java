@@ -1,49 +1,25 @@
 package kllngii.r6h;
 
-import java.awt.EventQueue;
-import java.awt.FlowLayout;
+import java.awt.Dimension;
 import java.awt.Toolkit;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JFrame;
-import javax.swing.JPasswordField;
-import java.awt.BorderLayout;
-import java.awt.Container;
-import java.awt.Dimension;
-
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
-public class EinstellungsFrame {
+import com.jgoodies.forms.builder.FormBuilder;
 
-	public JFrame eFrame;
-	public JFrame geteFrame() {
-		return eFrame;
-	}
+public class EinstellungsFrame extends JFrame {
 
-	public void seteFrame(JFrame eFrame) {
-		this.eFrame = eFrame;
-	}
+    private static final long serialVersionUID = 4749625493367013570L;
 
-	private JPasswordField passwordField;
-	private JTextField txtAdresse;
+    private JRadioButton rbLesenAusUri = new JRadioButton("aus URI");
+    private JRadioButton rbLesenPerFtp = new JRadioButton("per FTP (siehe unten)");
+	
+	private JTextField uriInput = new JTextField();
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					EinstellungsFrame window = new EinstellungsFrame();
-					window.eFrame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	private JRadioButton rbSchreibenInDatei = new JRadioButton("in Datei");
+	private JTextField dateiOutput = new JTextField();
 
 	/**
 	 * Create the application.
@@ -56,30 +32,50 @@ public class EinstellungsFrame {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		eFrame = new JFrame();
 		Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
-		Dimension size = new Dimension(100, 100);
-		eFrame.setSize(size.width, size.height);
-		eFrame.setLocation((screensize.width-size.width)/2, (screensize.height-size.height)/2);
-		eFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		Dimension size = new Dimension(640, 480);
+		setSize(size.width, size.height);
+		setLocation((screensize.width-size.width)/2, (screensize.height-size.height)/2);
+		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		
-		Container _root = eFrame.getContentPane();
-//		_root.setLayout(new BoxLayout(_root, BoxLayout.X_AXIS));
-		_root.setLayout(new FlowLayout(FlowLayout.LEADING));
+			/*
+		 * * <pre>
+ *     .columns("pref, $lcgap, %sdlu, p, p", "50")  // Format string
+ *     .columnGroup(4, 5)                           // Grouping short hand
+ *     .debug(true)                                 // Installs FormDebugPanel
+ * 
+ *     .add("Title:")         .xy(1, 1)             // Implicitly created label
+ *     .add("&Price:")        .xy(1, 1)             // Label with mnemonic
+ * 
+ *     .add(hasCountry, combo).xy(3, 1)             // Conditional adding
+ * 
+ *     .add(aTable)           .xywh(1, 1, 3, 5)    // Auto-wrapped with scrollpane
+ *     .addScrolled(aTextArea).xywh(1, 1, 1, 3)    // scrollpane shorthand
+ * 
+ *     .addBar(newBtn, editBtn, deleteBtn).xy(1, 5) // button bar
+ *     .addBar(landscapeRadio, portraitRadio).xy(1, 1) // Radio button bar
+		 */
 		
-		Box root = new Box(BoxLayout.Y_AXIS);
-		_root.add(root, BorderLayout.PAGE_END);
-		
-		txtAdresse = new JTextField();
-		txtAdresse.setText("Adresse");
-		
-		root.add(txtAdresse);
-		
-		passwordField = new JPasswordField();
-		passwordField.setText("Passwort");
-		root.add(passwordField);
-		
-		
+		FormBuilder builder = FormBuilder.create()
+		        .columns("left:90dlu, $lcgap, 200dlu")
+		        .rows("p, $pgap, p, $lgap, p, $pgap, p, 20dlu, " +
+		              "p, $pgap, p, $lgap, p, $lgap, p, $pgap, p, $lgap, p, $lgap, p, $lgap")
+		        .debug(false)
+		        .padding("6dlu, 6dlu, 6dlu, 6dlu")
+		        
+		        // -- Lesen
+		        .addSeparator("Lesen").xyw(1, 1, 3)
+		        .add(rbLesenAusUri).xy(1, 3)
+		        .addLabel("URI").xy(1, 5).add(uriInput).xy(3, 5)
+		        .add(rbLesenPerFtp).xy(1, 7)
+		        
+		        // -- Schreiben
+		        .addSeparator("Schreiben").xyw(1, 9, 3)
+		        .add(rbSchreibenInDatei).xy(1, 11)
+		        .addLabel("Datei").xy(1, 13).add(dateiOutput).xy(3, 13);
+		        ;
+		        
+		getContentPane().add(builder.build());
 	}
 
 }

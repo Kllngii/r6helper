@@ -38,6 +38,7 @@ public class SpeicherService {
 
     private final Logger log = Logger.getLogger(getClass());
     
+    
     public static class ModelWithErrors {
     	private final R6HelperModel model;
     	private final Collection<String> errors;
