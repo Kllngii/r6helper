@@ -19,7 +19,7 @@ public class EinstellungsFrame extends JFrame {
 	private JTextField uriInput = new JTextField();
 
 	private JRadioButton rbSchreibenInDatei = new JRadioButton("Datei");
-	private JRadioButton rbSchreibenPerFtp = new JRadioButton("FTP-Server");
+	private JRadioButton rbSchreibenPerFtp = new JRadioButton("FTP");
 	
 	private JTextField dateiOutput = new JTextField();
 	private JTextField ftpHost = new JTextField();
@@ -62,23 +62,24 @@ public class EinstellungsFrame extends JFrame {
 		 */
 		
 		FormBuilder builder = FormBuilder.create()
-		        .columns("left:70dlu, $lcgap, 200dlu")
+		        .columns("left:pref, 3dlu, pref, 3dlu, 200dlu")
 		        .rows("p, $pgap, p, $lgap, p, 20dlu, " +
 		              "p, $pgap, p, $pgap, p, $lgap, p, $lgap, p, $lgap, p, $lgap, p, $lgap")
 		        .debug(false)
 		        .padding("6dlu, 6dlu, 6dlu, 6dlu")
 		        
 		        // -- Lesen
-		        .addSeparator("Lesen").xyw(1, 1, 3)
-		        .add(rbLesenAusUri).xy(1, 3).add(uriInput).xy(3, 3)
-		        .add(rbLesenPerFtp).xy(1, 5).addLabel("gleicher Server wie unten").xy(3, 5)
+		        .addSeparator("Lesen").xyw(1, 1, 5)
+		        .add(rbLesenAusUri).xy(1, 3).add(uriInput).xyw(3, 3, 3)
+		        .add(rbLesenPerFtp).xy(1, 5).addLabel("gleiche Einstellungen wie unten").xyw(3, 5, 3)
 		        
 		        // -- Schreiben
-		        .addSeparator("Schreiben").xyw(1, 7, 3)
-		        .add(rbSchreibenInDatei).xy(1, 9).add(dateiOutput).xy(3, 9)
-        		.add(rbSchreibenPerFtp).xy(1, 11).add(ftpHost).xy(3, 11)
-        		    .add(ftpUser).xy(3, 13)
-        		    .add(ftpPwd).xy(3, 15)
+		        .addSeparator("Schreiben").xyw(1, 7, 5)
+		        .add(rbSchreibenInDatei).xy(1, 9).add(dateiOutput).xyw(3, 9, 3)
+        		.add(rbSchreibenPerFtp).xy(1, 11)
+        		    .addLabel("Server").xy(3, 11).add(ftpHost).xy(5, 11)
+        		    .addLabel("User").xy(3, 13).add(ftpUser).xy(5, 13)
+        		    .addLabel("Passwort").xy(3, 15).add(ftpPwd).xy(5, 15)
 		        ;
 		        
 		getContentPane().add(builder.build());
