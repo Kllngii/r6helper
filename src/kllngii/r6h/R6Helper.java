@@ -295,24 +295,15 @@ public class R6Helper extends KllngiiApplication  {
 		        }
 	        });
 		    speichernPanel.add( paddingLeft(speichernButton, lückeKlein) );
+	    }
 	    
            JButton jsonLoadButton = new JButton("Json laden");
            jsonLoadButton.addActionListener((ActionEvent evt) -> {
-                try {
-                    SpeicherService.ModelWithErrors mwe = speicherService.ladeJson(einstellungen.getUriInput());
-                    model = mwe.getModel();
-                    errors.clear();
-                    errors.addAll(mwe.getErrors());
-                    
-                    refreshView();
-                }
-                catch (Exception ex) {
-                    log.error("Fehler beim Laden des JSON!", ex);
-                    showError("Fehler beim Laden des JSON: " + StringUtils.defaultIfEmpty(ex.getMessage(), ex.toString()));
-                }
+               ladeAusJson();
             });
             speichernPanel.add( paddingLeft(jsonLoadButton, lückeKlein) );
             
+       if (readWrite) {
 	       JButton jsonSaveButton = new JButton("Json speichern");
 	       jsonSaveButton.addActionListener((ActionEvent evt) -> {
 	            try {
@@ -414,12 +405,28 @@ public class R6Helper extends KllngiiApplication  {
 		
 		root.add(Box.createVerticalGlue());
 		
-		
-		
-		
+
+		if (! readWrite)
+		    ladeAusJson();
 		
 		frame.setVisible(true);
 	}
+
+    private void ladeAusJson() {
+        try {
+            SpeicherService.ModelWithErrors mwe = speicherService.ladeJson(einstellungen.getUriInput());
+            model = mwe.getModel();
+            errors.clear();
+            errors.addAll(mwe.getErrors());
+            
+            refreshView();        
+        }
+        catch (Exception ex) {
+            log.error("Fehler beim Laden des JSON!", ex);
+            showError("Fehler beim Laden des JSON: " + StringUtils.defaultIfEmpty(ex.getMessage(), ex.toString()));
+        }
+
+    }
 	
 	
 	private void showWaffentyp() {
