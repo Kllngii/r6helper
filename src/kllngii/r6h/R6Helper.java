@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -24,6 +25,7 @@ import java.util.Vector;
 import java.util.function.BooleanSupplier;
 import java.util.function.Predicate;
 import java.util.prefs.BackingStoreException;
+import java.util.stream.Collectors;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -48,7 +50,7 @@ import kllngii.r6h.model.Rekrut;
 import kllngii.r6h.model.Waffe;
 import kllngii.r6h.model.Waffentyp;
 
-//TODO View und Controller für Waffenart(wTyp)
+
 public class R6Helper extends KllngiiApplication {
 
     private final Logger log = Logger.getLogger(getClass());
@@ -208,7 +210,7 @@ public class R6Helper extends KllngiiApplication {
         });
         //// Ebene 0.5 ////
         root.add(Box.createVerticalStrut(lücke));
-        // TODO wArt
+        
         JPanel wArt = new JPanel();
         wArt.setLayout(new BoxLayout(wArt, BoxLayout.X_AXIS));
         root.add(wArt);
@@ -565,7 +567,12 @@ public class R6Helper extends KllngiiApplication {
                         panel.add(cb);
                     }
                 } else {
-                    //FIXME Gadgets im RO-Modus anzeigen
+                	List<String> gadgetnamen = new ArrayList<>();
+                	for(Gadget g:rekrut.getSelectedGadgets())
+                		gadgetnamen.add(g.getName());
+                	
+//                	String[] gadgetnamen = rekrut.getSelectedGadgets().stream().map(Gadget::getName).collect(Collectors.toList()).toArray(new String[0]);
+                	panel.add(new JLabel(String.join(", ", gadgetnamen)));
                 }
             } else {
                 if (readWrite) {
