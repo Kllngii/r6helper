@@ -18,7 +18,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.Vector;
@@ -536,11 +535,11 @@ public class R6Helper extends KllngiiApplication {
                 });
                 panel.add(secW);
             } else {
-                // label = new JLabel( Optional.ofNullable(op.getSelectedSekundärwaffe()).map(Waffe::getName).orElse("") );
                 if (op.getSelectedSekundärwaffe() == null)
                     label = new JLabel("");
                 else
                     label = new JLabel(op.getSelectedSekundärwaffe().getName());
+                
                 label.setPreferredSize(comboPreferredSize);
                 label.setMaximumSize(maxSize);
                 panel.add(label);
