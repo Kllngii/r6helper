@@ -10,6 +10,7 @@ public class Einstellungen {
     // Lesen aus URI
     private URI uriInput = newURI("https://www.dropbox.com/s/qg32536wsqswir5/r6helper.json?dl=1");
     
+    //TODO FTP ganz streichen oder ersetzen durch SCP
     // Lesen per FTP
     private boolean ftpInput = false;
     
