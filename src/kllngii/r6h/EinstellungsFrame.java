@@ -1,54 +1,57 @@
 package kllngii.r6h;
 
-import java.awt.EventQueue;
-import java.awt.FlowLayout;
-import java.awt.Toolkit;
-
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JFrame;
-import javax.swing.JPasswordField;
-import java.awt.BorderLayout;
-import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.prefs.BackingStoreException;
 
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
-public class EinstellungsFrame {
+import org.apache.log4j.Logger;
 
-	public JFrame eFrame;
-	public JFrame geteFrame() {
-		return eFrame;
-	}
+import com.jgoodies.forms.builder.FormBuilder;
 
-	public void seteFrame(JFrame eFrame) {
-		this.eFrame = eFrame;
-	}
+import kllngii.r6h.model.Einstellungen;
 
-	private JPasswordField passwordField;
-	private JTextField txtAdresse;
+public class EinstellungsFrame extends JFrame {
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					EinstellungsFrame window = new EinstellungsFrame();
-					window.eFrame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+    private static final long serialVersionUID = 4749625493367013570L;
+    
+    private final Logger log = Logger.getLogger(getClass());
+
+    
+    /** Das Model */
+    private Einstellungen model;
+
+    private JRadioButton rbLesenAusUri = new JRadioButton("URI");
+    private JRadioButton rbLesenPerFtp = new JRadioButton("FTP");
+	
+	private JTextField uriInput = new JTextField();
+
+	private JRadioButton rbSchreibenInDatei = new JRadioButton("Datei");
+	private JRadioButton rbSchreibenPerFtp = new JRadioButton("FTP");
+	
+	private JTextField dateiOutput = new JTextField();
+	private JTextField ftpHost = new JTextField();
+	private JTextField ftpUser = new JTextField();
+	private JTextField ftpPwd = new JTextField();
+	
+	private JButton saveButton = new JButton("Speichern");
+	private JButton cancelButton = new JButton("Verwerfen");
+	
 
 	/**
 	 * Create the application.
 	 */
-	public EinstellungsFrame() {
+	public EinstellungsFrame(Einstellungen e) {
+	    this.model = e;
 		initialize();
 	}
 
@@ -56,30 +59,122 @@ public class EinstellungsFrame {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		eFrame = new JFrame();
 		Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
-		Dimension size = new Dimension(100, 100);
-		eFrame.setSize(size.width, size.height);
-		eFrame.setLocation((screensize.width-size.width)/2, (screensize.height-size.height)/2);
-		eFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		Container _root = eFrame.getContentPane();
-//		_root.setLayout(new BoxLayout(_root, BoxLayout.X_AXIS));
-		_root.setLayout(new FlowLayout(FlowLayout.LEADING));
-		
-		Box root = new Box(BoxLayout.Y_AXIS);
-		_root.add(root, BorderLayout.PAGE_END);
-		
-		txtAdresse = new JTextField();
-		txtAdresse.setText("Adresse");
-		
-		root.add(txtAdresse);
-		
-		passwordField = new JPasswordField();
-		passwordField.setText("Passwort");
-		root.add(passwordField);
+		Dimension size = new Dimension(640, 480);
+		setSize(size.width, size.height);
+		setLocation((screensize.width-size.width)/2, (screensize.height-size.height)/2);
+		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		
 		
+		// Layout aufbauen:
+		FormBuilder builder = FormBuilder.create()
+		        .columns("left:pref, 3dlu, pref, 3dlu, 200dlu")
+		        .rows("p, $pgap, p, $lgap, p, " +
+		              "20dlu, " + 
+		              "p, $pgap, p, $pgap, p, $lgap, p, $lgap, p, " +
+		              "30dlu, " +
+		              "p")
+		        .debug(false)
+		        .padding("6dlu, 6dlu, 6dlu, 6dlu")
+		        
+		        // -- Lesen
+		        .addSeparator("Lesen").xyw(1, 1, 5)
+		        .add(rbLesenAusUri).xy(1, 3).add(uriInput).xyw(3, 3, 3)
+		        .add(rbLesenPerFtp).xy(1, 5).addLabel("gleiche Einstellungen wie unten").xyw(3, 5, 3)
+		        
+		        // -- Schreiben
+		        .addSeparator("Schreiben").xyw(1, 7, 5)
+		        .add(rbSchreibenInDatei).xy(1, 9).add(dateiOutput).xyw(3, 9, 3)
+        		.add(rbSchreibenPerFtp).xy(1, 11)
+        		    .addLabel("Server").xy(3, 11).add(ftpHost).xy(5, 11)
+        		    .addLabel("User").xy(3, 13).add(ftpUser).xy(5, 13)
+        		    .addLabel("Passwort").xy(3, 15).add(ftpPwd).xy(5, 15)
+        		    
+        		// -- Buttons
+        		.addBar(saveButton, cancelButton).xyw(1, 17, 5)
+		        ;
+		        
+		getContentPane().add(builder.build());
+		
+		
+		// RadioButtons gruppieren:
+		ButtonGroup lesenGroup = new ButtonGroup();
+		lesenGroup.add(rbLesenAusUri);
+		lesenGroup.add(rbLesenPerFtp);
+		
+		ButtonGroup schreibenGroup = new ButtonGroup();
+		schreibenGroup.add(rbSchreibenInDatei);
+		schreibenGroup.add(rbSchreibenPerFtp);
+		
+		
+		// Stand des Models im View anzeigen:
+		modelToView();
+		
+		
+		// Buttons unten:
+		saveButton.setToolTipText("Speichert auf diesem Computer");
+		saveButton.addActionListener((ActionEvent evt) -> {
+		    viewToModel();
+		    new EinstellungenService().speichereInPreferences(model);
+		    setVisible(false);
+		}); 
+		
+		cancelButton.setToolTipText("Verwirft alle Änderungen seit dem letzten Speichern");
+		cancelButton.addActionListener((ActionEvent evt) -> {
+		    try {
+                new EinstellungenService().ladeAusPreferences(model);
+                modelToView();
+                setVisible(false);
+            } catch (BackingStoreException e) {
+                log.warn("Alte Einstellungen können nicht aus den Preferences geladen werden!", e);
+            }
+        }); 
+	}
+	
+	private void viewToModel() {
+	    // -- Lesen
+	    try {
+	        model.setUriInput(new URI(uriInput.getText()));
+	    }
+	    catch (URISyntaxException ex) {
+	        log.info("Ungültige URI: " + uriInput.getText());
+	        
+	        //TODO Das Problem dem User melden - Fehlermeldung sichtbar machen
+	        final String fallback = "http://www.example.com/ungueltige_uri";
+	        uriInput.setText(fallback);
+	        try {
+                model.setUriInput(new URI(fallback));
+            } catch (URISyntaxException e) {
+                // Kann nicht mehr auftreten
+                throw new RuntimeException(e);
+            }
+	    }
+	    model.setFtpInput(rbLesenPerFtp.isSelected());
+	    
+	    // -- Schreiben
+	    model.setDateiOutput(new File(dateiOutput.getText()));
+	    model.setFtpOutput(rbSchreibenPerFtp.isSelected());
+	    model.setFtpHost(ftpHost.getText());
+	    model.setFtpUser(ftpUser.getText());
+	    model.setFtpPwd(ftpPwd.getText());
 	}
 
+    private void modelToView() {
+        // -- Lesen
+        uriInput.setText(model.getUriInput().toString());
+        if (model.isFtpInput())
+            rbLesenPerFtp.setSelected(true);
+        else
+            rbLesenAusUri.setSelected(true);
+        
+        // -- Speichern
+        dateiOutput.setText((model.getDateiOutput() == null) ? "" : model.getDateiOutput().toString());
+        if (model.isFtpOutput())
+            rbSchreibenPerFtp.setSelected(true);
+        else
+            rbSchreibenInDatei.setSelected(true);
+        ftpHost.setText(model.getFtpHost());
+        ftpUser.setText(model.getFtpUser());
+        ftpPwd.setText(model.getFtpPwd());
+    }
 }

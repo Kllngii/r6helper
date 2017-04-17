@@ -23,6 +23,7 @@ import java.util.TreeSet;
 import java.util.Vector;
 import java.util.function.BooleanSupplier;
 import java.util.function.Predicate;
+import java.util.prefs.BackingStoreException;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -53,9 +54,11 @@ public class R6Helper extends KllngiiApplication  {
     
     private final Logger log = Logger.getLogger(getClass());
 	
-    private final Einstellungen einstellungen = new Einstellungen();
     private final boolean readWrite;
 	private JFrame frame;
+	
+	private final Einstellungen einstellungen = new Einstellungen();
+	private EinstellungsFrame einstellungsFrame = null;  // wird bei Bedarf erzeugt
 	
 	
 	private R6HelperModel model = new R6HelperModel();
@@ -143,6 +146,14 @@ public class R6Helper extends KllngiiApplication  {
 	 */
 	public R6Helper(boolean readWrite) {
 		this.readWrite = readWrite;
+		
+		// Einstellungen laden:
+		try {
+            new EinstellungenService().ladeAusPreferences(einstellungen);
+        } catch (BackingStoreException e) {
+            log.warn("Alte Einstellungen können nicht aus den Preferences geladen werden!", e);
+        }
+		
 		initialize();
 		
 	}
@@ -316,13 +327,10 @@ public class R6Helper extends KllngiiApplication  {
 	    }
 	    JButton settings = new JButton("Einstellungen");
 	    settings.addActionListener((ActionEvent evt) -> {
-            try {
-                EinstellungsFrame.main(null);
-            }
-            catch (Exception ex) {
-                log.error("Einstellungen konnten nicht geöffnet werden!", ex);
-                showError("Einstellungen konnten nicht geöffnet werden: " + StringUtils.defaultIfEmpty(ex.getMessage(), ex.toString()));
-            }
+	        if (einstellungsFrame == null)
+	            einstellungsFrame = new EinstellungsFrame(einstellungen);
+	        einstellungsFrame.setVisible(true);
+	        einstellungsFrame.toFront();
         });
 	    speichernPanel.add( paddingLeft(settings, lückeKlein) );
         //// Ebene 2 ////
