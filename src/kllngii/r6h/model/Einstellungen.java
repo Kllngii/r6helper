@@ -15,7 +15,7 @@ public class Einstellungen {
     
 
     // Speichern in eine Datei
-    private File dateiOutput = new File("/Users/kellingc/Dropbox/Texte von Lasse/r6helper.json");
+    private File dateiOutput = new File("r6helper.json");
     
     // Speichern per FTP
     private boolean ftpOutput = false;
