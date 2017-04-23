@@ -65,6 +65,10 @@ public class EinstellungsFrame extends JFrame {
 		setLocation((screensize.width-size.width)/2, (screensize.height-size.height)/2);
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		
+		//TODO FTP implementieren
+		rbLesenPerFtp.setEnabled(false);
+		rbSchreibenPerFtp.setEnabled(false);
+		
 		
 		// Layout aufbauen:
 		FormBuilder builder = FormBuilder.create()
