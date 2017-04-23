@@ -11,6 +11,8 @@ import java.util.prefs.BackingStoreException;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
@@ -72,6 +74,10 @@ public class EinstellungsFrame extends JFrame {
 		rbLesenPerFtp.setEnabled(false);
 		rbSchreibenPerFtp.setEnabled(false);
 		
+		JLabel refreshLabel = new JLabel("Aktualisiere alle");
+		refreshLabel.setToolTipText("0 oder negativ, um das automatische Laden auszuschalten");
+		refreshInterval.setToolTipText(refreshLabel.getToolTipText());
+		
 		
 		// Layout aufbauen:
 		FormBuilder builder = FormBuilder.create()
@@ -91,7 +97,7 @@ public class EinstellungsFrame extends JFrame {
 		        .addSeparator("Lesen").xyw(1, 1, 5)
 		        .add(rbLesenAusUri).xy(1, 3).add(uriInput).xyw(3, 3, 3)
 		        .add(rbLesenPerFtp).xy(1, 5).addLabel("gleiche Einstellungen wie unten").xyw(3, 5, 3)
-		        .addLabel("Aktualisiere alle").xy(1, 7).add(refreshInterval).xy(3, 7).addLabel("s").xy(5, 7)
+		        .add(refreshLabel).xy(1, 7).add(refreshInterval).xy(3, 7).addLabel("s").xy(5, 7)
 		        
 		        // -- Schreiben
 		        .addSeparator("Schreiben").xyw(1, 9, 5)
@@ -125,9 +131,15 @@ public class EinstellungsFrame extends JFrame {
 		// Buttons unten:
 		saveButton.setToolTipText("Speichert auf diesem Computer");
 		saveButton.addActionListener((ActionEvent evt) -> {
-		    viewToModel();
-		    new EinstellungenService().speichereInPreferences(model);
-		    setVisible(false);
+		    try {
+		        viewToModel();
+		        new EinstellungenService().speichereInPreferences(model);
+		        setVisible(false);
+		    }
+		    catch (IllegalArgumentException ex) {
+		        // Dem User das Problem anzeigen:
+		        JOptionPane.showMessageDialog(this, ex.getMessage(), "So kann ich nicht speichern!", JOptionPane.WARNING_MESSAGE);
+		    }
 		}); 
 		
 		cancelButton.setToolTipText("Verwirft alle Änderungen seit dem letzten Speichern");
@@ -142,22 +154,21 @@ public class EinstellungsFrame extends JFrame {
         }); 
 	}
 	
-	private void viewToModel() {
+	/**
+	 * Kopiert die Werte aus dem View in das Model um,
+	 * sofern sie fachlich richtig sind.
+	 * @throws IllegalArgumentException, wenn mindestens ein fachlicher Fehler aufgetreten ist.
+	 */
+	private void viewToModel()
+	throws IllegalArgumentException {
 	    // -- Lesen
 	    try {
 	        model.setUriInput(new URI(uriInput.getText()));
 	    }
 	    catch (URISyntaxException ex) {
-	        log.info("Ungültige URI: " + uriInput.getText());
-	        log.warn("Ein Fehler ist aufgetreten: "+ex);
-	        final String fallback = "http://www.example.com/ungueltige_uri";
-	        uriInput.setText(fallback);
-	        try {
-                model.setUriInput(new URI(fallback));
-            } catch (URISyntaxException e) {
-                // Kann nicht mehr auftreten
-                throw new RuntimeException(e);
-            }
+	        String msg = "Ungültige URI: " + uriInput.getText();
+	        log.warn(msg);
+	        throw new IllegalArgumentException(msg);
 	    }
 	    
 	    model.setFtpInput(rbLesenPerFtp.isSelected());
@@ -168,8 +179,9 @@ public class EinstellungsFrame extends JFrame {
 	        model.setRefreshIntervalS(Integer.parseInt(interval));
 	    }
 	    catch (NumberFormatException ex) {
-	        log.warn("Ein Fehler ist aufgetreten: "+ex);
-	        model.setRefreshIntervalS(Einstellungen.DEFAULT_REFRESH_INTERVAL_S);
+	        String msg = "Bitte nur ganze Sekunden eingeben.";
+	        log.warn(msg, ex);
+	        throw new IllegalArgumentException(msg);
 	    }
 	    refreshInterval.setText(String.valueOf(model.getRefreshIntervalS()));
 	    
