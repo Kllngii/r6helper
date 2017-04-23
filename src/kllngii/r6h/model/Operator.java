@@ -10,6 +10,7 @@ import org.apache.commons.collections4.CollectionUtils;
 public class Operator implements Serializable {
 
     private static final long serialVersionUID = 6997857670655689520L;
+    private static final int DEFAULT_LIFEPOINTS = 100;
 
     private final OperatorTyp typ;
     private final String name;
@@ -21,6 +22,7 @@ public class Operator implements Serializable {
     private Waffe selectedPrimärwaffe;
     private Waffe selectedSekundärwaffe;
     private Gadget selectedGadget;
+    private int lifepoints = DEFAULT_LIFEPOINTS;
 
     public Operator(OperatorTyp typ, String name, List<Waffe> primärwaffen, List<Waffe> sekundärwaffen,
             List<Gadget> gadgets) {
@@ -143,4 +145,18 @@ public class Operator implements Serializable {
         else
             selectedGadget = gadgets.get(0);
     }
+
+	public int getLifepoints() {
+		return lifepoints;
+	}
+
+	public void setLifepoints(int lifepoints) {
+		this.lifepoints = lifepoints;
+	}
+
+	public int getMaxLifepoints() {
+		return isAngreifer() ? DEFAULT_LIFEPOINTS : DEFAULT_LIFEPOINTS + 40;
+		
+		
+	}
 }

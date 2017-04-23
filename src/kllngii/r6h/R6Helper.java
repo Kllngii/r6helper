@@ -25,7 +25,6 @@ import java.util.Vector;
 import java.util.function.BooleanSupplier;
 import java.util.function.Predicate;
 import java.util.prefs.BackingStoreException;
-import java.util.stream.Collectors;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -37,7 +36,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.UIManager;
+import javax.swing.event.ChangeEvent;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -596,7 +598,27 @@ public class R6Helper extends KllngiiApplication {
 
                 }
             }
-
+            
+            panel.add(Box.createHorizontalStrut(lücke));
+            if(readWrite){
+            	final SpinnerNumberModel spinnerModel = new SpinnerNumberModel(op.getLifepoints(), 0, op.getMaxLifepoints(), 5);
+            	JSpinner spinner = new JSpinner(spinnerModel);
+            	spinner.setPreferredSize(comboPreferredSize);
+                spinner.setMaximumSize(maxSize);
+                spinnerModel.addChangeListener((ChangeEvent evt) -> {
+                	op.setLifepoints( spinnerModel.getNumber().intValue() );
+                });
+                    
+               
+                panel.add(spinner);
+            }
+            else{
+            	label = new JLabel(String.valueOf(op.getLifepoints()));
+                label.setPreferredSize(comboPreferredSize);
+                label.setMaximumSize(maxSize);
+                panel.add(label);
+            }
+            
             panel.add(Box.createHorizontalStrut(lücke));
             panel.add(Box.createHorizontalGlue());
 
