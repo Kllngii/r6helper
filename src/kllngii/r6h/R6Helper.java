@@ -490,13 +490,15 @@ public class R6Helper extends KllngiiApplication {
         panel_waffen.removeAll();
 
         for (Operator op : selectedOps) {
-            Dimension labelPreferredSize = new Dimension(100, 24);
-            Dimension comboPreferredSize = new Dimension(150, 24);
-            Dimension maxSize = new Dimension(250, 22);
+            final int maxHeight = 22;
+            Dimension labelPreferredSize = new Dimension(100, maxHeight);
+            Dimension comboPreferredSize = new Dimension(150, maxHeight);
+            Dimension spinnerPreferredSize = new Dimension(45, maxHeight);
+            Dimension maxSize = new Dimension(250, maxHeight);
 
             Box panel = new Box(BoxLayout.X_AXIS);
             // panel.setBorder(new LineBorder(Color.RED));
-            panel.setMaximumSize(new Dimension(999999, 22));
+            panel.setMaximumSize(new Dimension(999999, maxHeight));
 
             panel.add(Box.createHorizontalStrut(lücke));
 
@@ -603,8 +605,8 @@ public class R6Helper extends KllngiiApplication {
             if(readWrite){
             	final SpinnerNumberModel spinnerModel = new SpinnerNumberModel(op.getLifepoints(), 0, op.getMaxLifepoints(), 5);
             	JSpinner spinner = new JSpinner(spinnerModel);
-            	spinner.setPreferredSize(comboPreferredSize);
-                spinner.setMaximumSize(maxSize);
+            	spinner.setPreferredSize(spinnerPreferredSize);
+                spinner.setMaximumSize(spinnerPreferredSize);
                 spinnerModel.addChangeListener((ChangeEvent evt) -> {
                 	op.setLifepoints( spinnerModel.getNumber().intValue() );
                 });
@@ -613,8 +615,8 @@ public class R6Helper extends KllngiiApplication {
                 panel.add(spinner);
             }
             else{
-            	label = new JLabel(String.valueOf(op.getLifepoints()));
-                label.setPreferredSize(comboPreferredSize);
+            	label = new JLabel("LP: " + op.getLifepoints());
+                label.setPreferredSize(labelPreferredSize);
                 label.setMaximumSize(maxSize);
                 panel.add(label);
             }
