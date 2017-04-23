@@ -126,7 +126,7 @@ public class SpeicherService {
         }
         
         String result = json.toString(4);
-        log.info("JSON:\n" + result);
+        log.debug("JSON:\n" + result);
         return result;
     }
     
