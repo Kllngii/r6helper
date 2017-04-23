@@ -304,13 +304,8 @@ public class R6Helper extends KllngiiApplication {
         if (readWrite) {
             JButton jsonSaveButton = new JButton("Json speichern");
             jsonSaveButton.addActionListener((ActionEvent evt) -> {
-                try {
-                    speicherService.speichereJson(model, errors, einstellungen.getDateiOutput());
-                } catch (Exception ex) {
-                    log.error("Fehler beim Speichern des JSON!", ex);
-                    showError("Fehler beim Speichern des JSON: "
-                            + StringUtils.defaultIfEmpty(ex.getMessage(), ex.toString()));
-                }
+            	speichereInJSON();
+                
             });
             speichernPanel.add(paddingLeft(jsonSaveButton, lückeKlein));
         }
@@ -400,15 +395,34 @@ public class R6Helper extends KllngiiApplication {
 
         root.add(Box.createVerticalGlue());
 
-        if (!readWrite) {
+        if(!readWrite) {
             ladeAusJson();
             
             // Per Timer das Model regelmäßig neu einlesen
             if (einstellungen.getRefreshIntervalS() > 0) {
                 log.info("Timer wird erzeugt, um das JSON alle " + einstellungen.getRefreshIntervalS() + " s neu einzulesen.");
                 Timer refreshTimer = new Timer(einstellungen.getRefreshIntervalS()*1000, (ActionEvent) -> {
-                    log.info("Timer feuert - JSON neu einlesen...");
-                    ladeAusJson();
+                
+                log.info("Timer feuert - JSON neu einlesen...");
+                ladeAusJson();
+                });
+                einstellungen.setRefreshTimer(refreshTimer);
+                refreshTimer.start();
+            }
+        }
+        else {
+            ladeAusJson();
+            
+            // Per Timer das Model regelmäßig neu einlesen
+            if (einstellungen.getRefreshIntervalS() > 0) {
+                log.info("Timer wird erzeugt, um das JSON alle " + einstellungen.getRefreshIntervalS() + " s neu einzulesen.");
+                Timer refreshTimer = new Timer(einstellungen.getRefreshIntervalS()*1000, (ActionEvent) -> {
+                 
+                 log.info("Timer feuert - JSON neu speichern");
+                 speichereInJSON();
+                    	
+                    
+                
                 });
                 einstellungen.setRefreshTimer(refreshTimer);
                 refreshTimer.start();
@@ -418,7 +432,18 @@ public class R6Helper extends KllngiiApplication {
         frame.setVisible(true);
     }
 
-    private void ladeAusJson() {
+    private void speichereInJSON() {
+    	try {
+            speicherService.speichereJson(model, errors, einstellungen.getDateiOutput());
+        } catch (Exception ex) {
+            log.error("Fehler beim Speichern des JSON!", ex);
+            showError("Fehler beim Speichern des JSON: "
+                    + StringUtils.defaultIfEmpty(ex.getMessage(), ex.toString()));
+        }
+		
+	}
+
+	private void ladeAusJson() {
         //TODO Stand (Zeitstempel) des JSON anzeigen
         try {
             SpeicherService.ModelWithErrors mwe = speicherService.ladeJson(einstellungen.getUriInput());
