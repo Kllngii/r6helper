@@ -14,6 +14,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -44,6 +45,8 @@ import javax.swing.event.ChangeEvent;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+
+import com.jgoodies.forms.builder.FormBuilder;
 
 import kllngii.r6h.model.Einstellungen;
 import kllngii.r6h.model.Gadget;
@@ -295,34 +298,52 @@ public class R6Helper extends KllngiiApplication {
 
         root.add(Box.createVerticalStrut(lücke));
 
-        panel_angriff = new JPanel();
-        // panel_angriff.setBorder(new LineBorder(Color.BLACK));
-        panel_angriff.setMaximumSize(new Dimension(999999, 120));
-        panel_angriff.setPreferredSize(new Dimension(size.width, 120));
-        root.add(panel_angriff);
+//        panel_angriff.setMaximumSize(new Dimension(999999, 120));
+//        panel_angriff.setPreferredSize(new Dimension(size.width, 120));
+        
+        // Pseudo-Tabelle für Angreifer - Layout festlegen:
+        final int numColumns = 5;  // Anzahl Checkboxen nebeneinander
+        final int numRows = model.getAngreifer().size() / numColumns;
+        FormBuilder angriffBuilder = FormBuilder.create()
+                .columns("left:pref, 6dlu, " + // 1 Label und...
+                        String.join(", 3dlu, ", Collections.nCopies(numColumns, "pref")))  // ...n Checkboxen nebeneinander
+                .rows(String.join(", $lgap, ", Collections.nCopies(numRows, "p")))
+                .debug(false)
+                .padding("6dlu, 12px, 6dlu, 12px")
+                .addLabel("Operator:").xy(1, 1);
 
         panel_verteidigung = new JPanel();
         panel_verteidigung.setMaximumSize(new Dimension(999999, 120));
         panel_verteidigung.setPreferredSize(new Dimension(size.width, 120));
         root.add(panel_verteidigung);
 
-        panel_angriff.add(Box.createHorizontalStrut(lücke));
-        panel_angriff.add(paddingRight(new JLabel("Operator:"), lückeKlein));
-
         panel_verteidigung.add(Box.createHorizontalStrut(lücke));
         panel_verteidigung.add(paddingRight(new JLabel("Operator:"), lückeKlein));
 
         angriffCheckboxen = new HashMap<>();
+        int col = 1;
+        int row = 1;
         for (Operator op : model.getAngreifer()) {
             JCheckBox checkBox = new JCheckBox(op.getName());
             checkBox.setEnabled(readWrite);
             angriffCheckboxen.put(op, checkBox);
-            panel_angriff.add(checkBox);
+            
+            // Und der "Tabelle" im View hinzufügen:
+            angriffBuilder.add(checkBox).xy(2*col+1, row);
+            col++;
+            if (col > numColumns) {
+                col = 1;
+                row = row + 2;
+            }
+            
             checkBox.addActionListener((ActionEvent evt) -> {
                 model.toggleSelected(op);
                 fillPanelWaffen();
             });
         }
+        panel_angriff = angriffBuilder.build();
+        root.add(panel_angriff);
+        
         verteidigungCheckboxen = new HashMap<>();
         for (Operator op : model.getVerteidiger()) {
             JCheckBox checkBox = new JCheckBox(op.getName());
@@ -407,9 +428,11 @@ public class R6Helper extends KllngiiApplication {
         panel_meldung.setVisible(false);
 
         root.add(Box.createVerticalGlue());
+        
+        frame.setVisible(true);
 
+        ladeAusJson();
         if(!readWrite) {
-            ladeAusJson();
             
             // Per Timer das Model regelmäßig neu einlesen
             if (einstellungen.getRefreshIntervalS() > 0) {
@@ -424,7 +447,6 @@ public class R6Helper extends KllngiiApplication {
             }
         }
         else {
-            ladeAusJson();
             
             // Per Timer das Model regelmäßig neu einlesen
             if (einstellungen.getRefreshIntervalS() > 0) {
@@ -442,7 +464,6 @@ public class R6Helper extends KllngiiApplication {
             }
         }
 
-        frame.setVisible(true);
     }
 
     private void speichereInJSON() {
@@ -458,6 +479,7 @@ public class R6Helper extends KllngiiApplication {
 
 	private void ladeAusJson() {
         try {
+            log.info("Lade JSON...");
         	final long time1 = System.currentTimeMillis(); 
             SpeicherService.ModelWithErrors mwe = speicherService.ladeJson(einstellungen.getUriInput());
             model = mwe.getModel();
