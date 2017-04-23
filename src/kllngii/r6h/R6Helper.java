@@ -176,6 +176,7 @@ public class R6Helper extends KllngiiApplication {
         Container root = frame.getContentPane();
         root.setLayout(new BoxLayout(root, BoxLayout.Y_AXIS));
 
+        
         //// Ebene 0 ////
 
         root.add(Box.createVerticalStrut(lücke));
@@ -210,36 +211,7 @@ public class R6Helper extends KllngiiApplication {
                 e.printStackTrace();
             }
         });
-        //// Ebene 0.5 ////
-        root.add(Box.createVerticalStrut(lücke));
-        
-        JPanel wArt = new JPanel();
-        wArt.setLayout(new BoxLayout(wArt, BoxLayout.X_AXIS));
-        root.add(wArt);
 
-        lblSturm = new JLabel("Sturmgewehre:");
-        waffenTypMap.put(Waffentyp.STURM, new WaffenTypLabel(lblSturm));
-        wArt.add(paddingRight(lblSturm, lückeKlein));
-
-        lblShot = new JLabel("Shotguns:");
-        waffenTypMap.put(Waffentyp.SHOTGUN, new WaffenTypLabel(lblShot));
-        wArt.add(paddingRight(lblShot, lückeKlein));
-
-        lblLMG = new JLabel("LMGs:");
-        waffenTypMap.put(Waffentyp.LMG, new WaffenTypLabel(lblLMG));
-        wArt.add(paddingRight(lblLMG, lückeKlein));
-
-        lblDMR = new JLabel("DMRs:");
-        waffenTypMap.put(Waffentyp.DMR, new WaffenTypLabel(lblDMR));
-        wArt.add(paddingRight(lblDMR, lückeKlein));
-
-        lblMP = new JLabel("MPs:");
-        waffenTypMap.put(Waffentyp.MP, new WaffenTypLabel(lblMP));
-        wArt.add(paddingRight(lblMP, lückeKlein));
-
-        lblP = new JLabel("Pistolen:");
-        waffenTypMap.put(Waffentyp.PISTOLE, new WaffenTypLabel(lblP));
-        wArt.add(paddingRight(lblP, lückeKlein));
 
         //// Ebene 1 ////
 
@@ -317,6 +289,8 @@ public class R6Helper extends KllngiiApplication {
             einstellungsFrame.toFront();
         });
         speichernPanel.add(paddingLeft(settings, lückeKlein));
+        
+        
         //// Ebene 2 ////
 
         root.add(Box.createVerticalStrut(lücke));
@@ -376,6 +350,7 @@ public class R6Helper extends KllngiiApplication {
             fillPanelWaffen();
         });
 
+        
         //// Ebene 3 ////
 
         root.add(Box.createVerticalStrut(lücke));
@@ -383,6 +358,44 @@ public class R6Helper extends KllngiiApplication {
         panel_waffen = new Box(BoxLayout.Y_AXIS);
         // panel_waffen.setBorder(new LineBorder(Color.BLACK));
         root.add(panel_waffen);
+        
+        
+        //// Ebene 4 ////
+        
+        root.add(Box.createVerticalStrut(lücke));
+        
+        JPanel wArt = new JPanel();
+        wArt.setLayout(new BoxLayout(wArt, BoxLayout.X_AXIS));
+        root.add(wArt);
+
+        lblSturm = new JLabel("Sturmgewehre:");
+        waffenTypMap.put(Waffentyp.STURM, new WaffenTypLabel(lblSturm));
+        wArt.add(paddingRight(lblSturm, lückeKlein));
+
+        lblShot = new JLabel("Shotguns:");
+        waffenTypMap.put(Waffentyp.SHOTGUN, new WaffenTypLabel(lblShot));
+        wArt.add(paddingRight(lblShot, lückeKlein));
+
+        lblLMG = new JLabel("LMGs:");
+        waffenTypMap.put(Waffentyp.LMG, new WaffenTypLabel(lblLMG));
+        wArt.add(paddingRight(lblLMG, lückeKlein));
+
+        lblDMR = new JLabel("DMRs:");
+        waffenTypMap.put(Waffentyp.DMR, new WaffenTypLabel(lblDMR));
+        wArt.add(paddingRight(lblDMR, lückeKlein));
+
+        lblMP = new JLabel("MPs:");
+        waffenTypMap.put(Waffentyp.MP, new WaffenTypLabel(lblMP));
+        wArt.add(paddingRight(lblMP, lückeKlein));
+
+        lblP = new JLabel("Pistolen:");
+        waffenTypMap.put(Waffentyp.PISTOLE, new WaffenTypLabel(lblP));
+        wArt.add(paddingRight(lblP, lückeKlein));
+        
+        
+        //// Meldungen ////
+        
+        root.add(Box.createVerticalStrut(lücke));
 
         panel_meldung = new JPanel();
         root.add(panel_meldung);
