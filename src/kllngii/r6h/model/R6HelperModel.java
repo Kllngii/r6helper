@@ -168,4 +168,16 @@ public class R6HelperModel implements Serializable {
     public void setGegnerteamAngreifer(boolean gegnerteamAngreifer) {
         this.gegnerteamAngreifer = gegnerteamAngreifer;
     }
+
+
+    public void resetLifepoints() {
+        for (Operator op : operatoren)
+            op.resetLifepoints();
+        
+        // Nur nötig für in den Preferences gespeicherte Models, wenn sich die Menge der Ops geändert hat:
+        for (Operator op : selectedAngreifer)
+            op.resetLifepoints();
+        for (Operator op : selectedVerteidiger)
+            op.resetLifepoints();
+    }
 }

@@ -156,7 +156,9 @@ public class Operator implements Serializable {
 
 	public int getMaxLifepoints() {
 		return isAngreifer() ? DEFAULT_LIFEPOINTS : DEFAULT_LIFEPOINTS + 40;
-		
-		
+	}
+	
+	public void resetLifepoints() {
+	    lifepoints = DEFAULT_LIFEPOINTS;
 	}
 }

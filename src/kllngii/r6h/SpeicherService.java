@@ -92,6 +92,7 @@ public class SpeicherService {
             try (ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
                     ObjectInputStream ois = new ObjectInputStream(bis)) {
                 model = (R6HelperModel) ois.readObject();
+                model.resetLifepoints();
                 log.info("Model wurde aus den Preferences geholt.\nselectedAngreifer: " + model.getSelectedAngreifer()
                         + "\nselectedVerteidiger: " + model.getSelectedVerteidiger());
             } catch (ClassNotFoundException ex) {
@@ -187,6 +188,8 @@ public class SpeicherService {
             }
             op.setSelectedGadgets(selectedGadgets);
         }
+        if (json.has("lifepoints"))
+            op.setLifepoints(json.getInt("lifepoints"));
         
         return op;
     }
@@ -201,6 +204,7 @@ public class SpeicherService {
         if (CollectionUtils.isNotEmpty(op.getSelectedGadgets()))
             trg.put("gadgets", new JSONArray(
                 op.getSelectedGadgets().stream().map(g -> g.getName()).collect(Collectors.toList())));
+        trg.put("lifepoints", op.getLifepoints());
         return trg;
     }
     
