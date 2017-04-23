@@ -3,6 +3,8 @@ package kllngii.r6h.model;
 import java.io.File;
 import java.net.URI;
 
+import javax.swing.Timer;
+
 public class Einstellungen {
     
     public static final int DEFAULT_REFRESH_INTERVAL_S = 5;
@@ -17,6 +19,7 @@ public class Einstellungen {
     private boolean ftpInput = false;
     
     private int refreshIntervalS = DEFAULT_REFRESH_INTERVAL_S;
+    private Timer refreshTimer = null;
     
 
     // Speichern in eine Datei
@@ -109,7 +112,30 @@ public class Einstellungen {
         return refreshIntervalS;
     }
 
+    /**
+     * Merkt sich das gewünschte neue Refresh-Intervall und
+     * ändert den Timer (falls vorhanden).
+     */
     public void setRefreshIntervalS(int refreshIntervalS) {
         this.refreshIntervalS = refreshIntervalS;
+        if (refreshTimer != null) {
+            if (refreshIntervalS > 0) {
+                refreshTimer.setDelay(refreshIntervalS*1000);
+                if (! refreshTimer.isRunning())
+                    refreshTimer.start();
+            }
+            else {
+                if (refreshTimer.isRunning())
+                    refreshTimer.stop();
+            }
+        }
+    }
+
+    public Timer getRefreshTimer() {
+        return refreshTimer;
+    }
+
+    public void setRefreshTimer(Timer refreshTimer) {
+        this.refreshTimer = refreshTimer;
     }
 }

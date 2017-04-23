@@ -38,6 +38,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 
@@ -158,7 +159,6 @@ public class R6Helper extends KllngiiApplication {
         }
 
         initialize();
-
     }
 
     /**
@@ -400,13 +400,26 @@ public class R6Helper extends KllngiiApplication {
 
         root.add(Box.createVerticalGlue());
 
-        if (!readWrite)
+        if (!readWrite) {
             ladeAusJson();
+            
+            // Per Timer das Model regelmäßig neu einlesen
+            if (einstellungen.getRefreshIntervalS() > 0) {
+                log.info("Timer wird erzeugt, um das JSON alle " + einstellungen.getRefreshIntervalS() + " s neu einzulesen.");
+                Timer refreshTimer = new Timer(einstellungen.getRefreshIntervalS()*1000, (ActionEvent) -> {
+                    log.info("Timer feuert - JSON neu einlesen...");
+                    ladeAusJson();
+                });
+                einstellungen.setRefreshTimer(refreshTimer);
+                refreshTimer.start();
+            }
+        }
 
         frame.setVisible(true);
     }
 
     private void ladeAusJson() {
+        //TODO Stand (Zeitstempel) des JSON anzeigen
         try {
             SpeicherService.ModelWithErrors mwe = speicherService.ladeJson(einstellungen.getUriInput());
             model = mwe.getModel();
