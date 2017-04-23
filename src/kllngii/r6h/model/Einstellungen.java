@@ -5,6 +5,8 @@ import java.net.URI;
 
 public class Einstellungen {
     
+    public static final int DEFAULT_REFRESH_INTERVAL_S = 5;
+    
     //------ Variablen ------
     
     // Lesen aus URI
@@ -13,6 +15,8 @@ public class Einstellungen {
     //TODO FTP ganz streichen oder ersetzen durch SCP
     // Lesen per FTP
     private boolean ftpInput = false;
+    
+    private int refreshIntervalS = DEFAULT_REFRESH_INTERVAL_S;
     
 
     // Speichern in eine Datei
@@ -101,4 +105,11 @@ public class Einstellungen {
         }
     }
 
+    public int getRefreshIntervalS() {
+        return refreshIntervalS;
+    }
+
+    public void setRefreshIntervalS(int refreshIntervalS) {
+        this.refreshIntervalS = refreshIntervalS;
+    }
 }

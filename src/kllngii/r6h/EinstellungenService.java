@@ -46,6 +46,7 @@ public class EinstellungenService {
         // -- Lesen
         node.put("uriInput", e.getUriInput().toString());
         node.putBoolean("ftpInput", e.isFtpInput());
+        node.putInt("refreshIntervalS", e.getRefreshIntervalS());
         
         // -- Schreiben
         node.put("dateiOutput", e.getDateiOutput().toString());
@@ -84,6 +85,7 @@ public class EinstellungenService {
             }
             e.setUriInput(uriInput);
             e.setFtpInput(node.getBoolean("ftpInput", false));
+            e.setRefreshIntervalS(node.getInt("refreshIntervalS", Einstellungen.DEFAULT_REFRESH_INTERVAL_S));
             
             
             // -- Schreiben

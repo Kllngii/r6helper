@@ -14,6 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.jgoodies.forms.builder.FormBuilder;
@@ -34,6 +35,7 @@ public class EinstellungsFrame extends JFrame {
     private JRadioButton rbLesenPerFtp = new JRadioButton("FTP");
 	
 	private JTextField uriInput = new JTextField();
+	private JTextField refreshInterval = new JTextField();
 
 	private JRadioButton rbSchreibenInDatei = new JRadioButton("Datei");
 	private JRadioButton rbSchreibenPerFtp = new JRadioButton("FTP");
@@ -73,9 +75,12 @@ public class EinstellungsFrame extends JFrame {
 		// Layout aufbauen:
 		FormBuilder builder = FormBuilder.create()
 		        .columns("left:pref, 3dlu, pref, 3dlu, 200dlu")
-		        .rows("p, $pgap, p, $lgap, p, " +
-		              "20dlu, " + 
+		        .rows(// -- Lesen
+   	                  "p, $pgap, p, $lgap, p, $lgap, p, " +
+		              // -- Schreiben
+		              "20dlu, " +
 		              "p, $pgap, p, $pgap, p, $lgap, p, $lgap, p, " +
+		              // -- Buttons
 		              "30dlu, " +
 		              "p")
 		        .debug(false)
@@ -85,17 +90,18 @@ public class EinstellungsFrame extends JFrame {
 		        .addSeparator("Lesen").xyw(1, 1, 5)
 		        .add(rbLesenAusUri).xy(1, 3).add(uriInput).xyw(3, 3, 3)
 		        .add(rbLesenPerFtp).xy(1, 5).addLabel("gleiche Einstellungen wie unten").xyw(3, 5, 3)
+		        .addLabel("Aktualisiere alle").xy(1, 7).add(refreshInterval).xy(3, 7).addLabel("s").xy(5, 7)
 		        
 		        // -- Schreiben
-		        .addSeparator("Schreiben").xyw(1, 7, 5)
-		        .add(rbSchreibenInDatei).xy(1, 9).add(dateiOutput).xyw(3, 9, 3)
-        		.add(rbSchreibenPerFtp).xy(1, 11)
-        		    .addLabel("Server").xy(3, 11).add(ftpHost).xy(5, 11)
-        		    .addLabel("User").xy(3, 13).add(ftpUser).xy(5, 13)
-        		    .addLabel("Passwort").xy(3, 15).add(ftpPwd).xy(5, 15)
+		        .addSeparator("Schreiben").xyw(1, 9, 5)
+		        .add(rbSchreibenInDatei).xy(1, 11).add(dateiOutput).xyw(3, 11, 3)
+        		.add(rbSchreibenPerFtp).xy(1, 13)
+        		    .addLabel("Server").xy(3, 13).add(ftpHost).xy(5, 13)
+        		    .addLabel("User").xy(3, 15).add(ftpUser).xy(5, 15)
+        		    .addLabel("Passwort").xy(3, 17).add(ftpPwd).xy(5, 17)
         		    
         		// -- Buttons
-        		.addBar(saveButton, cancelButton).xyw(1, 17, 5)
+        		.addBar(saveButton, cancelButton).xyw(1, 19, 5)
 		        ;
 		        
 		getContentPane().add(builder.build());
@@ -153,7 +159,20 @@ public class EinstellungsFrame extends JFrame {
                 throw new RuntimeException(e);
             }
 	    }
+	    
 	    model.setFtpInput(rbLesenPerFtp.isSelected());
+	    
+	    try {
+	        String interval = StringUtils.trim(refreshInterval.getText()); 
+	        interval = StringUtils.defaultIfBlank(interval, String.valueOf(Einstellungen.DEFAULT_REFRESH_INTERVAL_S));
+	        model.setRefreshIntervalS(Integer.parseInt(interval));
+	    }
+	    catch (NumberFormatException ex) {
+	        //TODO Das Problem dem User melden - Fehlermeldung sichtbar machen
+	        model.setRefreshIntervalS(Einstellungen.DEFAULT_REFRESH_INTERVAL_S);
+	    }
+	    refreshInterval.setText(String.valueOf(model.getRefreshIntervalS()));
+	    
 	    
 	    // -- Schreiben
 	    model.setDateiOutput(new File(dateiOutput.getText()));
@@ -170,6 +189,7 @@ public class EinstellungsFrame extends JFrame {
             rbLesenPerFtp.setSelected(true);
         else
             rbLesenAusUri.setSelected(true);
+        refreshInterval.setText("" + model.getRefreshIntervalS());
         
         // -- Speichern
         dateiOutput.setText((model.getDateiOutput() == null) ? "" : model.getDateiOutput().toString());
