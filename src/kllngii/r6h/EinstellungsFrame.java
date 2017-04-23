@@ -68,6 +68,7 @@ public class EinstellungsFrame extends JFrame {
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		
 		//TODO FTP implementieren
+		//TODO Autosave an/aus Schalter
 		rbLesenPerFtp.setEnabled(false);
 		rbSchreibenPerFtp.setEnabled(false);
 		
@@ -148,8 +149,7 @@ public class EinstellungsFrame extends JFrame {
 	    }
 	    catch (URISyntaxException ex) {
 	        log.info("Ungültige URI: " + uriInput.getText());
-	        
-	        //TODO Das Problem dem User melden - Fehlermeldung sichtbar machen
+	        log.warn("Ein Fehler ist aufgetreten: "+ex);
 	        final String fallback = "http://www.example.com/ungueltige_uri";
 	        uriInput.setText(fallback);
 	        try {
@@ -168,7 +168,7 @@ public class EinstellungsFrame extends JFrame {
 	        model.setRefreshIntervalS(Integer.parseInt(interval));
 	    }
 	    catch (NumberFormatException ex) {
-	        //TODO Das Problem dem User melden - Fehlermeldung sichtbar machen
+	        log.warn("Ein Fehler ist aufgetreten: "+ex);
 	        model.setRefreshIntervalS(Einstellungen.DEFAULT_REFRESH_INTERVAL_S);
 	    }
 	    refreshInterval.setText(String.valueOf(model.getRefreshIntervalS()));

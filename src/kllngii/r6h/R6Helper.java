@@ -444,14 +444,17 @@ public class R6Helper extends KllngiiApplication {
 	}
 
 	private void ladeAusJson() {
-        //TODO Stand (Zeitstempel) des JSON anzeigen
         try {
+        	final long time1 = System.currentTimeMillis(); 
             SpeicherService.ModelWithErrors mwe = speicherService.ladeJson(einstellungen.getUriInput());
             model = mwe.getModel();
             errors.clear();
             errors.addAll(mwe.getErrors());
-
+            
             refreshView();
+            final long time2 = System.currentTimeMillis();
+            log.info("Ladezeit:  "+(time2-time1)+"ms"); 
+            
         } catch (Exception ex) {
             log.error("Fehler beim Laden des JSON!", ex);
             showError("Fehler beim Laden des JSON: " + StringUtils.defaultIfEmpty(ex.getMessage(), ex.toString()));
