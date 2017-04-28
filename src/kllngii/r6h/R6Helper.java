@@ -129,10 +129,8 @@ public class R6Helper extends KllngiiApplication {
             readWrite = Boolean.valueOf(args[0]);
 
         try {
-            // Set cross-platform Java L&F (also called "Metal")
+            // Set cross-platform Java L&F ("Metal")
             UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-
-            // UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception ex) {
             // Aufgeben...
             throw new RuntimeException(ex);
@@ -297,9 +295,6 @@ public class R6Helper extends KllngiiApplication {
         //// Ebene 2 ////
 
         root.add(Box.createVerticalStrut(lücke));
-
-//        panel_angriff.setMaximumSize(new Dimension(999999, 120));
-//        panel_angriff.setPreferredSize(new Dimension(size.width, 120));
         
         // Pseudo-Tabelle für Angreifer - Layout festlegen:
         final int numColumns = 5;  // Anzahl Checkboxen nebeneinander
@@ -377,7 +372,6 @@ public class R6Helper extends KllngiiApplication {
         root.add(Box.createVerticalStrut(lücke));
 
         panel_waffen = new Box(BoxLayout.Y_AXIS);
-        // panel_waffen.setBorder(new LineBorder(Color.BLACK));
         root.add(panel_waffen);
         
         
@@ -573,7 +567,6 @@ public class R6Helper extends KllngiiApplication {
             Dimension maxSize = new Dimension(250, maxHeight);
 
             Box panel = new Box(BoxLayout.X_AXIS);
-            // panel.setBorder(new LineBorder(Color.RED));
             panel.setMaximumSize(new Dimension(999999, maxHeight));
 
             panel.add(Box.createHorizontalStrut(lücke));
@@ -651,7 +644,6 @@ public class R6Helper extends KllngiiApplication {
                 	for(Gadget g:rekrut.getSelectedGadgets())
                 		gadgetnamen.add(g.getName());
                 	
-//                	String[] gadgetnamen = rekrut.getSelectedGadgets().stream().map(Gadget::getName).collect(Collectors.toList()).toArray(new String[0]);
                 	panel.add(new JLabel(String.join(", ", gadgetnamen)));
                 }
             } else {

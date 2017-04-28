@@ -70,12 +70,11 @@ public class EinstellungsFrame extends JFrame {
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		
 		//TODO FTP implementieren
-		//TODO Autosave an/aus Schalter
 		rbLesenPerFtp.setEnabled(false);
 		rbSchreibenPerFtp.setEnabled(false);
 		
-		JLabel refreshLabel = new JLabel("Aktualisiere alle");
-		refreshLabel.setToolTipText("0 oder negativ, um das automatische Laden auszuschalten");
+		JLabel refreshLabel = new JLabel("Autoload/save alle:");
+		refreshLabel.setToolTipText("0 oder negativ, um das automatische Laden/Speichern auszuschalten");
 		refreshInterval.setToolTipText(refreshLabel.getToolTipText());
 		
 		

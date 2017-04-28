@@ -140,9 +140,6 @@ public class R6HelperModel implements Serializable {
 		else
 			toggleSelected(selectedVerteidiger, op);
 		
-		//TODO Logger nachrüsten; muss "transient" sein und nach dem Laden hergestellt werden
-//		log.info("Angreifer ausgewählt:    "+selectedAngreifer);
-//		log.info("Verteidiger ausgewählt:  "+selectedVerteidiger);
 	}
 
 
@@ -150,9 +147,6 @@ public class R6HelperModel implements Serializable {
 		if(selected.contains(op)){
 			selected.remove(op);
 		}
-//		else if(selected.size() >= MAX_TEAMGRÖSSE){
-//			throw new IllegalArgumentException("Es dürfen höchstens "+MAX_TEAMGRÖSSE+" Operator gewählt werden.");
-//		}
 		else{
 			selected.add(op);
 			

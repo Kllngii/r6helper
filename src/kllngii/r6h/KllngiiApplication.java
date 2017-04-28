@@ -21,8 +21,7 @@ public abstract class KllngiiApplication {
         if (comp.getBorder() == null)
             comp.setBorder(outerBorder);
         else {
-            // *Eigentlich* sollte man jetzt mit einer CompoundBorder auskommen.
-            // Bei Buttons aber sieht das falsch aus.
+
             if (comp instanceof JButton) {
                 JPanel panel = new JPanel();
                 panel.add(comp);
