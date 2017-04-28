@@ -71,4 +71,5 @@
 			<version>1.9.0</version>
 		</dependency>
 	</dependencies>
+	<description>Programm für Ranked-Runden in Rainbow Six Siege um die Gegner Waffen und Gadgets sich zu merken</description>
 </project>
