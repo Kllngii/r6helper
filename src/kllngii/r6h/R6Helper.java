@@ -59,6 +59,7 @@ import kllngii.r6h.model.Waffentyp;
 
 public class R6Helper extends KllngiiApplication {
 	//TODO Button für Operator Infos(Echter Name, Fähigkeit,etc.)
+	//TODO Optional: Fenster auch auf Java FX umstellbar
     private final Logger log = Logger.getLogger(getClass());
 
     private final boolean readWrite;
