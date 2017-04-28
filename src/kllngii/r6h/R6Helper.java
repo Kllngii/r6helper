@@ -442,7 +442,7 @@ public class R6Helper extends KllngiiApplication {
         }
         else {
             
-            // Per Timer das Model regelmäßig neu einlesen
+            // Per Timer das Model regelmäßig neu speichern
             if (einstellungen.getRefreshIntervalS() > 0) {
                 log.info("Timer wird erzeugt, um das JSON alle " + einstellungen.getRefreshIntervalS() + " s neu einzulesen.");
                 Timer refreshTimer = new Timer(einstellungen.getRefreshIntervalS()*1000, (ActionEvent) -> {
@@ -459,10 +459,13 @@ public class R6Helper extends KllngiiApplication {
         }
 
     }
-
+    //FIXME einmal auf 0 gesetzt und es startet beim wieder auf 5 setzten nicht mehr
     private void speichereInJSON() {
     	try {
+    		final long time1 = System.currentTimeMillis();
             speicherService.speichereJson(model, errors, einstellungen.getDateiOutput());
+            final long time2 = System.currentTimeMillis();
+            log.info("Speicherzeit:  "+(time2-time1)+"ms"); 
         } catch (Exception ex) {
             log.error("Fehler beim Speichern des JSON!", ex);
             showError("Fehler beim Speichern des JSON: "
