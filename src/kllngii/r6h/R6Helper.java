@@ -33,6 +33,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -47,6 +48,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.jgoodies.forms.builder.FormBuilder;
+import com.jgoodies.looks.plastic.PlasticLookAndFeel;
+import com.jgoodies.looks.plastic.PlasticXPLookAndFeel;
+import com.jgoodies.looks.plastic.theme.ExperienceRoyale;
 
 import kllngii.r6h.model.Einstellungen;
 import kllngii.r6h.model.Gadget;
@@ -75,7 +79,7 @@ public class R6Helper extends KllngiiApplication {
 
     private JPanel panel_verteidigung;
 
-    private Box panel_waffen;
+    private JComponent panel_waffen;
 
     private JPanel panel_meldung;
     private Map<Operator, JCheckBox> angriffCheckboxen;
@@ -130,9 +134,26 @@ public class R6Helper extends KllngiiApplication {
         if (args != null && args.length >= 1)
             readWrite = Boolean.valueOf(args[0]);
 
+//        PlasticLookAndFeel.setPlasticTheme(new DarkStar());
+//        PlasticLookAndFeel.setPlasticTheme(new LightGray());
+//        PlasticLookAndFeel.setPlasticTheme(new Silver());  // ganz gut
+//        PlasticLookAndFeel.setPlasticTheme(new DesertBlue());   // ganz gut, farbig
+//        PlasticLookAndFeel.setPlasticTheme(new SkyBlue());
+//        PlasticLookAndFeel.setPlasticTheme(new SkyKrupp());
+//        PlasticLookAndFeel.setPlasticTheme(new ExperienceBlue());  // ganz gut, farbig
+//        PlasticLookAndFeel.setPlasticTheme(new ExperienceGreen());
+        PlasticLookAndFeel.setPlasticTheme(new ExperienceRoyale());  // ganz gut, farbig
+        
         try {
             // Set cross-platform Java L&F ("Metal")
-            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+//            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+//            UIManager.setLookAndFeel(new Plastic3DLookAndFeel());
+//            UIManager.setLookAndFeel(new PlasticLookAndFeel());
+            UIManager.setLookAndFeel(new PlasticXPLookAndFeel());
+//            UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+//            UIManager.setLookAndFeel(new MetalLookAndFeel());
+//            UIManager.setLookAndFeel(new NimbusLookAndFeel());
+//            UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
         } catch (Exception ex) {
             // Aufgeben...
             throw new RuntimeException(ex);
@@ -373,7 +394,7 @@ public class R6Helper extends KllngiiApplication {
 
         root.add(Box.createVerticalStrut(lücke));
 
-        panel_waffen = new Box(BoxLayout.Y_AXIS);
+        panel_waffen = readWrite ? new Box(BoxLayout.Y_AXIS) : new Box(BoxLayout.X_AXIS);
         root.add(panel_waffen);
         
         
@@ -563,8 +584,30 @@ public class R6Helper extends KllngiiApplication {
                 "Ein Rekrut darf höchstens " + Rekrut.MAX_GADGETS + " Gadgets haben!");
 
         panel_waffen.removeAll();
+        
+        // Pseudo-Tabelle für Operators und Rekruten - Layout festlegen:
+        final int numRows = 1 + selectedOps.size();
+        FormBuilder builder = FormBuilder.create()
+                .columns("left:pref, 12dlu, pref, 12dlu, pref, 12dlu, pref, 12dlu, pref")
+                .rows(String.join(", $lgap, ", Collections.nCopies(numRows, "p")))
+                .debug(false)
+                .padding("6dlu, 12px, 6dlu, 12px");
 
+        int row = 1;
+        if (! readWrite) {
+            builder.addTitle("Operator/Rekrut").xy(1, row)
+                   .addTitle("Primärwaffe").xy(3, row)
+                   .addTitle("Sekundärwaffe").xy(5, row)
+                   .addTitle("Gadgets").xy(7, row)
+                   .addTitle("Lifepoints").xy(9, row)
+                   .addSeparator("").xyw(1, 2, 9);
+        }
+        
         for (Operator op : selectedOps) {
+            row++;
+            builder.addSeparator("").xyw(1, row, 9);
+            row++;
+            
             final int maxHeight = 22;
             Dimension labelPreferredSize = new Dimension(100, maxHeight);
             Dimension comboPreferredSize = new Dimension(150, maxHeight);
@@ -576,11 +619,16 @@ public class R6Helper extends KllngiiApplication {
 
             panel.add(Box.createHorizontalStrut(lücke));
 
-            JLabel label = new JLabel(op.getName());
-            label.setPreferredSize(labelPreferredSize);
-            label.setMaximumSize(maxSize);
-            panel.add(label);
+            if (readWrite) {
+                JLabel label = new JLabel(op.getName());
+                label.setPreferredSize(labelPreferredSize);
+                label.setMaximumSize(maxSize);
+                panel.add(label);
+            }
+            else
+                builder.addLabel(op.getName()).xy(1, row);
 
+            // Primärwaffe
             if (readWrite) {
                 JComboBox<Waffe> primW = new JComboBox<>(new Vector<Waffe>((op.getPrimärwaffen())));
                 primW.setSelectedItem(op.getSelectedPrimärwaffe());
@@ -593,17 +641,13 @@ public class R6Helper extends KllngiiApplication {
                 primW.setMaximumSize(maxSize);
                 panel.add(primW);
             } else {
-                if (op.getSelectedPrimärwaffe() == null)
-                    label = new JLabel("");
-                else
-                    label = new JLabel(op.getSelectedPrimärwaffe().getName());
-                label.setPreferredSize(comboPreferredSize);
-                label.setMaximumSize(maxSize);
-                panel.add(label);
+                if (op.getSelectedPrimärwaffe() != null)
+                    builder.addLabel(op.getSelectedPrimärwaffe().getName()).xy(3, row);
             }
 
             panel.add(Box.createHorizontalStrut(lücke));
 
+            // Sekundärwaffe
             if (readWrite) {
                 JComboBox<Waffe> secW = new JComboBox<>(new Vector<Waffe>(op.getSekundärwaffen()));
                 secW.setSelectedItem(op.getSelectedSekundärwaffe());
@@ -615,17 +659,12 @@ public class R6Helper extends KllngiiApplication {
                 });
                 panel.add(secW);
             } else {
-                if (op.getSelectedSekundärwaffe() == null)
-                    label = new JLabel("");
-                else
-                    label = new JLabel(op.getSelectedSekundärwaffe().getName());
-                
-                label.setPreferredSize(comboPreferredSize);
-                label.setMaximumSize(maxSize);
-                panel.add(label);
+                if (op.getSelectedSekundärwaffe() != null)
+                    builder.addLabel(op.getSelectedSekundärwaffe().getName()).xy(5, row);
             }
             panel.add(Box.createHorizontalStrut(lücke));
 
+            // 1 oder mehrere Gadgets
             if (op instanceof Rekrut) {
                 Rekrut rekrut = (Rekrut) op;
                 // Checkboxen, um *2* Gadgets auszuwählen
@@ -649,7 +688,7 @@ public class R6Helper extends KllngiiApplication {
                 	for(Gadget g:rekrut.getSelectedGadgets())
                 		gadgetnamen.add(g.getName());
                 	
-                	panel.add(new JLabel(String.join(", ", gadgetnamen)));
+                	builder.addLabel(String.join(", ", gadgetnamen)).xy(7, row);
                 }
             } else {
                 if (readWrite) {
@@ -663,19 +702,13 @@ public class R6Helper extends KllngiiApplication {
                     });
                     panel.add(gad);
                 } else {
-                    if (op.getSelectedGadget() == null)
-                        label = new JLabel("");
-                    else
-                        label = new JLabel(op.getSelectedGadget().getName());
-                    label.setPreferredSize(comboPreferredSize);
-                    label.setMaximumSize(maxSize);
-                    panel.add(label);
-
+                    if (op.getSelectedGadget() != null)
+                        builder.addLabel(op.getSelectedGadget().getName()).xy(7, row);
                 }
             }
             
             panel.add(Box.createHorizontalStrut(lücke));
-            if(readWrite){
+            if (readWrite){
             	final SpinnerNumberModel spinnerModel = new SpinnerNumberModel(op.getLifepoints(), 0, op.getMaxLifepoints(), 5);
             	JSpinner spinner = new JSpinner(spinnerModel);
             	spinner.setPreferredSize(spinnerPreferredSize);
@@ -683,28 +716,28 @@ public class R6Helper extends KllngiiApplication {
                 spinnerModel.addChangeListener((ChangeEvent evt) -> {
                 	op.setLifepoints( spinnerModel.getNumber().intValue() );
                 });
-                    
                
                 panel.add(spinner);
             }
-            else{
-            	label = new JLabel("LP: " + op.getLifepoints());
-                label.setPreferredSize(labelPreferredSize);
-                label.setMaximumSize(maxSize);
-                panel.add(label);
+            else {
+                builder.addLabel(String.valueOf(op.getLifepoints())).xy(9, row);
             }
             
             panel.add(Box.createHorizontalStrut(lücke));
             panel.add(Box.createHorizontalGlue());
 
-            panel_waffen.add(panel);
+            if (readWrite) {
+                panel_waffen.add(panel);
 
-            // Lücke zwischen den Operatoren
-            panel_waffen.add(Box.createVerticalStrut(lückeKlein));
-
+                // Lücke zwischen den Operatoren
+                panel_waffen.add(Box.createVerticalStrut(lückeKlein));
+            }
         }
 
-        panel_waffen.add(Box.createVerticalGlue());
+        if (readWrite)
+            panel_waffen.add(Box.createVerticalGlue());
+        else
+            panel_waffen.add(builder.build());
 
         frame.getContentPane().validate();
 
