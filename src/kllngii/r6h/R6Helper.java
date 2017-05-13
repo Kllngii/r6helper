@@ -482,7 +482,7 @@ public class R6Helper extends KllngiiApplication {
         }
 
     }
-    //FIXME einmal auf 0 gesetzt und es startet beim wieder auf 5 setzten nicht mehr
+    
     private void speichereInJSON() {
     	try {
     		final long time1 = System.currentTimeMillis();
