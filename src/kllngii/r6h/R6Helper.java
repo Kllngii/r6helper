@@ -323,14 +323,12 @@ public class R6Helper extends KllngiiApplication {
         
         // Pseudo-Tabelle für Angreifer - Layout festlegen:
         final int numColumns = 5;  // Anzahl Checkboxen nebeneinander
-        final int numRows = model.getAngreifer().size() / numColumns;
+        final int numRows = (int) Math.ceil((double) model.getAngreifer().size() / (double) numColumns);
         FormBuilder angriffBuilder = FormBuilder.create()
-                .columns("left:pref, 6dlu, " + // 1 Label und...
-                        String.join(", 3dlu, ", Collections.nCopies(numColumns, "pref")))  // ...n Checkboxen nebeneinander
-                .rows(String.join(", $lgap, ", Collections.nCopies(numRows, "p")))
-                .debug(false)
+                .columns(String.join(", 3dlu, ", Collections.nCopies(numColumns, "pref")))  // n Checkboxen nebeneinander
+                .rows("p, $pgap, " + String.join(", $lgap, ", Collections.nCopies(numRows, "p")))
                 .padding("6dlu, 12px, 6dlu, 12px")
-                .addLabel("Operator:").xy(1, 1);
+                .addSeparator("Operator").xyw(1, 1, 2*numColumns - 1);
 
         panel_verteidigung = new JPanel();
         panel_verteidigung.setMaximumSize(new Dimension(999999, 120));
@@ -342,14 +340,14 @@ public class R6Helper extends KllngiiApplication {
 
         angriffCheckboxen = new HashMap<>();
         int col = 1;
-        int row = 1;
+        int row = 3;
         for (Operator op : model.getAngreifer()) {
             JCheckBox checkBox = new JCheckBox(op.getName());
             checkBox.setEnabled(readWrite);
             angriffCheckboxen.put(op, checkBox);
             
             // Und der "Tabelle" im View hinzufügen:
-            angriffBuilder.add(checkBox).xy(2*col+1, row);
+            angriffBuilder.add(checkBox).xy(2*col-1, row);
             col++;
             if (col > numColumns) {
                 col = 1;
@@ -655,22 +653,9 @@ public class R6Helper extends KllngiiApplication {
                 Rekrut rekrut = (Rekrut) op;
                 // Checkboxen, um *2* Gadgets auszuwählen
                 if (readWrite) {
-                    Box cbBox = new Box(BoxLayout.X_AXIS);
-                    for (Gadget gadget : rekrut.getGadgets()) {
-                        JCheckBox cb = new JCheckBox(gadget.getName());
-                        cb.setSelected(rekrut.getSelectedGadgets().contains(gadget));
-                        cb.addActionListener((ActionEvent evt) -> {
-                            rekrut.toggleGadget(cb.getText());
-
-                            List<Operator> _ops = (rdbtnAngreifer.isSelected()) ? model.getSelectedAngreifer()
-                                    : model.getSelectedVerteidiger();
-                            showErrorIf(() -> einRekrutHatZuVieleGadgets.test(_ops),
-                                    "Ein Rekrut darf höchstens " + Rekrut.MAX_GADGETS + " Gadgets haben!");
-                        });
-                        cbBox.add(cb);
-                        cbBox.add(Box.createHorizontalStrut(lücke));
-                    }
-                    builder.add(cbBox).xy(7, row);
+                    // Mini-Tabelle für Gadgets
+                    FormBuilder cbGrid = createGadgetGrid(rekrut, einRekrutHatZuVieleGadgets);
+                    builder.add(cbGrid.build()).xy(7, row);
                 } else {
                 	List<String> gadgetnamen = new ArrayList<>();
                 	for(Gadget g:rekrut.getSelectedGadgets())
@@ -712,6 +697,38 @@ public class R6Helper extends KllngiiApplication {
         frame.getContentPane().validate();
 
         showWaffentyp();
+    }
+    
+    private FormBuilder createGadgetGrid(Rekrut rekrut, Predicate<List<Operator>> einRekrutHatZuVieleGadgets) {
+        final int numCols = 3;  // Anzahl Checkboxen nebeneinander
+        final int numRows = (int) Math.ceil((double) rekrut.getGadgets().size() / (double) numCols);
+        FormBuilder builder = FormBuilder.create()
+                .columns(String.join(", 3dlu, ", Collections.nCopies(numCols, "pref")))  // n Checkboxen nebeneinander
+                .rows(String.join(", $lgap, ", Collections.nCopies(numRows, "p")));
+
+        int col = 1;
+        int row = 1;
+        for (Gadget gadget : rekrut.getGadgets()) {
+            JCheckBox cb = new JCheckBox(gadget.getName());
+            cb.setSelected(rekrut.getSelectedGadgets().contains(gadget));
+            cb.addActionListener((ActionEvent evt) -> {
+                rekrut.toggleGadget(cb.getText());
+
+                List<Operator> _ops = (rdbtnAngreifer.isSelected()) ? model.getSelectedAngreifer()
+                        : model.getSelectedVerteidiger();
+                showErrorIf(() -> einRekrutHatZuVieleGadgets.test(_ops),
+                        "Ein Rekrut darf höchstens " + Rekrut.MAX_GADGETS + " Gadgets haben!");
+            });
+            
+            builder.add(cb).xy(2*col-1, row);
+            col++;
+            if (col > numCols) {
+                col = 1;
+                row = row + 2;
+            }
+        }
+        
+        return builder;
     }
 
     private void showError(String msg) {
