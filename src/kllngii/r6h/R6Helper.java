@@ -47,7 +47,9 @@ import javax.swing.event.ChangeEvent;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
+import com.jgoodies.forms.FormsSetup;
 import com.jgoodies.forms.builder.FormBuilder;
+import com.jgoodies.forms.factories.ComponentFactory;
 import com.jgoodies.looks.plastic.PlasticLookAndFeel;
 import com.jgoodies.looks.plastic.PlasticXPLookAndFeel;
 import com.jgoodies.looks.plastic.theme.ExperienceRoyale;
@@ -394,7 +396,7 @@ public class R6Helper extends KllngiiApplication {
 
         root.add(Box.createVerticalStrut(lücke));
 
-        panel_waffen = readWrite ? new Box(BoxLayout.Y_AXIS) : new Box(BoxLayout.X_AXIS);
+        panel_waffen = new Box(BoxLayout.X_AXIS);
         root.add(panel_waffen);
         
         
@@ -567,14 +569,14 @@ public class R6Helper extends KllngiiApplication {
         }
     }
 
-    @SuppressWarnings("static-access")
+    
     private void fillPanelWaffen() {
 
         clearErrors();
 
         List<Operator> selectedOps = (rdbtnAngreifer.isSelected()) ? model.getSelectedAngreifer()
                 : model.getSelectedVerteidiger();
-        showErrorIf(() -> selectedOps.size() > model.MAX_TEAMGRÖSSE,
+        showErrorIf(() -> selectedOps.size() > R6HelperModel.MAX_TEAMGRÖSSE,
                 "Aktiviere höchstens " + R6HelperModel.MAX_TEAMGRÖSSE + " Operator!");
 
         // Hat einer zu viele Gadgets?
@@ -588,45 +590,36 @@ public class R6Helper extends KllngiiApplication {
         // Pseudo-Tabelle für Operators und Rekruten - Layout festlegen:
         final int numRows = 1 + selectedOps.size();
         FormBuilder builder = FormBuilder.create()
-                .columns("left:pref, 12dlu, pref, 12dlu, pref, 12dlu, pref, 12dlu, pref")
-                .rows(String.join(", $lgap, ", Collections.nCopies(numRows, "p")))
-                .debug(false)
                 .padding("6dlu, 12px, 6dlu, 12px");
+        if (readWrite) {
+            builder.rows(String.join(", $pgap, ", Collections.nCopies(numRows, "p")))
+                   .columns("left:pref,  6dlu, pref,  6dlu, pref,  6dlu, pref,  6dlu, [pref,45px]");
+        }
+        else {
+            builder.rows(String.join(", $lgap, ", Collections.nCopies(numRows, "p")))
+                   .columns("left:pref, 12dlu, pref, 12dlu, pref, 12dlu, pref, 12dlu, pref");
+        }
+        
+        ComponentFactory factory = FormsSetup.getComponentFactoryDefault();
+        JLabel lifepointsLabel = factory.createTitle("Lifepoints");
+        lifepointsLabel.setToolTipText("Lifepoints");
 
         int row = 1;
-        if (! readWrite) {
-            builder.addTitle("Operator/Rekrut").xy(1, row)
-                   .addTitle("Primärwaffe").xy(3, row)
-                   .addTitle("Sekundärwaffe").xy(5, row)
-                   .addTitle("Gadgets").xy(7, row)
-                   .addTitle("Lifepoints").xy(9, row)
-                   .addSeparator("").xyw(1, 2, 9);
-        }
+        builder.addTitle("Operator").xy(1, row)
+               .addTitle("Primärwaffe").xy(3, row)
+               .addTitle("Sekundärwaffe").xy(5, row)
+               .addTitle("Gadgets").xy(7, row)
+               .add(lifepointsLabel).xy(9, row)
+               .addSeparator("").xyw(1, 2, 9);
         
         for (Operator op : selectedOps) {
             row++;
-            builder.addSeparator("").xyw(1, row, 9);
+            if (! readWrite)  // Trennlinien nur beim Lesen
+                builder.addSeparator("").xyw(1, row, 9);
             row++;
             
-            final int maxHeight = 22;
-            Dimension labelPreferredSize = new Dimension(100, maxHeight);
-            Dimension comboPreferredSize = new Dimension(150, maxHeight);
-            Dimension spinnerPreferredSize = new Dimension(45, maxHeight);
-            Dimension maxSize = new Dimension(250, maxHeight);
-
-            Box panel = new Box(BoxLayout.X_AXIS);
-            panel.setMaximumSize(new Dimension(999999, maxHeight));
-
-            panel.add(Box.createHorizontalStrut(lücke));
-
-            if (readWrite) {
-                JLabel label = new JLabel(op.getName());
-                label.setPreferredSize(labelPreferredSize);
-                label.setMaximumSize(maxSize);
-                panel.add(label);
-            }
-            else
-                builder.addLabel(op.getName()).xy(1, row);
+            // Name
+            builder.addLabel(op.getName()).xy(1, row);
 
             // Primärwaffe
             if (readWrite) {
@@ -637,38 +630,32 @@ public class R6Helper extends KllngiiApplication {
                     showWaffentyp();
 
                 });
-                primW.setPreferredSize(comboPreferredSize);
-                primW.setMaximumSize(maxSize);
-                panel.add(primW);
+                builder.add(primW).xy(3, row);
             } else {
                 if (op.getSelectedPrimärwaffe() != null)
                     builder.addLabel(op.getSelectedPrimärwaffe().getName()).xy(3, row);
             }
 
-            panel.add(Box.createHorizontalStrut(lücke));
-
             // Sekundärwaffe
             if (readWrite) {
                 JComboBox<Waffe> secW = new JComboBox<>(new Vector<Waffe>(op.getSekundärwaffen()));
                 secW.setSelectedItem(op.getSelectedSekundärwaffe());
-                secW.setPreferredSize(comboPreferredSize);
-                secW.setMaximumSize(maxSize);
                 secW.addActionListener((ActionEvent evt) -> {
                     op.setSelectedSekundärwaffe((Waffe) secW.getSelectedItem());
                     showWaffentyp();
                 });
-                panel.add(secW);
+                builder.add(secW).xy(5, row);
             } else {
                 if (op.getSelectedSekundärwaffe() != null)
                     builder.addLabel(op.getSelectedSekundärwaffe().getName()).xy(5, row);
             }
-            panel.add(Box.createHorizontalStrut(lücke));
 
             // 1 oder mehrere Gadgets
             if (op instanceof Rekrut) {
                 Rekrut rekrut = (Rekrut) op;
                 // Checkboxen, um *2* Gadgets auszuwählen
                 if (readWrite) {
+                    Box cbBox = new Box(BoxLayout.X_AXIS);
                     for (Gadget gadget : rekrut.getGadgets()) {
                         JCheckBox cb = new JCheckBox(gadget.getName());
                         cb.setSelected(rekrut.getSelectedGadgets().contains(gadget));
@@ -680,9 +667,10 @@ public class R6Helper extends KllngiiApplication {
                             showErrorIf(() -> einRekrutHatZuVieleGadgets.test(_ops),
                                     "Ein Rekrut darf höchstens " + Rekrut.MAX_GADGETS + " Gadgets haben!");
                         });
-
-                        panel.add(cb);
+                        cbBox.add(cb);
+                        cbBox.add(Box.createHorizontalStrut(lücke));
                     }
+                    builder.add(cbBox).xy(7, row);
                 } else {
                 	List<String> gadgetnamen = new ArrayList<>();
                 	for(Gadget g:rekrut.getSelectedGadgets())
@@ -695,49 +683,31 @@ public class R6Helper extends KllngiiApplication {
                     // Combobox, um *1* Gadget auszuwählen
                     JComboBox<Gadget> gad = new JComboBox<>(new Vector<Gadget>(op.getGadgets()));
                     gad.setSelectedItem(op.getSelectedGadget());
-                    gad.setPreferredSize(comboPreferredSize);
-                    gad.setMaximumSize(maxSize);
                     gad.addActionListener((ActionEvent evt) -> {
                         op.setSelectedGadget((Gadget) gad.getSelectedItem());
                     });
-                    panel.add(gad);
+                    builder.add(gad).xy(7, row);
                 } else {
                     if (op.getSelectedGadget() != null)
                         builder.addLabel(op.getSelectedGadget().getName()).xy(7, row);
                 }
             }
             
-            panel.add(Box.createHorizontalStrut(lücke));
             if (readWrite){
             	final SpinnerNumberModel spinnerModel = new SpinnerNumberModel(op.getLifepoints(), 0, op.getMaxLifepoints(), 5);
             	JSpinner spinner = new JSpinner(spinnerModel);
-            	spinner.setPreferredSize(spinnerPreferredSize);
-                spinner.setMaximumSize(spinnerPreferredSize);
                 spinnerModel.addChangeListener((ChangeEvent evt) -> {
                 	op.setLifepoints( spinnerModel.getNumber().intValue() );
                 });
                
-                panel.add(spinner);
+                builder.add(spinner).xy(9, row);
             }
             else {
                 builder.addLabel(String.valueOf(op.getLifepoints())).xy(9, row);
             }
-            
-            panel.add(Box.createHorizontalStrut(lücke));
-            panel.add(Box.createHorizontalGlue());
-
-            if (readWrite) {
-                panel_waffen.add(panel);
-
-                // Lücke zwischen den Operatoren
-                panel_waffen.add(Box.createVerticalStrut(lückeKlein));
-            }
         }
 
-        if (readWrite)
-            panel_waffen.add(Box.createVerticalGlue());
-        else
-            panel_waffen.add(builder.build());
+        panel_waffen.add(builder.build());
 
         frame.getContentPane().validate();
 
