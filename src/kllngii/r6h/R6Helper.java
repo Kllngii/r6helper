@@ -66,6 +66,7 @@ import kllngii.r6h.model.Waffentyp;
 
 public class R6Helper extends KllngiiApplication {
 	private static final String ERROR_AKTIVIERE_HÖCHSTENS_N_OPERATOR = "Aktiviere höchstens " + R6HelperModel.MAX_TEAMGRÖSSE + " Operator!";
+	private static final String ERROR_REKRUT_HAT_ZU_VIELE_GADGETS = "Ein Rekrut darf höchstens " + Rekrut.MAX_GADGETS + " Gadgets haben!";
 
     //TODO Button für Operator Infos(Echter Name, Fähigkeit,etc.)
 	//TODO Optional: Fenster auch auf Java FX umstellbar
@@ -194,7 +195,7 @@ public class R6Helper extends KllngiiApplication {
         frame.setTitle("R6 Helper");
 
         Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
-        Dimension size = new Dimension(840, 630);
+        Dimension size = new Dimension(880, 630);
         frame.setSize(size.width, size.height);
         frame.setLocation((screensize.width - size.width) / 2, (screensize.height - size.height) / 2);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -548,7 +549,7 @@ public class R6Helper extends KllngiiApplication {
         final Predicate<List<Operator>> einRekrutHatZuVieleGadgets = (_ops) -> _ops.stream()
                 .filter(o -> o instanceof Rekrut).anyMatch(r -> r.getSelectedGadgets().size() > Rekrut.MAX_GADGETS);
         showErrorIf(() -> einRekrutHatZuVieleGadgets.test(selectedOps),
-                "Ein Rekrut darf höchstens " + Rekrut.MAX_GADGETS + " Gadgets haben!");
+                ERROR_REKRUT_HAT_ZU_VIELE_GADGETS);
 
         panel_waffen.removeAll();
         
@@ -583,7 +584,8 @@ public class R6Helper extends KllngiiApplication {
             row++;
             
             // Name
-            builder.addLabel(op.getName()).xy(1, row);
+            JLabel nameLabel = new JLabel(op.getName());
+            builder.add(nameLabel).xy(1, row);
 
             // Primärwaffe
             if (readWrite) {
@@ -617,10 +619,17 @@ public class R6Helper extends KllngiiApplication {
             // 1 oder mehrere Gadgets
             if (op instanceof Rekrut) {
                 Rekrut rekrut = (Rekrut) op;
+                final Predicate<Rekrut> dieserRekrutHatZuVieleGadgets = (r) -> r.getSelectedGadgets().size() > Rekrut.MAX_GADGETS;
+                
+                if (dieserRekrutHatZuVieleGadgets.test(rekrut)) {
+                    nameLabel.setIcon(ValidationResultViewFactory.getErrorIcon());
+                    nameLabel.setToolTipText(ERROR_REKRUT_HAT_ZU_VIELE_GADGETS);
+                }
+                
                 // Checkboxen, um *2* Gadgets auszuwählen
                 if (readWrite) {
                     // Mini-Tabelle für Gadgets
-                    FormBuilder cbGrid = createGadgetGrid(rekrut, einRekrutHatZuVieleGadgets);
+                    FormBuilder cbGrid = createGadgetGrid(rekrut, dieserRekrutHatZuVieleGadgets, einRekrutHatZuVieleGadgets, nameLabel);
                     builder.add(cbGrid.build()).xy(7, row);
                 } else {
                 	List<String> gadgetnamen = new ArrayList<>();
@@ -629,6 +638,8 @@ public class R6Helper extends KllngiiApplication {
                 	
                 	builder.addLabel(String.join(", ", gadgetnamen)).xy(7, row);
                 }
+                
+                
             } else {
                 if (readWrite) {
                     // Combobox, um *1* Gadget auszuwählen
@@ -665,7 +676,8 @@ public class R6Helper extends KllngiiApplication {
         showWaffentyp();
     }
     
-    private FormBuilder createGadgetGrid(Rekrut rekrut, Predicate<List<Operator>> einRekrutHatZuVieleGadgets) {
+    private FormBuilder createGadgetGrid(Rekrut rekrut, Predicate<Rekrut> dieserRekrutHatZuVieleGadgets, 
+            Predicate<List<Operator>> einRekrutHatZuVieleGadgets, JLabel nameLabel) {
         final int numCols = 3;  // Anzahl Checkboxen nebeneinander
         final int numRows = (int) Math.ceil((double) rekrut.getGadgets().size() / (double) numCols);
         FormBuilder builder = FormBuilder.create()
@@ -679,11 +691,19 @@ public class R6Helper extends KllngiiApplication {
             cb.setSelected(rekrut.getSelectedGadgets().contains(gadget));
             cb.addActionListener((ActionEvent evt) -> {
                 rekrut.toggleGadget(cb.getText());
-
+                
+                if (dieserRekrutHatZuVieleGadgets.test(rekrut)) {
+                    nameLabel.setIcon(ValidationResultViewFactory.getErrorIcon());
+                    nameLabel.setToolTipText(ERROR_REKRUT_HAT_ZU_VIELE_GADGETS);
+                }
+                else {
+                    nameLabel.setIcon(null);
+                    nameLabel.setToolTipText(null);
+                }
+                
                 List<Operator> _ops = (rdbtnAngreifer.isSelected()) ? model.getSelectedAngreifer()
                         : model.getSelectedVerteidiger();
-                showErrorIf(() -> einRekrutHatZuVieleGadgets.test(_ops),
-                        "Ein Rekrut darf höchstens " + Rekrut.MAX_GADGETS + " Gadgets haben!");
+                showErrorIf(() -> einRekrutHatZuVieleGadgets.test(_ops), ERROR_REKRUT_HAT_ZU_VIELE_GADGETS);
             });
             
             builder.add(cb).xy(2*col-1, row);
