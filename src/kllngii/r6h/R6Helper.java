@@ -40,6 +40,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingConstants;
 import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
@@ -47,12 +48,12 @@ import javax.swing.event.ChangeEvent;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
-import com.jgoodies.forms.FormsSetup;
 import com.jgoodies.forms.builder.FormBuilder;
-import com.jgoodies.forms.factories.ComponentFactory;
+import com.jgoodies.forms.factories.DefaultComponentFactory;
 import com.jgoodies.looks.plastic.PlasticLookAndFeel;
 import com.jgoodies.looks.plastic.PlasticXPLookAndFeel;
 import com.jgoodies.looks.plastic.theme.ExperienceRoyale;
+import com.jgoodies.validation.view.ValidationResultViewFactory;
 
 import kllngii.r6h.model.Einstellungen;
 import kllngii.r6h.model.Gadget;
@@ -64,7 +65,9 @@ import kllngii.r6h.model.Waffentyp;
 
 
 public class R6Helper extends KllngiiApplication {
-	//TODO Button für Operator Infos(Echter Name, Fähigkeit,etc.)
+	private static final String ERROR_AKTIVIERE_HÖCHSTENS_N_OPERATOR = "Aktiviere höchstens " + R6HelperModel.MAX_TEAMGRÖSSE + " Operator!";
+
+    //TODO Button für Operator Infos(Echter Name, Fähigkeit,etc.)
 	//TODO Optional: Fenster auch auf Java FX umstellbar
 	//TODO "Operator Gadget zerstört" zähler
     private final Logger log = Logger.getLogger(getClass());
@@ -76,10 +79,13 @@ public class R6Helper extends KllngiiApplication {
     private EinstellungsFrame einstellungsFrame = null; // wird bei Bedarf erzeugt
 
     private R6HelperModel model = new R6HelperModel();
+    
+    private final DefaultComponentFactory compFactory = new DefaultComponentFactory();
 
     private JPanel panel_angriff;
-
     private JPanel panel_verteidigung;
+    
+    private final JLabel operatorLabel = compFactory.createTitle("Operator");
 
     private JComponent panel_waffen;
 
@@ -188,7 +194,7 @@ public class R6Helper extends KllngiiApplication {
         frame.setTitle("R6 Helper");
 
         Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
-        Dimension size = new Dimension(1000, 600);
+        Dimension size = new Dimension(840, 630);
         frame.setSize(size.width, size.height);
         frame.setLocation((screensize.width - size.width) / 2, (screensize.height - size.height) / 2);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -287,11 +293,12 @@ public class R6Helper extends KllngiiApplication {
         // Pseudo-Tabelle für Angreifer - Layout festlegen:
         final int numColumns = 5;  // Anzahl Checkboxen nebeneinander
         final int numRows = (int) Math.ceil((double) model.getAngreifer().size() / (double) numColumns);
+        operatorLabel.setHorizontalAlignment(SwingConstants.LEFT);
         FormBuilder angriffBuilder = FormBuilder.create()
                 .columns(String.join(", 3dlu, ", Collections.nCopies(numColumns, "pref")))  // n Checkboxen nebeneinander
                 .rows("p, $lgap, " + String.join(", $lgap, ", Collections.nCopies(numRows, "p")))
                 .padding("6dlu, 12px, 6dlu, 12px")
-                .addSeparator("Operator").xyw(1, 1, 2*numColumns - 1);
+                .add(compFactory.createSeparator(operatorLabel)).xyw(1, 1, 2*numColumns - 1);
 
         panel_verteidigung = new JPanel();
         panel_verteidigung.setMaximumSize(new Dimension(999999, 120));
@@ -404,7 +411,7 @@ public class R6Helper extends KllngiiApplication {
 
         meldunglabel = new JLabel("");
         meldunglabel.setForeground(Color.RED);
-        meldunglabel.setFont(new Font(Font.DIALOG, Font.BOLD, 20));
+        meldunglabel.setFont(new Font(Font.DIALOG, Font.BOLD, 14));
         panel_meldung.add(meldunglabel);
         panel_meldung.setVisible(false);
 
@@ -535,7 +542,7 @@ public class R6Helper extends KllngiiApplication {
         List<Operator> selectedOps = (rdbtnAngreifer.isSelected()) ? model.getSelectedAngreifer()
                 : model.getSelectedVerteidiger();
         showErrorIf(() -> selectedOps.size() > R6HelperModel.MAX_TEAMGRÖSSE,
-                "Aktiviere höchstens " + R6HelperModel.MAX_TEAMGRÖSSE + " Operator!");
+                ERROR_AKTIVIERE_HÖCHSTENS_N_OPERATOR);
 
         // Hat einer zu viele Gadgets?
         final Predicate<List<Operator>> einRekrutHatZuVieleGadgets = (_ops) -> _ops.stream()
@@ -558,8 +565,7 @@ public class R6Helper extends KllngiiApplication {
                    .columns("left:pref, 12dlu, pref, 12dlu, pref, 12dlu, pref, 12dlu, pref");
         }
         
-        ComponentFactory factory = FormsSetup.getComponentFactoryDefault();
-        JLabel lifepointsLabel = factory.createTitle("Lifepoints");
+        JLabel lifepointsLabel = compFactory.createTitle("Lifepoints");
         lifepointsLabel.setToolTipText("Lifepoints");
 
         int row = 1;
@@ -706,9 +712,23 @@ public class R6Helper extends KllngiiApplication {
     }
 
     private void refreshErrors() {
-        if (errors.isEmpty())
+        if (errors.isEmpty()) {
+            // Fehler-Icon oben entfernen
+            operatorLabel.setIcon(null);
+            operatorLabel.setToolTipText(null);
+            
             panel_meldung.setVisible(false);
+        }
         else {
+            // Fehler-Icon oben anzeigen
+            for (String error : errors) {
+                if (ERROR_AKTIVIERE_HÖCHSTENS_N_OPERATOR.equals(error)) {
+                    operatorLabel.setIcon(ValidationResultViewFactory.getErrorIcon());
+                    operatorLabel.setToolTipText(error);
+                    break;
+                }
+            }
+            
             meldunglabel.setText("<html>" + String.join("<br>", errors.toArray(new String[0])) + "</html>");
             panel_meldung.setVisible(true);
         }
