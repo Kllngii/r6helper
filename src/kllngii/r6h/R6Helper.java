@@ -199,8 +199,68 @@ public class R6Helper extends KllngiiApplication {
         frame.setSize(size.width, size.height);
         frame.setLocation((screensize.width - size.width) / 2, (screensize.height - size.height) / 2);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        Container root = frame.getContentPane();
-        root.setLayout(new BoxLayout(root, BoxLayout.Y_AXIS));
+        
+//        frame.getContentPane().setLayout(new BorderLayout());
+        frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.X_AXIS));
+        Container root = new Box(BoxLayout.Y_AXIS);
+//        frame.getContentPane().add(root, BorderLayout.CENTER);
+        frame.getContentPane().add(root);
+        
+        
+        //// Menü-Buttons am rechten Rand ////
+        
+        Box speichernPanel = new Box(BoxLayout.Y_AXIS);
+        frame.getContentPane().add(speichernPanel);
+        if (readWrite) {
+            JButton ladenButton = new JButton("Laden");
+            ladenButton.addActionListener((ActionEvent evt) -> {
+                try {
+                    R6HelperModel oldModel = speicherService.ladeAusPreferences();
+                    if (oldModel != null) {
+                        model = oldModel;
+                        refreshView();
+                    }
+                } catch (IOException ex) {
+                    log.error("Fehler beim Laden des Models aus den Preferences!", ex);
+                }
+            });
+            speichernPanel.add(ladenButton);
+        }
+        if (readWrite) {
+            JButton speichernButton = new JButton("Speichern");
+            speichernButton.addActionListener((ActionEvent evt) -> {
+                try {
+                    speicherService.speichereInPreferences(model);
+                } catch (IOException ex) {
+                    log.error("Fehler beim Speichern!", ex);
+                }
+            });
+            speichernPanel.add(paddingTop(speichernButton, lückeKlein));
+        }
+
+        JButton jsonLoadButton = new JButton("Json laden");
+        jsonLoadButton.addActionListener((ActionEvent evt) -> {
+            ladeAusJson();
+        });
+        speichernPanel.add(paddingTop(jsonLoadButton, lücke));
+
+        if (readWrite) {
+            JButton jsonSaveButton = new JButton("Json speichern");
+            jsonSaveButton.addActionListener((ActionEvent evt) -> {
+                speichereInJSON();
+                
+            });
+            speichernPanel.add(paddingTop(jsonSaveButton, lückeKlein));
+        }
+        JButton settings = new JButton("Einstellungen");
+        settings.addActionListener((ActionEvent evt) -> {
+            if (einstellungsFrame == null)
+                einstellungsFrame = new EinstellungsFrame(einstellungen);
+            einstellungsFrame.setVisible(true);
+            einstellungsFrame.toFront();
+        });
+        speichernPanel.add(paddingTop(settings, lücke));
+
 
         
         //// Ebene 0 ////
@@ -243,79 +303,25 @@ public class R6Helper extends KllngiiApplication {
 
         root.add(Box.createVerticalStrut(lücke));
 
-        JPanel avPanel = new JPanel();
-        avPanel.setLayout(new BoxLayout(avPanel, BoxLayout.X_AXIS));
-        root.add(avPanel);
-
-        JLabel lblArt = new JLabel("Gegnerteam:");
-        avPanel.add(paddingRight(lblArt, lückeKlein));
-
-        rdbtnAngreifer = new JRadioButton("Angreifer");
-        avPanel.add(rdbtnAngreifer);
-        rdbtnAngreifer.setSelected(true);
+        rdbtnAngreifer = new JRadioButton("Angreifer", true);
         rdbtnAngreifer.setEnabled(readWrite);
 
         rdbtnVerteidiger = new JRadioButton("Verteidiger");
-        avPanel.add(rdbtnVerteidiger);
         rdbtnVerteidiger.setEnabled(readWrite);
 
         ButtonGroup art = new ButtonGroup();
         art.add(rdbtnAngreifer);
         art.add(rdbtnVerteidiger);
 
-        JPanel speichernPanel = new JPanel();
-        speichernPanel.setLayout(new BoxLayout(speichernPanel, BoxLayout.X_AXIS));
-        avPanel.add(padding(speichernPanel, 0, lücke));
-        if (readWrite) {
-            JButton ladenButton = new JButton("Laden");
-            ladenButton.addActionListener((ActionEvent evt) -> {
-                try {
-                    R6HelperModel oldModel = speicherService.ladeAusPreferences();
-                    if (oldModel != null) {
-                        model = oldModel;
-                        refreshView();
-                    }
-                } catch (IOException ex) {
-                    log.error("Fehler beim Laden des Models aus den Preferences!", ex);
-                }
-            });
-            speichernPanel.add(ladenButton);
-        }
-        if (readWrite) {
-            JButton speichernButton = new JButton("Speichern");
-            speichernButton.addActionListener((ActionEvent evt) -> {
-                try {
-                    speicherService.speichereInPreferences(model);
-                } catch (IOException ex) {
-                    log.error("Fehler beim Speichern!", ex);
-                }
-            });
-            speichernPanel.add(paddingLeft(speichernButton, lückeKlein));
-        }
+        FormBuilder avPanel = FormBuilder.create()
+                .columns("pref, 6dlu, pref")
+                .rows("p, $pgap, p")
+                .padding("6dlu, 12px, 6dlu, 12px")
+                .addSeparator("Gegnerteam").xyw(1, 1, 3)
+                .add(rdbtnAngreifer).xy(1, 3)
+                .add(rdbtnVerteidiger).xy(3, 3);
+        root.add(avPanel.build());
 
-        JButton jsonLoadButton = new JButton("Json laden");
-        jsonLoadButton.addActionListener((ActionEvent evt) -> {
-            ladeAusJson();
-        });
-        speichernPanel.add(paddingLeft(jsonLoadButton, lückeKlein));
-
-        if (readWrite) {
-            JButton jsonSaveButton = new JButton("Json speichern");
-            jsonSaveButton.addActionListener((ActionEvent evt) -> {
-            	speichereInJSON();
-                
-            });
-            speichernPanel.add(paddingLeft(jsonSaveButton, lückeKlein));
-        }
-        JButton settings = new JButton("Einstellungen");
-        settings.addActionListener((ActionEvent evt) -> {
-            if (einstellungsFrame == null)
-                einstellungsFrame = new EinstellungsFrame(einstellungen);
-            einstellungsFrame.setVisible(true);
-            einstellungsFrame.toFront();
-        });
-        speichernPanel.add(paddingLeft(settings, lückeKlein));
-        
         
         //// Ebene 2 ////
 

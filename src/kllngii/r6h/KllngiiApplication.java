@@ -44,6 +44,14 @@ public abstract class KllngiiApplication {
         return padding(comp, 0, right, 0, 0);
     }
 
+    protected JComponent paddingTop(JComponent comp, int top) {
+        return padding(comp, top, 0, 0, 0);
+    }
+
+    protected JComponent paddingBottom(JComponent comp, int bottom) {
+        return padding(comp, 0, 0, bottom, 0);
+    }
+    
     protected JComponent padding(JComponent comp, int topAndBottom, int leftAndRight) {
             return padding(comp, topAndBottom, leftAndRight, topAndBottom, leftAndRight);
     }
