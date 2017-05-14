@@ -89,18 +89,11 @@ public class R6Helper extends KllngiiApplication {
 
     private JRadioButton rdbtnAngreifer;
     private JRadioButton rdbtnVerteidiger;
-    private JButton btnWeb;
 
     private final int lücke = 12;
     private final int lückeKlein = lücke / 2;
 
     private JLabel meldunglabel;
-    private JLabel lblSturm;
-    private JLabel lblLMG;
-    private JLabel lblDMR;
-    private JLabel lblShot;
-    private JLabel lblP;
-    private JLabel lblMP;
     private final SortedSet<String> errors = new TreeSet<>();
 
     private final Map<Waffentyp, WaffenTypLabel> waffenTypMap = new LinkedHashMap<>();
@@ -200,87 +193,28 @@ public class R6Helper extends KllngiiApplication {
         frame.setLocation((screensize.width - size.width) / 2, (screensize.height - size.height) / 2);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-//        frame.getContentPane().setLayout(new BorderLayout());
         frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.X_AXIS));
         Container root = new Box(BoxLayout.Y_AXIS);
-//        frame.getContentPane().add(root, BorderLayout.CENTER);
         frame.getContentPane().add(root);
         
         
         //// Menü-Buttons am rechten Rand ////
         
-        Box speichernPanel = new Box(BoxLayout.Y_AXIS);
-        frame.getContentPane().add(speichernPanel);
-        if (readWrite) {
-            JButton ladenButton = new JButton("Laden");
-            ladenButton.addActionListener((ActionEvent evt) -> {
-                try {
-                    R6HelperModel oldModel = speicherService.ladeAusPreferences();
-                    if (oldModel != null) {
-                        model = oldModel;
-                        refreshView();
-                    }
-                } catch (IOException ex) {
-                    log.error("Fehler beim Laden des Models aus den Preferences!", ex);
-                }
-            });
-            speichernPanel.add(ladenButton);
-        }
-        if (readWrite) {
-            JButton speichernButton = new JButton("Speichern");
-            speichernButton.addActionListener((ActionEvent evt) -> {
-                try {
-                    speicherService.speichereInPreferences(model);
-                } catch (IOException ex) {
-                    log.error("Fehler beim Speichern!", ex);
-                }
-            });
-            speichernPanel.add(paddingTop(speichernButton, lückeKlein));
-        }
-
-        JButton jsonLoadButton = new JButton("Json laden");
-        jsonLoadButton.addActionListener((ActionEvent evt) -> {
-            ladeAusJson();
-        });
-        speichernPanel.add(paddingTop(jsonLoadButton, lücke));
-
-        if (readWrite) {
-            JButton jsonSaveButton = new JButton("Json speichern");
-            jsonSaveButton.addActionListener((ActionEvent evt) -> {
-                speichereInJSON();
-                
-            });
-            speichernPanel.add(paddingTop(jsonSaveButton, lückeKlein));
-        }
-        JButton settings = new JButton("Einstellungen");
-        settings.addActionListener((ActionEvent evt) -> {
-            if (einstellungsFrame == null)
-                einstellungsFrame = new EinstellungsFrame(einstellungen);
-            einstellungsFrame.setVisible(true);
-            einstellungsFrame.toFront();
-        });
-        speichernPanel.add(paddingTop(settings, lücke));
-
-
+        FormBuilder menu = FormBuilder.create()
+                .columns("pref")
+                .rows("p, $pgap, " +
+                      "p, $lgap, p, $pgap, " +
+                      "p")
+                .padding("6dlu, 12px, 6dlu, 12px");
         
-        //// Ebene 0 ////
-
-        root.add(Box.createVerticalStrut(lücke));
-
-        JPanel panel_options = new JPanel();
-        panel_options.setLayout(new BoxLayout(panel_options, BoxLayout.X_AXIS));
-        root.add(panel_options);
-
-        JLabel lblweb = new JLabel("Map:");
-        panel_options.add(paddingRight(lblweb, lücke));
-
-        btnWeb = new JButton("Öffnen");
+        
+        JButton btnWeb = new JButton("Map öffnen");
         if (Desktop.isDesktopSupported()) {
             btnWeb.setEnabled(true);
         } else {
             btnWeb.setEnabled(false);
         }
-        panel_options.add(btnWeb);
+        menu.add(btnWeb).xy(1, 1);
         btnWeb.addActionListener((ActionEvent evt) -> {
             URL url = null;
             try {
@@ -297,11 +231,36 @@ public class R6Helper extends KllngiiApplication {
                 e.printStackTrace();
             }
         });
+        
+    
+        JButton jsonLoadButton = new JButton("Laden");
+        jsonLoadButton.addActionListener((ActionEvent evt) -> {
+            ladeAusJson();
+        });
+        menu.add(jsonLoadButton).xy(1, 3);
 
+        if (readWrite) {
+            JButton jsonSaveButton = new JButton("Speichern");
+            jsonSaveButton.addActionListener((ActionEvent evt) -> {
+                speichereInJSON();
+                
+            });
+            menu.add(jsonSaveButton).xy(1, 5);
+        }
+        
+        JButton settings = new JButton("Einstellungen");
+        settings.addActionListener((ActionEvent evt) -> {
+            if (einstellungsFrame == null)
+                einstellungsFrame = new EinstellungsFrame(einstellungen);
+            einstellungsFrame.setVisible(true);
+            einstellungsFrame.toFront();
+        });
+        menu.add(settings).xy(1, 7);
 
+        frame.getContentPane().add(menu.build());
+
+        
         //// Ebene 1 ////
-
-        root.add(Box.createVerticalStrut(lücke));
 
         rdbtnAngreifer = new JRadioButton("Angreifer", true);
         rdbtnAngreifer.setEnabled(readWrite);
@@ -315,7 +274,7 @@ public class R6Helper extends KllngiiApplication {
 
         FormBuilder avPanel = FormBuilder.create()
                 .columns("pref, 6dlu, pref")
-                .rows("p, $pgap, p")
+                .rows("p, $lgap, p")
                 .padding("6dlu, 12px, 6dlu, 12px")
                 .addSeparator("Gegnerteam").xyw(1, 1, 3)
                 .add(rdbtnAngreifer).xy(1, 3)
@@ -325,14 +284,12 @@ public class R6Helper extends KllngiiApplication {
         
         //// Ebene 2 ////
 
-        root.add(Box.createVerticalStrut(lücke));
-        
         // Pseudo-Tabelle für Angreifer - Layout festlegen:
         final int numColumns = 5;  // Anzahl Checkboxen nebeneinander
         final int numRows = (int) Math.ceil((double) model.getAngreifer().size() / (double) numColumns);
         FormBuilder angriffBuilder = FormBuilder.create()
                 .columns(String.join(", 3dlu, ", Collections.nCopies(numColumns, "pref")))  // n Checkboxen nebeneinander
-                .rows("p, $pgap, " + String.join(", $lgap, ", Collections.nCopies(numRows, "p")))
+                .rows("p, $lgap, " + String.join(", $lgap, ", Collections.nCopies(numRows, "p")))
                 .padding("6dlu, 12px, 6dlu, 12px")
                 .addSeparator("Operator").xyw(1, 1, 2*numColumns - 1);
 
@@ -398,8 +355,6 @@ public class R6Helper extends KllngiiApplication {
         
         //// Ebene 3 ////
 
-        root.add(Box.createVerticalStrut(lücke));
-
         panel_waffen = new Box(BoxLayout.X_AXIS);
         root.add(panel_waffen);
         
@@ -412,27 +367,27 @@ public class R6Helper extends KllngiiApplication {
         wArt.setLayout(new BoxLayout(wArt, BoxLayout.X_AXIS));
         root.add(wArt);
 
-        lblSturm = new JLabel("Sturmgewehre:");
+        JLabel lblSturm = new JLabel("Sturmgewehre:");
         waffenTypMap.put(Waffentyp.STURM, new WaffenTypLabel(lblSturm));
         wArt.add(paddingRight(lblSturm, lückeKlein));
 
-        lblShot = new JLabel("Shotguns:");
+        JLabel lblShot = new JLabel("Shotguns:");
         waffenTypMap.put(Waffentyp.SHOTGUN, new WaffenTypLabel(lblShot));
         wArt.add(paddingRight(lblShot, lückeKlein));
 
-        lblLMG = new JLabel("LMGs:");
+        JLabel lblLMG = new JLabel("LMGs:");
         waffenTypMap.put(Waffentyp.LMG, new WaffenTypLabel(lblLMG));
         wArt.add(paddingRight(lblLMG, lückeKlein));
 
-        lblDMR = new JLabel("DMRs:");
+        JLabel lblDMR = new JLabel("DMRs:");
         waffenTypMap.put(Waffentyp.DMR, new WaffenTypLabel(lblDMR));
         wArt.add(paddingRight(lblDMR, lückeKlein));
 
-        lblMP = new JLabel("MPs:");
+        JLabel lblMP = new JLabel("MPs:");
         waffenTypMap.put(Waffentyp.MP, new WaffenTypLabel(lblMP));
         wArt.add(paddingRight(lblMP, lückeKlein));
 
-        lblP = new JLabel("Pistolen:");
+        JLabel lblP = new JLabel("Pistolen:");
         waffenTypMap.put(Waffentyp.PISTOLE, new WaffenTypLabel(lblP));
         wArt.add(paddingRight(lblP, lückeKlein));
         
