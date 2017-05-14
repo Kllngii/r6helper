@@ -361,35 +361,38 @@ public class R6Helper extends KllngiiApplication {
         
         //// Ebene 4 ////
         
-        root.add(Box.createVerticalStrut(lücke));
+        final int numWaffenTyp = 6;
+        FormBuilder wArt = FormBuilder.create()
+                .columns(String.join(", 6dlu, ", Collections.nCopies(numWaffenTyp, "[45dlu,pref]")))
+                .rows("p, $lgap, p")
+                .padding("6dlu, 12px, 6dlu, 12px")
+                .addSeparator("Waffen des Teams").xyw(1, 1, 2*numWaffenTyp - 1);
         
-        JPanel wArt = new JPanel();
-        wArt.setLayout(new BoxLayout(wArt, BoxLayout.X_AXIS));
-        root.add(wArt);
-
         JLabel lblSturm = new JLabel("Sturmgewehre:");
         waffenTypMap.put(Waffentyp.STURM, new WaffenTypLabel(lblSturm));
-        wArt.add(paddingRight(lblSturm, lückeKlein));
+        wArt.add(lblSturm).xy(1, 3);
 
         JLabel lblShot = new JLabel("Shotguns:");
         waffenTypMap.put(Waffentyp.SHOTGUN, new WaffenTypLabel(lblShot));
-        wArt.add(paddingRight(lblShot, lückeKlein));
+        wArt.add(lblShot).xy(3, 3);
 
         JLabel lblLMG = new JLabel("LMGs:");
         waffenTypMap.put(Waffentyp.LMG, new WaffenTypLabel(lblLMG));
-        wArt.add(paddingRight(lblLMG, lückeKlein));
+        wArt.add(lblLMG).xy(5, 3);
 
         JLabel lblDMR = new JLabel("DMRs:");
         waffenTypMap.put(Waffentyp.DMR, new WaffenTypLabel(lblDMR));
-        wArt.add(paddingRight(lblDMR, lückeKlein));
+        wArt.add(lblDMR).xy(7, 3);
 
         JLabel lblMP = new JLabel("MPs:");
         waffenTypMap.put(Waffentyp.MP, new WaffenTypLabel(lblMP));
-        wArt.add(paddingRight(lblMP, lückeKlein));
+        wArt.add(lblMP).xy(9, 3);
 
         JLabel lblP = new JLabel("Pistolen:");
         waffenTypMap.put(Waffentyp.PISTOLE, new WaffenTypLabel(lblP));
-        wArt.add(paddingRight(lblP, lückeKlein));
+        wArt.add(lblP).xy(11, 3);
+        
+        root.add(wArt.build());
         
         
         //// Meldungen ////
@@ -433,9 +436,6 @@ public class R6Helper extends KllngiiApplication {
                  
                  log.info("Timer feuert - JSON neu speichern");
                  speichereInJSON();
-                    	
-                    
-                
                 });
                 einstellungen.setRefreshTimer(refreshTimer);
                 refreshTimer.start();
@@ -516,7 +516,6 @@ public class R6Helper extends KllngiiApplication {
         log.info(anzahlByWaffentyp);
 
         // Ändern der Texte an den Labeln
-
         for (Waffentyp waffentyp : Waffentyp.values()) {
             WaffenTypLabel wtl = waffenTypMap.get(waffentyp);
             if (wtl == null)
@@ -547,15 +546,15 @@ public class R6Helper extends KllngiiApplication {
         panel_waffen.removeAll();
         
         // Pseudo-Tabelle für Operators und Rekruten - Layout festlegen:
-        final int numRows = 1 + selectedOps.size();
+        final int numRows = selectedOps.size();
         FormBuilder builder = FormBuilder.create()
                 .padding("6dlu, 12px, 6dlu, 12px");
         if (readWrite) {
-            builder.rows(String.join(", $pgap, ", Collections.nCopies(numRows, "p")))
+            builder.rows("p, $pgap, " + String.join(", $pgap, ", Collections.nCopies(numRows, "p")))
                    .columns("left:pref,  6dlu, pref,  6dlu, pref,  6dlu, pref,  6dlu, [pref,45px]");
         }
         else {
-            builder.rows(String.join(", $lgap, ", Collections.nCopies(numRows, "p")))
+            builder.rows("p, $lgap, " + String.join(", $lgap, ", Collections.nCopies(numRows, "p")))
                    .columns("left:pref, 12dlu, pref, 12dlu, pref, 12dlu, pref, 12dlu, pref");
         }
         
