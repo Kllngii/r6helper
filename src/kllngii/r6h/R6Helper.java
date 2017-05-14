@@ -420,34 +420,45 @@ public class R6Helper extends KllngiiApplication {
         
         frame.setVisible(true);
 
-        ladeAusJson();
+        // Timer starten:
+        final int refreshIntervalS = Math.max(0, einstellungen.getRefreshIntervalS());  // negative Werte krachen
         if(!readWrite) {
             
-            // Per Timer das Model regelmäßig neu einlesen
-            if (einstellungen.getRefreshIntervalS() > 0) {
-                log.info("Timer wird erzeugt, um das JSON alle " + einstellungen.getRefreshIntervalS() + " s neu einzulesen.");
-                Timer refreshTimer = new Timer(einstellungen.getRefreshIntervalS()*1000, (ActionEvent) -> {
-                
+            // Per Timer (in einem eigenen Thread):
+            // Sofort einmal das JSON holen
+            // UND später regelmäßig neu einlesen
+            Timer refreshTimer = new Timer(refreshIntervalS*1000, (ActionEvent e) -> {
                 log.info("Timer feuert - JSON neu einlesen...");
                 ladeAusJson();
-                });
-                einstellungen.setRefreshTimer(refreshTimer);
-                refreshTimer.start();
-            }
+            });
+            refreshTimer.setInitialDelay(0);  // sofort einmal holen
+            if (refreshIntervalS == 0)
+                refreshTimer.setRepeats(false);  // NUR einmal holen
+            else
+                log.info("Timer wird erzeugt, um das JSON alle " + einstellungen.getRefreshIntervalS() + " s neu einzulesen.");
+            einstellungen.setRefreshTimer(refreshTimer);
+            refreshTimer.start();
         }
         else {
-            
-            // Per Timer das Model regelmäßig neu speichern
-            if (einstellungen.getRefreshIntervalS() > 0) {
-                log.info("Timer wird erzeugt, um das JSON alle " + einstellungen.getRefreshIntervalS() + " s neu einzulesen.");
-                Timer refreshTimer = new Timer(einstellungen.getRefreshIntervalS()*1000, (ActionEvent) -> {
-                 
-                 log.info("Timer feuert - JSON neu speichern");
-                 speichereInJSON();
+            Timer loadOnceTimer = new Timer(0, (ActionEvent e1) -> {
+                log.info("JSON nach dem Start einmal einlesen...");
+                ladeAusJson();
+                
+                // Per Timer das Model regelmäßig neu speichern
+                Timer refreshTimer = new Timer(einstellungen.getRefreshIntervalS()*1000, (ActionEvent e2) -> {
+                    log.info("Timer feuert - JSON neu speichern");
+                    speichereInJSON();
                 });
                 einstellungen.setRefreshTimer(refreshTimer);
-                refreshTimer.start();
-            }
+                if (refreshIntervalS != 0) {
+                    log.info("Timer wird gestartet, um das JSON alle " + einstellungen.getRefreshIntervalS() + " s zu speichern.");
+                    refreshTimer.start();
+                }
+
+            });
+            loadOnceTimer.setRepeats(false);
+            loadOnceTimer.start();
+            
         }
 
     }

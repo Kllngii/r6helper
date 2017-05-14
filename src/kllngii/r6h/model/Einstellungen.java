@@ -120,8 +120,10 @@ public class Einstellungen {
         if (refreshTimer != null) {
             if (refreshIntervalS > 0) {
                 refreshTimer.setDelay(refreshIntervalS*1000);
-                if (! refreshTimer.isRunning())
+                refreshTimer.setRepeats(true);
+                if (! refreshTimer.isRunning()) {
                     refreshTimer.start();
+                }
             }
             else {
                 if (refreshTimer.isRunning())
