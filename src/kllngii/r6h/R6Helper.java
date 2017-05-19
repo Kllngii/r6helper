@@ -57,6 +57,7 @@ import com.jgoodies.looks.plastic.theme.ExperienceRoyale;
 import com.jgoodies.validation.view.ValidationResultViewFactory;
 
 import kllngii.r6h.model.Einstellungen;
+import kllngii.r6h.model.Faehigkeit;
 import kllngii.r6h.model.Gadget;
 import kllngii.r6h.model.Operator;
 import kllngii.r6h.model.R6HelperModel;
@@ -197,7 +198,7 @@ public class R6Helper extends KllngiiApplication {
         frame.setTitle("R6 Helper");
 
         Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
-        Dimension size = new Dimension(880, 630);
+        Dimension size = new Dimension(940, 630);
         frame.setSize(size.width, size.height);
         frame.setLocation((screensize.width - size.width) / 2, (screensize.height - size.height) / 2);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -589,15 +590,17 @@ public class R6Helper extends KllngiiApplication {
                 .padding("6dlu, 12px, 6dlu, 12px");
         if (readWrite) {
             builder.rows("p, $pgap, " + String.join(", $pgap, ", Collections.nCopies(numRows, "p")))
-                   .columns("left:pref,  6dlu, pref,  6dlu, pref,  6dlu, pref,  6dlu, [pref,45px]");
+                   .columns("left:pref,  6dlu, pref,  6dlu, pref,  6dlu, pref,  6dlu, [pref,45px], 6dlu, [20px,pref], 3dlu, pref");
         }
         else {
             builder.rows("p, $lgap, " + String.join(", $lgap, ", Collections.nCopies(numRows, "p")))
-                   .columns("left:pref, 12dlu, pref, 12dlu, pref, 12dlu, pref, 12dlu, pref");
+                   .columns("left:pref, 12dlu, pref, 12dlu, pref, 12dlu, pref, 12dlu, pref, 12dlu, pref, 4dlu, [40px,pref]");
         }
         
         JLabel lifepointsLabel = compFactory.createTitle("Lifepoints");
         lifepointsLabel.setToolTipText("Lifepoints");
+        JLabel fähigkeitLabel = compFactory.createTitle("Fähigkeit");
+        fähigkeitLabel.setToolTipText("Fähigkeit");
 
         int row = 1;
         builder.addTitle("Operator").xy(1, row)
@@ -605,12 +608,13 @@ public class R6Helper extends KllngiiApplication {
                .addTitle("Sekundärwaffe").xy(5, row)
                .addTitle("Gadgets").xy(7, row)
                .add(lifepointsLabel).xy(9, row)
-               .addSeparator("").xyw(1, 2, 9);
+               .add(fähigkeitLabel).xyw(11, row, 3)
+               .addSeparator("").xyw(1, 2, 13);
         
         for (Operator op : selectedOps) {
             row++;
             if (! readWrite)  // Trennlinien nur beim Lesen
-                builder.addSeparator("").xyw(1, row, 9);
+                builder.addSeparator("").xyw(1, row, 13);
             row++;
             
             // Name
@@ -696,6 +700,30 @@ public class R6Helper extends KllngiiApplication {
             }
             else {
                 builder.addLabel(String.valueOf(op.getLifepoints())).xy(9, row);
+            }
+            
+            if (op.getFähigkeit() != Faehigkeit.KEINE) {
+                builder.addLabel(op.getFähigkeit().toString()).xy(11, row);
+                if (readWrite) {
+                        if (op.getFähigkeit().isAnzahlLimitiert() && op.isFähigkeitÜbrig()) {
+                            // Fähigkeit herunterzählen können über Button
+                            JButton countDownBtn = new JButton(String.valueOf(op.getFähigkeitAnzahlÜbrig()));
+                            countDownBtn.setToolTipText("Fähigkeit verbrauchen");
+                            countDownBtn.addActionListener((ActionEvent evt) -> {
+                                op.verbraucheFähigkeit();
+                                if (op.isFähigkeitÜbrig())
+                                    countDownBtn.setText(String.valueOf(op.getFähigkeitAnzahlÜbrig()));
+                                else
+                                    countDownBtn.setVisible(false);
+                                
+                            });
+                            builder.add(countDownBtn).xy(13, row);
+                        }
+                }
+                else {
+                    if (op.getFähigkeit().isAnzahlLimitiert())
+                        builder.addLabel(String.valueOf(op.getFähigkeitAnzahlÜbrig())).xy(13, row);
+                }
             }
         }
 

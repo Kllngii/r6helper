@@ -173,8 +173,11 @@ public class Operator implements Serializable {
     public int getFähigkeitAnzahlÜbrig() {
         return fähigkeitAnzahlÜbrig;
     }
+    public boolean isFähigkeitÜbrig() {
+        return fähigkeitAnzahlÜbrig > 0;
+    }
     public void verbraucheFähigkeit() {
-        if (fähigkeitAnzahlÜbrig > 0)
+        if (isFähigkeitÜbrig())
             fähigkeitAnzahlÜbrig--;
     }
 
