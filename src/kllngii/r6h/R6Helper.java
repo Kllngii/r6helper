@@ -60,6 +60,7 @@ import kllngii.r6h.model.Einstellungen;
 import kllngii.r6h.model.Gadget;
 import kllngii.r6h.model.Operator;
 import kllngii.r6h.model.R6HelperModel;
+import kllngii.r6h.model.R6Map;
 import kllngii.r6h.model.Rekrut;
 import kllngii.r6h.model.Waffe;
 import kllngii.r6h.model.Waffentyp;
@@ -210,23 +211,26 @@ public class R6Helper extends KllngiiApplication {
         
         FormBuilder menu = FormBuilder.create()
                 .columns("pref")
-                .rows("p, $pgap, " +
+                .rows("p, $lgap, p, $pgap, " +
                       "p, $lgap, p, $pgap, " +
                       "p")
                 .padding("6dlu, 12px, 6dlu, 12px");
         
         
         JButton btnWeb = new JButton("Map öffnen");
+        JComboBox<R6Map> comboWeb = new JComboBox<R6Map>(R6Map.values());
         if (Desktop.isDesktopSupported()) {
             btnWeb.setEnabled(true);
         } else {
             btnWeb.setEnabled(false);
         }
         menu.add(btnWeb).xy(1, 1);
+        menu.add(comboWeb).xy(1, 3);
         btnWeb.addActionListener((ActionEvent evt) -> {
             URL url = null;
             try {
-                url = new URL("http://www.r6maps.com/");
+            	
+                url = new URL("http://www.r6maps.com/"+comboWeb.getItemAt(comboWeb.getSelectedIndex()).getUrl());
 
                 try {
                     Desktop.getDesktop().browse(url.toURI());
