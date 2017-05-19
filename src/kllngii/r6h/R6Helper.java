@@ -87,7 +87,8 @@ public class R6Helper extends KllngiiApplication {
     private JPanel panel_angriff;
     private JPanel panel_verteidigung;
     
-    private final JLabel operatorLabel = compFactory.createTitle("Operator");
+    private final JLabel angriffOpLabel = compFactory.createTitle("Operator");
+    private final JLabel verteidigungOpLabel = compFactory.createTitle("Operator");
 
     private JComponent panel_waffen;
 
@@ -99,7 +100,6 @@ public class R6Helper extends KllngiiApplication {
     private JRadioButton rdbtnVerteidiger;
 
     private final int lücke = 12;
-    private final int lückeKlein = lücke / 2;
 
     private JLabel meldunglabel;
     private final SortedSet<String> errors = new TreeSet<>();
@@ -292,23 +292,12 @@ public class R6Helper extends KllngiiApplication {
         
         //// Ebene 2 ////
 
-        // Pseudo-Tabelle für Angreifer - Layout festlegen:
+        // Pseudo-Tabelle für Angreifer bzw. Verteidiger - Layout festlegen:
         final int numColumns = 5;  // Anzahl Checkboxen nebeneinander
         final int numRows = (int) Math.ceil((double) model.getAngreifer().size() / (double) numColumns);
-        operatorLabel.setHorizontalAlignment(SwingConstants.LEFT);
-        FormBuilder angriffBuilder = FormBuilder.create()
-                .columns(String.join(", 3dlu, ", Collections.nCopies(numColumns, "pref")))  // n Checkboxen nebeneinander
-                .rows("p, $lgap, " + String.join(", $lgap, ", Collections.nCopies(numRows, "p")))
-                .padding("6dlu, 12px, 6dlu, 12px")
-                .add(compFactory.createSeparator(operatorLabel)).xyw(1, 1, 2*numColumns - 1);
-
-        panel_verteidigung = new JPanel();
-        panel_verteidigung.setMaximumSize(new Dimension(999999, 120));
-        panel_verteidigung.setPreferredSize(new Dimension(size.width, 120));
-        root.add(panel_verteidigung);
-
-        panel_verteidigung.add(Box.createHorizontalStrut(lücke));
-        panel_verteidigung.add(paddingRight(new JLabel("Operator:"), lückeKlein));
+        
+        FormBuilder angriffBuilder = createAvBuilder(numColumns, numRows, angriffOpLabel);
+        FormBuilder verteidigungBuilder = createAvBuilder(numColumns, numRows, verteidigungOpLabel);
 
         angriffCheckboxen = new HashMap<>();
         int col = 1;
@@ -335,16 +324,28 @@ public class R6Helper extends KllngiiApplication {
         root.add(panel_angriff);
         
         verteidigungCheckboxen = new HashMap<>();
+        col = 1;
+        row = 3;
         for (Operator op : model.getVerteidiger()) {
             JCheckBox checkBox = new JCheckBox(op.getName());
             checkBox.setEnabled(readWrite);
             verteidigungCheckboxen.put(op, checkBox);
-            panel_verteidigung.add(checkBox);
+            
+            // Und der "Tabelle" im View hinzufügen:
+            verteidigungBuilder.add(checkBox).xy(2*col-1, row);
+            col++;
+            if (col > numColumns) {
+                col = 1;
+                row = row + 2;
+            }
+            
             checkBox.addActionListener((ActionEvent evt) -> {
                 model.toggleSelected(op);
                 fillPanelWaffen();
             });
         }
+        panel_verteidigung = verteidigungBuilder.build();
+        root.add(panel_verteidigung);
         panel_verteidigung.setVisible(false);
 
         // Event-Handler für Auswahl Angriff/Verteidigung:
@@ -461,7 +462,17 @@ public class R6Helper extends KllngiiApplication {
             loadOnceTimer.start();
             
         }
-
+    }
+    
+    private FormBuilder createAvBuilder(final int numColumns, final int numRows, JLabel operatorLabel) {
+        operatorLabel.setHorizontalAlignment(SwingConstants.LEFT);
+        FormBuilder av = FormBuilder.create()
+                .columns(String.join(", 3dlu, ", Collections.nCopies(numColumns, "pref")))  // n Checkboxen nebeneinander
+                .rows("p, $lgap, " + String.join(", $lgap, ", Collections.nCopies(numRows, "p")))
+                .padding("6dlu, 12px, 6dlu, 12px")
+                .add(compFactory.createSeparator(operatorLabel)).xyw(1, 1, 2*numColumns - 1);
+        
+        return av;
     }
     
     private void speichereInJSON() {
@@ -749,8 +760,8 @@ public class R6Helper extends KllngiiApplication {
     private void refreshErrors() {
         if (errors.isEmpty()) {
             // Fehler-Icon oben entfernen
-            operatorLabel.setIcon(null);
-            operatorLabel.setToolTipText(null);
+            removeErrorMarker(angriffOpLabel);
+            removeErrorMarker(verteidigungOpLabel);
             
             panel_meldung.setVisible(false);
         }
@@ -758,8 +769,8 @@ public class R6Helper extends KllngiiApplication {
             // Fehler-Icon oben anzeigen
             for (String error : errors) {
                 if (ERROR_AKTIVIERE_HÖCHSTENS_N_OPERATOR.equals(error)) {
-                    operatorLabel.setIcon(ValidationResultViewFactory.getErrorIcon());
-                    operatorLabel.setToolTipText(error);
+                    addErrorMarker(angriffOpLabel, error);
+                    addErrorMarker(verteidigungOpLabel, error);
                     break;
                 }
             }
@@ -767,6 +778,15 @@ public class R6Helper extends KllngiiApplication {
             meldunglabel.setText("<html>" + String.join("<br>", errors.toArray(new String[0])) + "</html>");
             panel_meldung.setVisible(true);
         }
+    }
+    
+    private void addErrorMarker(JLabel label, String error) {
+        label.setIcon(ValidationResultViewFactory.getErrorIcon());
+        label.setToolTipText(error);
+    }
+    private void removeErrorMarker(JLabel label) {
+        label.setIcon(null);
+        label.setToolTipText(null);
     }
 
     private void clearErrors() {
