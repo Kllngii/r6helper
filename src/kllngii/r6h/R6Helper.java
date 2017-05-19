@@ -2,6 +2,7 @@ package kllngii.r6h;
 
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Cursor;
 import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -479,6 +480,7 @@ public class R6Helper extends KllngiiApplication {
 
 	private void ladeAusJson() {
         try {
+            frame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             log.info("Lade JSON...");
         	final long time1 = System.currentTimeMillis(); 
             SpeicherService.ModelWithErrors mwe = speicherService.ladeJson(einstellungen.getUriInput());
@@ -489,10 +491,12 @@ public class R6Helper extends KllngiiApplication {
             refreshView();
             final long time2 = System.currentTimeMillis();
             log.info("Ladezeit:  "+(time2-time1)+"ms"); 
-            
         } catch (Exception ex) {
             log.error("Fehler beim Laden des JSON!", ex);
             showError("Fehler beim Laden des JSON: " + StringUtils.defaultIfEmpty(ex.getMessage(), ex.toString()));
+        }
+        finally {
+            frame.setCursor(Cursor.getDefaultCursor());
         }
 
     }
