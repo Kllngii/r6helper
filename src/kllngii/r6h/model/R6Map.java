@@ -1,6 +1,6 @@
 package kllngii.r6h.model;
 
-public enum Map {
+public enum R6Map {
 ////	Hauptspiel Maps:	////
 	Bank("/#bank/1/all", "Bank"),
 	Barlett("/#bartlett/1/all", "Barlett Universität"),
@@ -29,13 +29,17 @@ public enum Map {
 	private final String url;
 	private final String name;
 	
-	private Map(String url, String name){
+	private R6Map(String url, String name){
 		this.url =url;
 		this.name =name;
 	}
 
 	public String getName() {
 		return name;
+	}
+	@Override
+	public String toString() {
+	    return name;
 	}
 
 	public String getUrl() {
