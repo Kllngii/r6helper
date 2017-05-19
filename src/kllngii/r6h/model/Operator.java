@@ -18,35 +18,41 @@ public class Operator implements Serializable {
     private final List<Waffe> primärwaffen;
     private final List<Waffe> sekundärwaffen;
     private final List<Gadget> gadgets;
+    private final Faehigkeit fähigkeit;
 
     private Waffe selectedPrimärwaffe;
     private Waffe selectedSekundärwaffe;
     private Gadget selectedGadget;
     private int lifepoints = DEFAULT_LIFEPOINTS;
+    private int fähigkeitAnzahlÜbrig;
+    
 
     public Operator(OperatorTyp typ, String name, List<Waffe> primärwaffen, List<Waffe> sekundärwaffen,
-            List<Gadget> gadgets) {
+            List<Gadget> gadgets, Faehigkeit fähigkeit) {
         super();
         this.typ = typ;
         this.name = name;
         this.primärwaffen = Collections.unmodifiableList(primärwaffen);
         this.sekundärwaffen = Collections.unmodifiableList(sekundärwaffen);
         this.gadgets = Collections.unmodifiableList(gadgets);
+        
+        this.fähigkeit = fähigkeit;
+        this.fähigkeitAnzahlÜbrig = fähigkeit.getAnzahl();
     }
 
     public Operator(OperatorTyp typ, String name, Waffe primärwaffe1, List<Waffe> sekundärwaffen,
-            List<Gadget> gadgets) {
-        this(typ, name, Arrays.asList(primärwaffe1), sekundärwaffen, gadgets);
+            List<Gadget> gadgets, Faehigkeit fähigkeit) {
+        this(typ, name, Arrays.asList(primärwaffe1), sekundärwaffen, gadgets, fähigkeit);
     }
 
     public Operator(OperatorTyp typ, String name, Waffe primärwaffe1, Waffe primärwaffe2, List<Waffe> sekundärwaffen,
-            List<Gadget> gadgets) {
-        this(typ, name, Arrays.asList(primärwaffe1, primärwaffe2), sekundärwaffen, gadgets);
+            List<Gadget> gadgets, Faehigkeit fähigkeit) {
+        this(typ, name, Arrays.asList(primärwaffe1, primärwaffe2), sekundärwaffen, gadgets, fähigkeit);
     }
 
     public Operator(OperatorTyp typ, String name, Waffe primärwaffe1, Waffe primärwaffe2, Waffe primärwaffe3,
-            List<Waffe> sekundärwaffen, List<Gadget> gadgets) {
-        this(typ, name, Arrays.asList(primärwaffe1, primärwaffe2, primärwaffe3), sekundärwaffen, gadgets);
+            List<Waffe> sekundärwaffen, List<Gadget> gadgets, Faehigkeit fähigkeit) {
+        this(typ, name, Arrays.asList(primärwaffe1, primärwaffe2, primärwaffe3), sekundärwaffen, gadgets, fähigkeit);
     }
 
     @Override
@@ -158,7 +164,22 @@ public class Operator implements Serializable {
 		return isAngreifer() ? DEFAULT_LIFEPOINTS : DEFAULT_LIFEPOINTS + 40;
 	}
 	
-	public void resetLifepoints() {
+	
+	
+	public Faehigkeit getFähigkeit() {
+        return fähigkeit;
+    }
+	
+    public int getFähigkeitAnzahlÜbrig() {
+        return fähigkeitAnzahlÜbrig;
+    }
+    public void verbraucheFähigkeit() {
+        if (fähigkeitAnzahlÜbrig > 0)
+            fähigkeitAnzahlÜbrig--;
+    }
+
+    public void reset() {
 	    lifepoints = DEFAULT_LIFEPOINTS;
+	    fähigkeitAnzahlÜbrig = fähigkeit.getAnzahl();
 	}
 }

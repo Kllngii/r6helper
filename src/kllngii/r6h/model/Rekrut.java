@@ -27,7 +27,7 @@ public class Rekrut extends Operator {
 
 	public Rekrut(OperatorTyp typ, String name, List<Waffe> primärwaffen,
 			List<Waffe> sekundärwaffen, Collection<Gadget> gadgets) {
-		super(typ, name, primärwaffen, sekundärwaffen, new ArrayList<>(gadgets));
+		super(typ, name, primärwaffen, sekundärwaffen, new ArrayList<>(gadgets), Faehigkeit.KEINE);
 	}
 	
 	

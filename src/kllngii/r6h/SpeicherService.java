@@ -92,7 +92,7 @@ public class SpeicherService {
             try (ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
                     ObjectInputStream ois = new ObjectInputStream(bis)) {
                 model = (R6HelperModel) ois.readObject();
-                model.resetLifepoints();
+                model.reset();
                 log.info("Model wurde aus den Preferences geholt.\nselectedAngreifer: " + model.getSelectedAngreifer()
                         + "\nselectedVerteidiger: " + model.getSelectedVerteidiger());
             } catch (ClassNotFoundException ex) {
