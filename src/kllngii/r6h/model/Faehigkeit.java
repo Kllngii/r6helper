@@ -1,6 +1,9 @@
 package kllngii.r6h.model;
 
 public enum Faehigkeit {
+    /** Für Rekruten */
+    KEINE(),
+    
 	EMP(3),
 	ASH(2),
 	EXO(2),
@@ -14,14 +17,33 @@ public enum Faehigkeit {
 	
 	
 	;
-	private final int Anzahl;
+	private final int anzahl;
+
+	/**
+	 * Konstruktor für eine Fähigkeit, die sich nicht verbraucht.
+	 */
+	private Faehigkeit() {
+	    this(-1);
+	}
 	
-	private Faehigkeit(int Anzahl){
-		this.Anzahl = Anzahl;
+	/**
+	 * Konstruktor für eine Fähigkeit, die sich verbraucht.
+	 * @param anzahl  Wie oft die Fähigkeit pro Runde benutzt werden kann
+	 */
+	private Faehigkeit(int anzahl){
+		this.anzahl = anzahl;
 	}
 	
 	
+	/**
+	 * @return  Wie oft die Fähigkeit pro Runde benutzt werden kann, oder -1 bei
+	 *          unlimitiertem Gebrauch.
+	 */
 	public int getAnzahl() {
-		return Anzahl;
+		return anzahl;
+	}
+	
+	public boolean isAnzahlLimitiert() {
+	    return anzahl >= 0;
 	}
 }
