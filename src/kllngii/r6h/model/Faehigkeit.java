@@ -10,10 +10,26 @@ public enum Faehigkeit {
 	TWI(2),
 	FUZ(3),
 	BLI(5),
+	SKEL(21),
 	BLC(2),
 	CAP(4),
 	HIB(3),
-	JAC(-1),
+	
+	SMK(3),
+	MTE(4),
+	CSTL(3),
+	DOC(3),
+	ROOK(5),
+	KPKN(3),
+	TCHNK(1),
+	BNDT(4),
+	JGR(3),
+	FRST(3),
+	BLCKEYE(3),
+	YOKAI(1),
+	BLCKMIRROR(2),
+	
+	
 	
 	
 	;
@@ -33,7 +49,6 @@ public enum Faehigkeit {
 	private Faehigkeit(int anzahl){
 		this.anzahl = anzahl;
 	}
-	
 	
 	/**
 	 * @return  Wie oft die Fähigkeit pro Runde benutzt werden kann, oder -1 bei
