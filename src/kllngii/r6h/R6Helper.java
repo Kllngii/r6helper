@@ -70,9 +70,14 @@ import kllngii.r6h.model.Waffentyp;
 public class R6Helper extends KllngiiApplication {
 	private static final String ERROR_AKTIVIERE_HÖCHSTENS_N_OPERATOR = "Aktiviere höchstens " + R6HelperModel.MAX_TEAMGRÖSSE + " Operator!";
 	private static final String ERROR_REKRUT_HAT_ZU_VIELE_GADGETS = "Ein Rekrut darf höchstens " + Rekrut.MAX_GADGETS + " Gadgets haben!";
-
+	
+	//TODO Mehrere Channel einführen, um PW geschützt getrennt Programm zu nutzen
     //TODO Button für Operator Infos(Echter Name, Fähigkeit,etc.)
-	//TODO Optional: Fenster auch auf Java FX umstellbar
+	//TODO Optional: Fenster auch auf Java FX umstellbar / Type Script
+	//TODO Clanmanagement Kalender mit Terminen und an/Abmedung
+	//TODO Drohnen/Kamera Counter
+	//TODO Reset Button
+	//TODO Operator anpassen an aktuelle Patches
     private final Logger log = Logger.getLogger(getClass());
 
     private final boolean readWrite;
