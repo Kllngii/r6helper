@@ -514,7 +514,7 @@ public class R6Helper extends KllngiiApplication {
         }
     	
     	try {
-    	    saveScreenshot();
+    	    saveScreenshot(new File(einstellungen.getDateiOutput().getParentFile(), "R6Screenshot.png"));
     	} catch (Exception ex) {
             log.error("Fehler beim Speichern des Screenshots!", ex);
             showError("Fehler beim Speichern des Screenshots: "
@@ -896,8 +896,9 @@ public class R6Helper extends KllngiiApplication {
     }
     
     
-    private void saveScreenshot()
+    private void saveScreenshot(File file)
     throws IOException {
+    	
         log.info("Erstelle Screenshot...");
         Component comp = frame.getRootPane();
         BufferedImage image = new BufferedImage(comp.getWidth(), comp.getHeight(), BufferedImage.TYPE_INT_RGB);
@@ -905,7 +906,7 @@ public class R6Helper extends KllngiiApplication {
         // the Graphics object of the image.
         comp.paint(image.getGraphics()); // alternately use .printAll(..)
 
-        ImageIO.write(image, "PNG", new File("/var/tmp/screenshot.png"));
+        ImageIO.write(image, "PNG", file);
     }
 
 }
