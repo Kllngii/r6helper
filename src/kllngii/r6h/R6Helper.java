@@ -77,6 +77,7 @@ public class R6Helper extends KllngiiApplication {
 	//TODO Optional: Fenster auch auf Java FX umstellbar / Type Script
 	//TODO Clanmanagement Kalender mit Terminen und An/Abmedung
 	//TODO Drohnen/Kamera Counter
+	//TODO Fähigkeiten brauchen Klarnamen
 	
     private final Logger log = Logger.getLogger(getClass());
 
