@@ -74,10 +74,10 @@ public class R6Helper extends KllngiiApplication {
 	//TODO Mehrere Channel einführen, um PW geschützt getrennt Programm zu nutzen
     //TODO Button für Operator Infos(Echter Name, Fähigkeit,etc.)
 	//TODO Optional: Fenster auch auf Java FX umstellbar / Type Script
-	//TODO Clanmanagement Kalender mit Terminen und an/Abmedung
+	//TODO Clanmanagement Kalender mit Terminen und An/Abmedung
 	//TODO Drohnen/Kamera Counter
-	//TODO Reset Button
-	//TODO Operator anpassen an aktuelle Patches
+	//TODO Reset Button Für Gadgets und Waffen
+	
     private final Logger log = Logger.getLogger(getClass());
 
     private final boolean readWrite;
@@ -249,7 +249,7 @@ public class R6Helper extends KllngiiApplication {
             }
         });
         
-    
+        
         JButton jsonLoadButton = new JButton("Laden");
         jsonLoadButton.addActionListener((ActionEvent evt) -> {
             ladeAusJson();
