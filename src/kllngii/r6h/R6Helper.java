@@ -42,6 +42,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
@@ -76,7 +77,6 @@ public class R6Helper extends KllngiiApplication {
 	//TODO Optional: Fenster auch auf Java FX umstellbar / Type Script
 	//TODO Clanmanagement Kalender mit Terminen und An/Abmedung
 	//TODO Drohnen/Kamera Counter
-	//TODO Reset Button Für Gadgets und Waffen
 	
     private final Logger log = Logger.getLogger(getClass());
 
@@ -218,7 +218,7 @@ public class R6Helper extends KllngiiApplication {
                 .columns("pref")
                 .rows("p, $lgap, p, $pgap, " +
                       "p, $lgap, p, $pgap, " +
-                      "p")
+                      "p, $pgap, p")
                 .padding("6dlu, 12px, 6dlu, 12px");
         
         
@@ -273,7 +273,13 @@ public class R6Helper extends KllngiiApplication {
             einstellungsFrame.toFront();
         });
         menu.add(settings).xy(1, 7);
-
+        
+        JButton resetBtn = new JButton("Reset");
+        resetBtn.addActionListener((ActionEvent evt) -> {
+            reset();
+        });
+        menu.add(resetBtn).xy(1, 9);
+        
         frame.getContentPane().add(menu.build());
 
         
@@ -483,7 +489,12 @@ public class R6Helper extends KllngiiApplication {
         
         return av;
     }
-    
+    private void reset() {
+    	model = new R6HelperModel();
+    	errors.clear();
+    	speichereInJSON();
+    	refreshView();
+    }
     private void speichereInJSON() {
     	try {
     		final long time1 = System.currentTimeMillis();
@@ -500,7 +511,11 @@ public class R6Helper extends KllngiiApplication {
 
 	private void ladeAusJson() {
         try {
-            frame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        	// Im richtigen Thread (EDT) den Mauszeiger auf "Warten" setzen:
+        	if (! SwingUtilities.isEventDispatchThread())
+        		SwingUtilities.invokeAndWait(() -> frame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR)));
+        	else
+        		frame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             log.info("Lade JSON...");
         	final long time1 = System.currentTimeMillis(); 
             SpeicherService.ModelWithErrors mwe = speicherService.ladeJson(einstellungen.getUriInput());
@@ -516,7 +531,7 @@ public class R6Helper extends KllngiiApplication {
             showError("Fehler beim Laden des JSON: " + StringUtils.defaultIfEmpty(ex.getMessage(), ex.toString()));
         }
         finally {
-            frame.setCursor(Cursor.getDefaultCursor());
+        	SwingUtilities.invokeLater(() -> frame.setCursor(Cursor.getDefaultCursor()));
         }
 
     }
