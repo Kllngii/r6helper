@@ -1,6 +1,7 @@
 package kllngii.r6h;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Desktop;
@@ -9,6 +10,8 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
@@ -28,6 +31,7 @@ import java.util.function.BooleanSupplier;
 import java.util.function.Predicate;
 import java.util.prefs.BackingStoreException;
 
+import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -502,9 +506,18 @@ public class R6Helper extends KllngiiApplication {
             speicherService.speichereJson(model, errors, einstellungen.getDateiOutput());
             final long time2 = System.currentTimeMillis();
             log.info("Speicherzeit:  "+(time2-time1)+"ms"); 
+            
         } catch (Exception ex) {
             log.error("Fehler beim Speichern des JSON!", ex);
             showError("Fehler beim Speichern des JSON: "
+                    + StringUtils.defaultIfEmpty(ex.getMessage(), ex.toString()));
+        }
+    	
+    	try {
+    	    saveScreenshot();
+    	} catch (Exception ex) {
+            log.error("Fehler beim Speichern des Screenshots!", ex);
+            showError("Fehler beim Speichern des Screenshots: "
                     + StringUtils.defaultIfEmpty(ex.getMessage(), ex.toString()));
         }
 		
@@ -880,6 +893,19 @@ public class R6Helper extends KllngiiApplication {
         setAVCheckboxes(); // Checkboxen passend zum Model setzen
         fillPanelWaffen(); // Änderungen sichtbar machen
         refreshErrors();
+    }
+    
+    
+    private void saveScreenshot()
+    throws IOException {
+        log.info("Erstelle Screenshot...");
+        Component comp = frame.getRootPane();
+        BufferedImage image = new BufferedImage(comp.getWidth(), comp.getHeight(), BufferedImage.TYPE_INT_RGB);
+        // call the Component's paint method, using
+        // the Graphics object of the image.
+        comp.paint(image.getGraphics()); // alternately use .printAll(..)
+
+        ImageIO.write(image, "PNG", new File("/var/tmp/screenshot.png"));
     }
 
 }
