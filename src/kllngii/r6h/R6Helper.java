@@ -88,6 +88,7 @@ public class R6Helper extends KllngiiApplication {
 	//TODO Drohnen/Kamera Counter
 	//TODO Fähigkeiten brauchen Klarnamen
 	//TODO Button für Operator Infos(Echter Name, Fähigkeit,etc.)
+	//TODO Ace und Headshot Counter
 	
     private final Logger log = Logger.getLogger(getClass());
 
