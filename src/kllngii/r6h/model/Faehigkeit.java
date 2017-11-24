@@ -4,52 +4,58 @@ public enum Faehigkeit {
     /** Für Rekruten */
     KEINE(),
     
-	EMP(3),
-	ASH(2),
-	EXO(2),
-	TWI(2),
-	FUZ(3),
-	BLI(5),
-	SKEL(21),
-	BLC(2),
-	CAP(4),
-	HIB(3),
+	EMP(3, "EMP"),
+	ASH(2, "Ash-Rakete"),
+	EXO(2, "Exotherme-Sprengladung"),
+	TWI(2, "Schockdrohne"),
+	FUZ(3, "Clustercharge"),
+	BLI(5, "Blitzschild"),
+	SKEL(21, "Skeletonshotgun"),
+	BLC(2, "Waffenschild"),
+	CAP(4, "Bolzen"),
+	HIB(3, "X-Kairos"),
 	
-	SMK(3),
-	MTE(4),
-	CSTL(3),
-	DOC(3),
-	ROOK(5),
-	KPKN(3),
-	TCHNK(1),
-	BNDT(4),
-	JGR(3),
-	FRST(3),
-	BLCKEYE(3),
-	YOKAI(1),
-	BLCKMIRROR(2),
+	SMK(3, "Smoke"),
+	MTE(4, "Störsender"),
+	CSTL(3, "Castle Barrikade"),
+	DOC(3, "Heilladung"),
+	ROOK(5, "Rüstung"),
+	KPKN(5, "Sprengfalle"),
+	TCHNK(1, "Montiertes LMG"),
+	BNDT(4, "Schockdraht"),
+	JGR(3, "AVS"),
+	FRST(3, "Bärenfalle"),
+	BLCKEYE(3, "Blackeye"),
+	YOKAI(1, "Yokai"),
+	BLCKMIRROR(2, "Blackmirror"),
 	
 	
 	
 	
 	;
 	private final int anzahl;
+	private final String name;
 
 	/**
 	 * Konstruktor für eine Fähigkeit, die sich nicht verbraucht.
 	 */
 	private Faehigkeit() {
-	    this(-1);
+	    this(-1, null);
 	}
 	
 	/**
 	 * Konstruktor für eine Fähigkeit, die sich verbraucht.
 	 * @param anzahl  Wie oft die Fähigkeit pro Runde benutzt werden kann
 	 */
-	private Faehigkeit(int anzahl){
+	private Faehigkeit(int anzahl, String name){
 		this.anzahl = anzahl;
+		this.name = name;
 	}
 	
+	public String getName() {
+		return name;
+	}
+
 	/**
 	 * @return  Wie oft die Fähigkeit pro Runde benutzt werden kann, oder -1 bei
 	 *          unlimitiertem Gebrauch.

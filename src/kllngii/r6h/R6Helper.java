@@ -75,7 +75,6 @@ import kllngii.r6h.model.Waffentyp;
 public class R6Helper extends KllngiiApplication {
 	private static final String ERROR_AKTIVIERE_HÖCHSTENS_N_OPERATOR = "Aktiviere höchstens " + R6HelperModel.MAX_TEAMGRÖSSE + " Operator!";
 	private static final String ERROR_REKRUT_HAT_ZU_VIELE_GADGETS = "Ein Rekrut darf höchstens " + Rekrut.MAX_GADGETS + " Gadgets haben!";
-	//TODO CTUs hinzufügen
 	//TODO Fehler ausgeben, wenn Rekrut PRIWA CTU und SEKWA CTU nicht übereinstimmen
 	//TODO Anhand des oberen TODOs Waffen automatisch ausgrauen, wenn eine bestimmte CUgewählt wird
 	
@@ -86,9 +85,9 @@ public class R6Helper extends KllngiiApplication {
 	//TODO Webobefläche erneuern. Kein Screenshot sondern JSON übertragen
 	
 	//TODO Drohnen/Kamera Counter
-	//TODO Fähigkeiten brauchen Klarnamen
-	//TODO Button für Operator Infos(Echter Name, Fähigkeit,etc.)
 	//TODO Ace und Headshot Counter
+	
+	//TODO Fähigkeiten Klarnamen brauchen Verwendung
 	
     private final Logger log = Logger.getLogger(getClass());
 
