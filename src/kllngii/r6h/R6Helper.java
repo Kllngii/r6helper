@@ -157,26 +157,10 @@ public class R6Helper extends KllngiiApplication {
         if (args != null && args.length >= 1)
             readWrite = Boolean.valueOf(args[0]);
 
-//        PlasticLookAndFeel.setPlasticTheme(new DarkStar());
-//        PlasticLookAndFeel.setPlasticTheme(new LightGray());
-//        PlasticLookAndFeel.setPlasticTheme(new Silver());  // ganz gut
-//        PlasticLookAndFeel.setPlasticTheme(new DesertBlue());   // ganz gut, farbig
-//        PlasticLookAndFeel.setPlasticTheme(new SkyBlue());
-//        PlasticLookAndFeel.setPlasticTheme(new SkyKrupp());
-//        PlasticLookAndFeel.setPlasticTheme(new ExperienceBlue());  // ganz gut, farbig
-//        PlasticLookAndFeel.setPlasticTheme(new ExperienceGreen());
         PlasticLookAndFeel.setPlasticTheme(new ExperienceRoyale());  // ganz gut, farbig
         
         try {
-            // Set cross-platform Java L&F ("Metal")
-//            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-//            UIManager.setLookAndFeel(new Plastic3DLookAndFeel());
-//            UIManager.setLookAndFeel(new PlasticLookAndFeel());
             UIManager.setLookAndFeel(new PlasticXPLookAndFeel());
-//            UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
-//            UIManager.setLookAndFeel(new MetalLookAndFeel());
-//            UIManager.setLookAndFeel(new NimbusLookAndFeel());
-//            UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
         } catch (Exception ex) {
             // Aufgeben...
             throw new RuntimeException(ex);
