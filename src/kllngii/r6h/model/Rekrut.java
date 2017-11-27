@@ -17,6 +17,7 @@ public class Rekrut extends Operator {
     private static final long serialVersionUID = -5375903106008752408L;
 
     public static final int MAX_GADGETS = 2;
+    public static final String MAX_CTUS = "einer";
 	
 	private final List<Gadget> selectedGadgets = new ArrayList<>();
 	
@@ -27,7 +28,7 @@ public class Rekrut extends Operator {
 
 	public Rekrut(OperatorTyp typ, String name, List<Waffe> primärwaffen,
 			List<Waffe> sekundärwaffen, Collection<Gadget> gadgets) {
-		super(typ, name, primärwaffen, sekundärwaffen, new ArrayList<>(gadgets), Faehigkeit.KEINE, "");
+		super(typ, name, primärwaffen, sekundärwaffen, new ArrayList<>(gadgets), Faehigkeit.KEINE, Ctu.CTU);
 	}
 	
 	

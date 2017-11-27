@@ -14,7 +14,7 @@ public class Operator implements Serializable {
 
     private final OperatorTyp typ;
     private final String name;
-    private final String ctu;
+    private final Ctu ctu;
 
     private final List<Waffe> primärwaffen;
     private final List<Waffe> sekundärwaffen;
@@ -31,7 +31,7 @@ public class Operator implements Serializable {
     
 
     public Operator(OperatorTyp typ, String name, List<Waffe> primärwaffen, List<Waffe> sekundärwaffen,
-            List<Gadget> gadgets, Faehigkeit fähigkeit, String ctu) {
+            List<Gadget> gadgets, Faehigkeit fähigkeit, Ctu ctu) {
         super();
         this.typ = typ;
         this.name = name;
@@ -45,17 +45,17 @@ public class Operator implements Serializable {
     }
 
     public Operator(OperatorTyp typ, String name, Waffe primärwaffe1, List<Waffe> sekundärwaffen,
-            List<Gadget> gadgets, Faehigkeit fähigkeit, String ctu) {
+            List<Gadget> gadgets, Faehigkeit fähigkeit, Ctu ctu) {
         this(typ, name, Arrays.asList(primärwaffe1), sekundärwaffen, gadgets, fähigkeit, ctu);
     }
 
     public Operator(OperatorTyp typ, String name, Waffe primärwaffe1, Waffe primärwaffe2, List<Waffe> sekundärwaffen,
-            List<Gadget> gadgets, Faehigkeit fähigkeit, String ctu) {
+            List<Gadget> gadgets, Faehigkeit fähigkeit, Ctu ctu) {
         this(typ, name, Arrays.asList(primärwaffe1, primärwaffe2), sekundärwaffen, gadgets, fähigkeit, ctu);
     }
 
     public Operator(OperatorTyp typ, String name, Waffe primärwaffe1, Waffe primärwaffe2, Waffe primärwaffe3,
-            List<Waffe> sekundärwaffen, List<Gadget> gadgets, Faehigkeit fähigkeit, String ctu) {
+            List<Waffe> sekundärwaffen, List<Gadget> gadgets, Faehigkeit fähigkeit, Ctu ctu) {
         this(typ, name, Arrays.asList(primärwaffe1, primärwaffe2, primärwaffe3), sekundärwaffen, gadgets, fähigkeit, ctu);
     }
 
@@ -102,7 +102,7 @@ public class Operator implements Serializable {
     public String getName() {
         return name;
     }
-    public String getCtu() {
+    public Ctu getCtu() {
     	return ctu;
     }
 
