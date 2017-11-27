@@ -82,7 +82,6 @@ public class R6Helper extends KllngiiApplication {
 	//TODO Clanmanagement Kalender mit Terminen und An/Abmedung
 	//TODO Mehrere Channel einführen, um PW geschützt getrennt Programm zu nutzen
     
-	//TODO Ela und Lesion einfügen
 	//TODO Neue Operator vorab einführen
 	
 	//TODO Optional: Fenster auch auf Java FX umstellbar
