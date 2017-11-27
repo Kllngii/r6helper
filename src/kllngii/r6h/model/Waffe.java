@@ -32,6 +32,9 @@ public enum Waffe {
 	SUPER90("Super90", Waffentyp.SHOTGUN, Ctu.JTF2),
 	SPAS12("Spas-12", Waffentyp.SHOTGUN, Ctu.NAVYSEALS),
 	SPAS15("Spas-15", Waffentyp.SHOTGUN, Ctu.BOPE),
+	SIX12("Six12", Waffentyp.SHOTGUN, Ctu.SDU),
+	SIX12SD("Six12SD", Waffentyp.SHOTGUN, Ctu.SDU),
+	FO12("Fo-12", Waffentyp.SHOTGUN, Ctu.GROM),
 	
 //	DMRs	
 	_417("417", Waffentyp.DMR, Ctu.GIGN),
@@ -53,6 +56,8 @@ public enum Waffe {
 	P2_26("P226 MK 25", Waffentyp.PISTOLE, Ctu.SAS),
 	_57USG("57USG", Waffentyp.PISTOLE, Ctu.FBI),
 	M45_MEUSOC("M45-MEUSOC", Waffentyp.PISTOLE, Ctu.FBI),
+	Q929("Q-929", Waffentyp.PISTOLE, Ctu.SDU),
+	RG15("RG15", Waffentyp.PISTOLE, Ctu.GROM),
 
 //	Reihenfeuerwaffen
 	BEARING9("Bearing 9", Waffentyp.REIHEN, Ctu.SAT),
@@ -67,6 +72,7 @@ public enum Waffe {
 	_6P41("6P41", Waffentyp.LMG, Ctu.SPETZNAS),
 	M249("M249", Waffentyp.LMG, Ctu.BOPE),
 	G8A1("G8A1", Waffentyp.LMG, Ctu.GSG9),
+	T95("T-95", Waffentyp.LMG, Ctu.SDU),
 	
 //	MPs
 	FMG9("FMG9", Waffentyp.MP, Ctu.SAS),
@@ -81,7 +87,9 @@ public enum Waffe {
 	_9mmC1("9mm-C1", Waffentyp.MP, Ctu.JTF2),
 	M12("M12", Waffentyp.MP, Ctu.BOPE),
 	MP5SD("MP5SD", Waffentyp.MP, Ctu.SAT),
-	VECTOR45("Vector.45", Waffentyp.MP, Ctu.GEO)
+	VECTOR45("Vector.45", Waffentyp.MP, Ctu.GEO),
+	T5SMG("T-5 SMG", Waffentyp.MP, Ctu.SDU),
+	SCORPION("Scorpion EVO 3 A1", Waffentyp.MP, Ctu.GROM)
 	;
 	
 	

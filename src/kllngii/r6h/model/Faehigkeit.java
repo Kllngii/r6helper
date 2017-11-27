@@ -14,6 +14,7 @@ public enum Faehigkeit {
 	BLC(2, "Waffenschild"),
 	CAP(4, "Bolzen"),
 	HIB(3, "X-Kairos"),
+	YNG(3, "Candela"),
 	
 	SMK(3, "Smoke"),
 	MTE(4, "Störsender"),
@@ -28,6 +29,8 @@ public enum Faehigkeit {
 	BLCKEYE(3, "Blackeye"),
 	YOKAI(1, "Yokai"),
 	BLCKMIRROR(2, "Blackmirror"),
+	ELA(3, "GRZMOT"),
+	LSN(7, "GU")
 	
 	
 	
