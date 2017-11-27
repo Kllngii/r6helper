@@ -75,12 +75,16 @@ import kllngii.r6h.model.Waffentyp;
 public class R6Helper extends KllngiiApplication {
 	private static final String ERROR_AKTIVIERE_HÖCHSTENS_N_OPERATOR = "Aktiviere höchstens " + R6HelperModel.MAX_TEAMGRÖSSE + " Operator!";
 	private static final String ERROR_REKRUT_HAT_ZU_VIELE_GADGETS = "Ein Rekrut darf höchstens " + Rekrut.MAX_GADGETS + " Gadgets haben!";
+	private static final String ERROR_REKRUT_PRIWA_SEKWA_CTU = "Ein Rekrut darf nicht die Waffen von mehr als" + Rekrut.MAX_CTUS + "haben!";
 	//TODO Fehler ausgeben, wenn Rekrut PRIWA CTU und SEKWA CTU nicht übereinstimmen
-	//TODO Anhand des oberen TODOs Waffen automatisch ausgrauen, wenn eine bestimmte CUgewählt wird
+	//TODO Anhand des oberen TODOs Waffen automatisch ausgrauen, wenn eine bestimmte CTU gewählt wird
 	
 	//TODO Clanmanagement Kalender mit Terminen und An/Abmedung
 	//TODO Mehrere Channel einführen, um PW geschützt getrennt Programm zu nutzen
     
+	//TODO Ela und Lesion einfügen
+	//TODO Neue Operator vorab einführen
+	
 	//TODO Optional: Fenster auch auf Java FX umstellbar
 	//TODO Webobefläche erneuern. Kein Screenshot sondern JSON übertragen
 	
