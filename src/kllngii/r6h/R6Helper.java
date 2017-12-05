@@ -75,7 +75,7 @@ import kllngii.r6h.model.Waffentyp;
 public class R6Helper extends KllngiiApplication {
 	private static final String ERROR_AKTIVIERE_HÖCHSTENS_N_OPERATOR = "Aktiviere höchstens " + R6HelperModel.MAX_TEAMGRÖSSE + " Operator!";
 	private static final String ERROR_REKRUT_HAT_ZU_VIELE_GADGETS = "Ein Rekrut darf höchstens " + Rekrut.MAX_GADGETS + " Gadgets haben!";
-	private static final String ERROR_REKRUT_PRIWA_SEKWA_CTU = "Ein Rekrut darf nicht die Waffen von mehr als" + Rekrut.MAX_CTUS + "haben!";
+	private static final String ERROR_REKRUT_PRIWA_SEKWA_CTU = "Ein Rekrut darf nicht die Waffen von mehr als " + Rekrut.MAX_CTUS + " haben!";
 	//TODO Fehler ausgeben, wenn Rekrut PRIWA CTU und SEKWA CTU nicht übereinstimmen
 	//TODO Anhand des oberen TODOs Waffen automatisch ausgrauen, wenn eine bestimmte CTU gewählt wird
 	
@@ -89,6 +89,7 @@ public class R6Helper extends KllngiiApplication {
 	
 	//TODO Drohnen/Kamera Counter
 	//TODO Ace und Headshot Counter
+	//Wie Fähigkeiten einrichten
 	
 	//TODO Fähigkeiten Klarnamen brauchen Verwendung
 	
@@ -220,7 +221,7 @@ public class R6Helper extends KllngiiApplication {
                 .padding("6dlu, 12px, 6dlu, 12px");
         
         
-        JButton btnWeb = new JButton("Map öffnen");
+        JButton btnWeb = new JButton("Externe Rainbow Programme");
         JComboBox<R6Map> comboWeb = new JComboBox<R6Map>(R6Map.values());
         if (Desktop.isDesktopSupported()) {
             btnWeb.setEnabled(true);
@@ -236,6 +237,7 @@ public class R6Helper extends KllngiiApplication {
                 url = new URL("http://www.r6maps.com/"+comboWeb.getItemAt(comboWeb.getSelectedIndex()).getUrl());
 
                 try {
+                	R6DBWindow.main(null);
                     Desktop.getDesktop().browse(url.toURI());
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -262,7 +264,6 @@ public class R6Helper extends KllngiiApplication {
             });
             menu.add(jsonSaveButton).xy(1, 5);
         }
-        
         JButton settings = new JButton("Einstellungen");
         settings.addActionListener((ActionEvent evt) -> {
             if (einstellungsFrame == null)
