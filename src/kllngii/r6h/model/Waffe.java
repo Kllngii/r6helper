@@ -19,7 +19,8 @@ public enum Waffe {
 	TYPE89("Type-89", Waffentyp.STURM, Ctu.SAT),
 	C7E("C7E", Waffentyp.STURM, Ctu.GEO),
 	PDW9("PDW9", Waffentyp.STURM, Ctu.GEO),
-	
+	MK14EBR("Mk-14EBR", Waffentyp.STURM, Ctu._707SBM),
+	M762("M762", Waffentyp.STURM, Ctu.GROM),
 //	Shotguns	
 	M590A1("M590A1", Waffentyp.SHOTGUN, Ctu.SAS),
 	M1014("M1014", Waffentyp.SHOTGUN, Ctu.FBI),
@@ -35,6 +36,7 @@ public enum Waffe {
 	SIX12("Six12", Waffentyp.SHOTGUN, Ctu.SDU),
 	SIX12SD("Six12SD", Waffentyp.SHOTGUN, Ctu.SDU),
 	FO12("Fo-12", Waffentyp.SHOTGUN, Ctu.GROM),
+	BOSG122("BOSG.12.2", Waffentyp.SHOTGUN, Ctu._707SBM),
 	
 //	DMRs	
 	_417("417", Waffentyp.DMR, Ctu.GIGN),
@@ -62,6 +64,8 @@ public enum Waffe {
 //	Reihenfeuerwaffen
 	BEARING9("Bearing 9", Waffentyp.REIHEN, Ctu.SAT),
 	SMG11("SMG 11", Waffentyp.REIHEN, Ctu.SAS),
+	C75("C75", Waffentyp.REIHEN, Ctu._707SBM),
+	SMG12("SMG-12", Waffentyp.REIHEN, Ctu._707SBM),
 	
 //	Schilder
 	AUSF_SCHILD("Ausfahrbarer Schild", Waffentyp.SCHILD, Ctu.GIGN),
@@ -73,6 +77,7 @@ public enum Waffe {
 	M249("M249", Waffentyp.LMG, Ctu.BOPE),
 	G8A1("G8A1", Waffentyp.LMG, Ctu.GSG9),
 	T95("T-95", Waffentyp.LMG, Ctu.SDU),
+	LMGE("LMG-E", Waffentyp.LMG, Ctu.GROM),
 	
 //	MPs
 	FMG9("FMG9", Waffentyp.MP, Ctu.SAS),
@@ -89,7 +94,8 @@ public enum Waffe {
 	MP5SD("MP5SD", Waffentyp.MP, Ctu.SAT),
 	VECTOR45("Vector.45", Waffentyp.MP, Ctu.GEO),
 	T5SMG("T-5 SMG", Waffentyp.MP, Ctu.SDU),
-	SCORPION("Scorpion EVO 3 A1", Waffentyp.MP, Ctu.GROM)
+	SCORPION("Scorpion EVO 3 A1", Waffentyp.MP, Ctu.GROM),
+	K1A("K1-A", Waffentyp.MP, Ctu._707SBM),
 	;
 	
 	

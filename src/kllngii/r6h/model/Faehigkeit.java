@@ -14,7 +14,9 @@ public enum Faehigkeit {
 	BLC(2, "Waffenschild"),
 	CAP(4, "Bolzen"),
 	HIB(3, "X-Kairos"),
+	ZFA(6, "Doppellauf-Granatwerfer"),
 	YNG(3, "Candela"),
+	DKB(2, "Handy-Hack"),
 	
 	SMK(3, "Smoke"),
 	MTE(4, "Störsender"),
@@ -30,10 +32,7 @@ public enum Faehigkeit {
 	YOKAI(1, "Yokai"),
 	BLCKMIRROR(2, "Blackmirror"),
 	ELA(3, "GRZMOT"),
-	LSN(7, "GU")
-	
-	
-	
+	LSN(7, "GU"),
 	
 	;
 	private final int anzahl;
