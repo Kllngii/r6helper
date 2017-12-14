@@ -75,15 +75,12 @@ import kllngii.r6h.model.Waffentyp;
 public class R6Helper extends KllngiiApplication {
 	private static final String ERROR_AKTIVIERE_HÖCHSTENS_N_OPERATOR = "Aktiviere höchstens " + R6HelperModel.MAX_TEAMGRÖSSE + " Operator!";
 	private static final String ERROR_REKRUT_HAT_ZU_VIELE_GADGETS = "Ein Rekrut darf höchstens " + Rekrut.MAX_GADGETS + " Gadgets haben!";
-	private static final String ERROR_REKRUT_PRIWA_SEKWA_CTU = "Ein Rekrut darf nicht die Waffen von mehr als " + Rekrut.MAX_CTUS + " haben!";
-	//TODO Fehler ausgeben, wenn Rekrut PRIWA CTU und SEKWA CTU nicht übereinstimmen
-	//TODO Anhand des oberen TODOs Waffen automatisch ausgrauen, wenn eine bestimmte CTU gewählt wird
+	private static final String ERROR_REKRUT_PRIWA_SEKWA_CTU = "Ein Rekrut darf nicht die Waffen von mehr als " + Rekrut.MAX_CTUS + " CTUs haben!";
 	
-	//TODO Clanmanagement Kalender mit Terminen und An/Abmedung
 	//TODO Mehrere Channel einführen, um PW geschützt getrennt Programm zu nutzen
     
 	//TODO Optional: Fenster auch auf Java FX umstellbar
-	//TODO Webobefläche erneuern. Kein Screenshot sondern JSON übertragen
+	//TODO Webobefläche erneuern. Kein Screenshot sondern JSON übertragen -> angular Project
 	
 	//TODO Drohnen/Kamera Counter
 	//TODO Ace und Headshot Counter
@@ -645,16 +642,30 @@ public class R6Helper extends KllngiiApplication {
             // Name
             JLabel nameLabel = new JLabel(op.getName());
             builder.add(nameLabel).xy(1, row);
+            
+            final JComboBox<Waffe> primW = new JComboBox<>(new Vector<Waffe>((op.getPrimärwaffen())));
+            final JComboBox<Waffe> secW = new JComboBox<>(new Vector<Waffe>(op.getSekundärwaffen()));
 
             // Primärwaffe
             if (readWrite) {
-                JComboBox<Waffe> primW = new JComboBox<>(new Vector<Waffe>((op.getPrimärwaffen())));
                 primW.setSelectedItem(op.getSelectedPrimärwaffe());
                 primW.addActionListener((ActionEvent evt) -> {
-                    op.setSelectedPrimärwaffe((Waffe) primW.getSelectedItem());
+                	Waffe prim = (Waffe) primW.getSelectedItem();
+                    op.setSelectedPrimärwaffe(prim);
+                    if ( prim != null && secW.getSelectedItem() != null && 
+                         ((Waffe) secW.getSelectedItem()).getC() != prim.getC() ) {
+                    	secW.setSelectedItem(null);
+                    	showError(ERROR_REKRUT_PRIWA_SEKWA_CTU);
+                    }
+                    else
+                    	removeError(ERROR_REKRUT_PRIWA_SEKWA_CTU);
                     showWaffentyp();
-
                 });
+                
+                // Sofort die einzige Waffe auswählen
+                if (op.getPrimärwaffen().size() == 1)
+                	primW.setSelectedItem(op.getPrimärwaffen().get(0));
+                
                 builder.add(primW).xy(3, row);
             } else {
                 if (op.getSelectedPrimärwaffe() != null)
@@ -663,12 +674,24 @@ public class R6Helper extends KllngiiApplication {
 
             // Sekundärwaffe
             if (readWrite) {
-                JComboBox<Waffe> secW = new JComboBox<>(new Vector<Waffe>(op.getSekundärwaffen()));
                 secW.setSelectedItem(op.getSelectedSekundärwaffe());
                 secW.addActionListener((ActionEvent evt) -> {
-                    op.setSelectedSekundärwaffe((Waffe) secW.getSelectedItem());
+                	Waffe sec = (Waffe) secW.getSelectedItem();
+                    op.setSelectedSekundärwaffe(sec);
+                    if ( sec != null && primW.getSelectedItem() != null && 
+                    	 ((Waffe) primW.getSelectedItem()).getC() != sec.getC() ) {
+                    	primW.setSelectedItem(null);
+                    	showError(ERROR_REKRUT_PRIWA_SEKWA_CTU);
+                    }
+                    else
+                    	removeError(ERROR_REKRUT_PRIWA_SEKWA_CTU);
                     showWaffentyp();
                 });
+                
+                // Sofort die einzige Waffe auswählen
+                if (op.getSekundärwaffen().size() == 1)
+                	secW.setSelectedItem(op.getSekundärwaffen().get(0));
+
                 builder.add(secW).xy(5, row);
             } else {
                 if (op.getSelectedSekundärwaffe() != null)
@@ -806,11 +829,16 @@ public class R6Helper extends KllngiiApplication {
     }
 
     private void showErrorIf(BooleanSupplier condition, String msg) {
-        if (condition.getAsBoolean())
+        if (condition.getAsBoolean()) {
             errors.add(msg);
+            refreshErrors();            
+        }
         else
-            errors.remove(msg);
-
+        	removeError(msg);
+    }
+    
+    private void removeError(String msg) {
+        errors.remove(msg);
         refreshErrors();
     }
 

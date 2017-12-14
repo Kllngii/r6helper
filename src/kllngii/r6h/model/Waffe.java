@@ -101,6 +101,8 @@ public enum Waffe {
 	
     private final Waffentyp typ;
 	private final String name;
+	/** Benennung inklusive CTU, für Comboboxen etc */
+	private final String label;
 	private final Ctu c;
 	
 	
@@ -108,6 +110,8 @@ public enum Waffe {
 		this.name = name;
 		this.typ = typ;
 		this.c = c;
+		
+		this.label = name + " (" + c + ")";
 		
 	}
 
@@ -123,7 +127,7 @@ public enum Waffe {
 
     @Override
 	public String toString() {
-	    return name;
+	    return label;
 	}
 	public static Waffe findByName(String name) {
 	    if (name == null)
