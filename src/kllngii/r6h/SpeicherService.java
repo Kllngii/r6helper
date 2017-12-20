@@ -11,6 +11,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.prefs.Preferences;
 import java.util.stream.Collectors;
 
@@ -22,9 +23,11 @@ import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import kllngii.r6h.model.Einstellungen;
 import kllngii.r6h.model.Gadget;
 import kllngii.r6h.model.Operator;
 import kllngii.r6h.model.R6HelperModel;
+import kllngii.r6h.model.Spieler;
 import kllngii.r6h.model.Waffe;
 
 /**
@@ -241,7 +244,6 @@ public class SpeicherService {
         String jsonString = IOUtils.toString(uri, StandardCharsets.UTF_8);
         return ladeJson(jsonString);
     }
-    
     public ModelWithErrors ladeJson(String jsonString) throws IllegalArgumentException {
     	if (StringUtils.isBlank(jsonString))
     		throw new IllegalArgumentException("Die Datei enthält kein gültiges JSON!");
@@ -249,7 +251,10 @@ public class SpeicherService {
     	
     	return new ModelWithErrors(getModel(json), getErrors(json));
     }
-    
+    public void createSpielerData(Spieler sp) {
+    	JSONObject JsonObj = new JSONObject();
+    	JsonObj.put(sp.getName(), sp);
+    }
     
     
 }
