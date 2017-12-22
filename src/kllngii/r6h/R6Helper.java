@@ -57,7 +57,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.jgoodies.forms.builder.FormBuilder;
-import com.jgoodies.forms.factories.DefaultComponentFactory;
 import com.jgoodies.looks.plastic.PlasticLookAndFeel;
 import com.jgoodies.looks.plastic.PlasticXPLookAndFeel;
 import com.jgoodies.looks.plastic.theme.ExperienceRoyale;
@@ -72,9 +71,10 @@ import kllngii.r6h.model.R6Map;
 import kllngii.r6h.model.Rekrut;
 import kllngii.r6h.model.Waffe;
 import kllngii.r6h.model.Waffentyp;
+import kllngii.r6h.spieler.SpielerlisteController;
 
 
-public class R6Helper extends KllngiiApplication {
+public class R6Helper extends KllngiiView {
 	private static final String ERROR_AKTIVIERE_HÖCHSTENS_N_OPERATOR = "Aktiviere höchstens " + R6HelperModel.MAX_TEAMGRÖSSE + " Operator!";
 	private static final String ERROR_REKRUT_HAT_ZU_VIELE_GADGETS = "Ein Rekrut darf höchstens " + Rekrut.MAX_GADGETS + " Gadgets haben!";
 	private static final String ERROR_REKRUT_PRIWA_SEKWA_CTU = "Ein Rekrut darf nicht die Waffen von mehr als " + Rekrut.MAX_CTUS + " CTUs haben!";
@@ -100,8 +100,8 @@ public class R6Helper extends KllngiiApplication {
 
     private R6HelperModel model = new R6HelperModel();
     
-    private final DefaultComponentFactory compFactory = new DefaultComponentFactory();
-
+    private SpielerlisteController spielerlisteController;
+    
     private JPanel panel_angriff;
     private JPanel panel_verteidigung;
     
@@ -194,6 +194,8 @@ public class R6Helper extends KllngiiApplication {
      * Initialize the contents of the frame.
      */
     private void initialize() {
+        spielerlisteController = new SpielerlisteController(readWrite, model);
+
         frame = new JFrame();
         frame.setTitle("R6 Helper");
 
@@ -213,11 +215,19 @@ public class R6Helper extends KllngiiApplication {
         frame.getContentPane().add(linksRechtsRoot);
         
         final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.WRAP_TAB_LAYOUT);
+        final Dimension tabDimension = new Dimension(890, 600);
+        
+        // Gegnerteam
         Container gegnerTabRoot = createGegnerTabContent();
         JScrollPane tabbedPaneScroller = new JScrollPane(gegnerTabRoot);
-        tabbedPaneScroller.setPreferredSize(new Dimension(890, 600));
+        tabbedPaneScroller.setPreferredSize(tabDimension);
         tabbedPane.addTab("Gegnerteam", tabbedPaneScroller);
-        tabbedPane.addTab("Team", new Box(BoxLayout.Y_AXIS));
+        
+        // Eigenes Team
+        JComponent teamTabRoot = spielerlisteController.getView().getRoot();
+        tabbedPaneScroller = new JScrollPane(teamTabRoot);
+        tabbedPaneScroller.setPreferredSize(tabDimension);
+        tabbedPane.addTab("Team", teamTabRoot);
         linksRechtsRoot.add(tabbedPane);
         
         
@@ -252,7 +262,7 @@ public class R6Helper extends KllngiiApplication {
             // Per Timer (in einem eigenen Thread):
             // Sofort einmal das JSON holen
             // UND später regelmäßig neu einlesen
-            Timer refreshTimer = new Timer(refreshIntervalS*1000, (ActionEvent e) -> {
+            Timer refreshTimer = new Timer(Math.max(refreshIntervalS*1000, 100), (ActionEvent e) -> {
                 log.info("Timer feuert - JSON neu einlesen...");
                 ladeAusJson();
             });
@@ -265,7 +275,7 @@ public class R6Helper extends KllngiiApplication {
             refreshTimer.start();
         }
         else {
-            Timer loadOnceTimer = new Timer(0, (ActionEvent e1) -> {
+            Timer loadOnceTimer = new Timer(100, (ActionEvent e1) -> {
                 log.info("JSON nach dem Start einmal einlesen...");
                 ladeAusJson();
                 
@@ -281,6 +291,7 @@ public class R6Helper extends KllngiiApplication {
                 }
 
             });
+            loadOnceTimer.setInitialDelay(0);
             loadOnceTimer.setRepeats(false);
             loadOnceTimer.start();
             
@@ -543,29 +554,33 @@ public class R6Helper extends KllngiiApplication {
 		
 	}
 
-	private void ladeAusJson() {
+    private void ladeAusJson() {
         try {
-        	// Im richtigen Thread (EDT) den Mauszeiger auf "Warten" setzen:
-        	if (! SwingUtilities.isEventDispatchThread())
-        		SwingUtilities.invokeAndWait(() -> frame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR)));
-        	else
-        		frame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             log.info("Lade JSON...");
-        	final long time1 = System.currentTimeMillis(); 
+            
+            // Im richtigen Thread (EDT) den Mauszeiger auf "Warten" setzen:
+            if (!SwingUtilities.isEventDispatchThread())
+                SwingUtilities.invokeAndWait(() -> frame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR)));
+            else
+                frame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+            final long time1 = System.currentTimeMillis();
             SpeicherService.ModelWithErrors mwe = speicherService.ladeJson(einstellungen.getUriInput());
             model = mwe.getModel();
+            spielerlisteController = new SpielerlisteController(readWrite, model);
             errors.clear();
             errors.addAll(mwe.getErrors());
-            
+
             refreshView();
             final long time2 = System.currentTimeMillis();
-            log.info("Ladezeit:  "+(time2-time1)+"ms"); 
-        } catch (Exception ex) {
+            log.info("Ladezeit:  " + (time2 - time1) + "ms");
+        }
+        catch (Exception ex) {
             log.error("Fehler beim Laden des JSON!", ex);
             showError("Fehler beim Laden des JSON: " + StringUtils.defaultIfEmpty(ex.getMessage(), ex.toString()));
         }
         finally {
-        	SwingUtilities.invokeLater(() -> frame.setCursor(Cursor.getDefaultCursor()));
+            SwingUtilities.invokeLater(() -> frame.setCursor(Cursor.getDefaultCursor()));
         }
 
     }
@@ -650,18 +665,13 @@ public class R6Helper extends KllngiiApplication {
                    .columns("left:pref, 12dlu, pref, 12dlu, pref, 12dlu, pref, 12dlu, pref, 12dlu, pref, 4dlu, [40px,pref]");
         }
         
-        JLabel lifepointsLabel = compFactory.createTitle("Lifepoints");
-        lifepointsLabel.setToolTipText("Lifepoints");
-        JLabel fähigkeitLabel = compFactory.createTitle("Fähigkeit");
-        fähigkeitLabel.setToolTipText("Fähigkeit");
-
         int row = 1;
         builder.addTitle("Operator").xy(1, row)
                .addTitle("Primärwaffe").xy(3, row)
                .addTitle("Sekundärwaffe").xy(5, row)
                .addTitle("Gadgets").xy(7, row)
-               .add(lifepointsLabel).xy(9, row)
-               .add(fähigkeitLabel).xyw(11, row, 3)
+               .add(title("Lifepoints")).xy(9, row)
+               .add(title("Fähigkeit")).xyw(11, row, 3)
                .addSeparator("").xyw(1, 2, 13);
         
         for (Operator op : selectedOps) {

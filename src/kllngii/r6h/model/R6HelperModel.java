@@ -119,6 +119,7 @@ public class R6HelperModel implements Serializable {
 
         spielerRepo = new ArrayList<>();
         spielerRepo.add(new Spieler("Klln911gii"));
+        spielerRepo.add(new Spieler("CLK"));
 
         team = new ArrayList<>(spielerRepo);
 

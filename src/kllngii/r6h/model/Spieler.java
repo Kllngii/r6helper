@@ -40,9 +40,15 @@ public class Spieler {
 	public int getHeadshots() {
 		return hs;
 	}
+	public void increaseHeadshots() {
+	    hs++;
+	}
 
 	public int getAce() {
 		return ace;
+	}
+	public void increaseAce() {
+	    ace++;
 	}
 	
 	

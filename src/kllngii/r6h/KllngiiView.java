@@ -3,12 +3,31 @@ package kllngii.r6h;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 
-public abstract class KllngiiApplication {
+import com.jgoodies.forms.factories.DefaultComponentFactory;
+
+public abstract class KllngiiView {
+    
+    protected final DefaultComponentFactory compFactory = new DefaultComponentFactory();
+
+    
+    /**
+     * Erzeugt ein JLabel mit Tooltip-Text, für einen Formbuilder
+     * @param text  Text und Tooltip-Text
+     */
+    protected JLabel title(String text) {
+        return title(text, text);
+    }
+    protected JLabel title(String text, String tooltip) {
+        JLabel label = compFactory.createTitle(text);
+        label.setToolTipText(tooltip);
+        return label;
+    }
 
     /**
      * Versieht eine {@link JComponent} mit einem unsichtbaren Rand von soundso vielen Pixeln;
