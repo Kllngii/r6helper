@@ -249,10 +249,5 @@ public class SpeicherService {
     	
     	return new ModelWithErrors(getModel(json), getErrors(json));
     }
-    public void createSpielerData(Spieler sp) {
-    	JSONObject JsonObj = new JSONObject();
-    	JsonObj.put(sp.getName(), sp);
-    }
-    
     
 }
