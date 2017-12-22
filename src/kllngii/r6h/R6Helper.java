@@ -43,6 +43,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
 import javax.swing.SpinnerNumberModel;
@@ -197,7 +198,7 @@ public class R6Helper extends KllngiiApplication {
         frame.setTitle("R6 Helper");
 
         Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
-        Dimension size = new Dimension(940, 630);
+        Dimension size = new Dimension(1080, 630);
         frame.setSize(size.width, size.height);
         frame.setLocation((screensize.width - size.width) / 2, (screensize.height - size.height) / 2);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -205,16 +206,27 @@ public class R6Helper extends KllngiiApplication {
         
         frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
 
-        // Tabs für Gegnerteam und eigenes Team
+        
+        //// Links: Tabs für Gegnerteam und eigenes Team ////
+        
+        final Container linksRechtsRoot = new Box(BoxLayout.X_AXIS);
+        frame.getContentPane().add(linksRechtsRoot);
+        
         final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.WRAP_TAB_LAYOUT);
         Container gegnerTabRoot = createGegnerTabContent();
-        tabbedPane.addTab("Gegnerteam", gegnerTabRoot);
+        JScrollPane tabbedPaneScroller = new JScrollPane(gegnerTabRoot);
+        tabbedPaneScroller.setPreferredSize(new Dimension(890, 600));
+        tabbedPane.addTab("Gegnerteam", tabbedPaneScroller);
         tabbedPane.addTab("Team", new Box(BoxLayout.Y_AXIS));
-        frame.getContentPane().add(tabbedPane);
+        linksRechtsRoot.add(tabbedPane);
         
         
+        //// Rechts: Menu ////
         
-        //// Meldungen ////
+        linksRechtsRoot.add(createMenuContent());
+
+        
+        //// Unten: Meldungen ////
         
         final Container meldungenRoot = new Box(BoxLayout.Y_AXIS);
         frame.getContentPane().add(meldungenRoot);
@@ -282,78 +294,6 @@ public class R6Helper extends KllngiiApplication {
         root.add(leftColumn);
         
         
-        
-        //// Menü-Buttons am rechten Rand ////
-        
-        FormBuilder menu = FormBuilder.create()
-                .columns("pref")
-                .rows("p, $lgap, p, $pgap, " +
-                      "p, $lgap, p, $pgap, " +
-                      "p, $pgap, p")
-                .padding("6dlu, 12px, 6dlu, 12px");
-        
-        
-        JButton btnWeb = new JButton("Externe Rainbow Programme");
-        JComboBox<R6Map> comboWeb = new JComboBox<R6Map>(R6Map.values());
-        if (Desktop.isDesktopSupported()) {
-            btnWeb.setEnabled(true);
-        } else {
-            btnWeb.setEnabled(false);
-        }
-        menu.add(btnWeb).xy(1, 1);
-        menu.add(comboWeb).xy(1, 3);
-        btnWeb.addActionListener((ActionEvent evt) -> {
-            URL url = null;
-            try {
-            	
-                url = new URL("http://www.r6maps.com/"+comboWeb.getItemAt(comboWeb.getSelectedIndex()).getUrl());
-
-                try {
-                	R6DBWindow.main(null);
-                    Desktop.getDesktop().browse(url.toURI());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (URISyntaxException e) {
-                    e.printStackTrace();
-                }
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
-        });
-        
-        
-        JButton jsonLoadButton = new JButton("Laden");
-        jsonLoadButton.addActionListener((ActionEvent evt) -> {
-            ladeAusJson();
-        });
-        menu.add(jsonLoadButton).xy(1, 3);
-
-        if (readWrite) {
-            JButton jsonSaveButton = new JButton("Speichern");
-            jsonSaveButton.addActionListener((ActionEvent evt) -> {
-                speichereInJSON();
-                
-            });
-            menu.add(jsonSaveButton).xy(1, 5);
-        }
-        JButton settings = new JButton("Einstellungen");
-        settings.addActionListener((ActionEvent evt) -> {
-            if (einstellungsFrame == null)
-                einstellungsFrame = new EinstellungsFrame(einstellungen);
-            einstellungsFrame.setVisible(true);
-            einstellungsFrame.toFront();
-        });
-        menu.add(settings).xy(1, 7);
-        
-        JButton resetBtn = new JButton("Reset");
-        resetBtn.addActionListener((ActionEvent evt) -> {
-            reset();
-        });
-        menu.add(resetBtn).xy(1, 9);
-        
-        root.add(menu.build());
-
-        
         //// Ebene 1 ////
 
         rdbtnAngreifer = new JRadioButton("Angreifer", true);
@@ -370,9 +310,8 @@ public class R6Helper extends KllngiiApplication {
                 .columns("pref, 6dlu, pref")
                 .rows("p, $lgap, p")
                 .padding("6dlu, 12px, 6dlu, 12px")
-                .addSeparator("Gegnerteam").xyw(1, 1, 3)
-                .add(rdbtnAngreifer).xy(1, 3)
-                .add(rdbtnVerteidiger).xy(3, 3);
+                .add(rdbtnAngreifer).xy(1, 1)
+                .add(rdbtnVerteidiger).xy(3, 1);
         leftColumn.add(avPanel.build());
 
         
@@ -491,6 +430,78 @@ public class R6Helper extends KllngiiApplication {
         leftColumn.add(wArt.build());
         
         return root;
+    }
+
+    private JPanel createMenuContent() {
+        //// Menü-Buttons am rechten Rand ////
+        
+        FormBuilder menu = FormBuilder.create()
+                .columns("pref")
+                .rows("p, $lgap, p, $pgap, " +
+                      "p, $lgap, p, $pgap, " +
+                      "p, $pgap, p")
+                .padding("6dlu, 12px, 6dlu, 12px");
+        
+        
+        JButton btnWeb = new JButton("Externe Rainbow Programme");
+        JComboBox<R6Map> comboWeb = new JComboBox<R6Map>(R6Map.values());
+        if (Desktop.isDesktopSupported()) {
+            btnWeb.setEnabled(true);
+        } else {
+            btnWeb.setEnabled(false);
+        }
+        menu.add(btnWeb).xy(1, 1);
+        menu.add(comboWeb).xy(1, 3);
+        btnWeb.addActionListener((ActionEvent evt) -> {
+            URL url = null;
+            try {
+            	
+                url = new URL("http://www.r6maps.com/"+comboWeb.getItemAt(comboWeb.getSelectedIndex()).getUrl());
+
+                try {
+                	R6DBWindow.main(null);
+                    Desktop.getDesktop().browse(url.toURI());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+        });
+        
+        
+        JButton jsonLoadButton = new JButton("Laden");
+        jsonLoadButton.addActionListener((ActionEvent evt) -> {
+            ladeAusJson();
+        });
+        menu.add(jsonLoadButton).xy(1, 3);
+
+        if (readWrite) {
+            JButton jsonSaveButton = new JButton("Speichern");
+            jsonSaveButton.addActionListener((ActionEvent evt) -> {
+                speichereInJSON();
+                
+            });
+            menu.add(jsonSaveButton).xy(1, 5);
+        }
+        JButton settings = new JButton("Einstellungen");
+        settings.addActionListener((ActionEvent evt) -> {
+            if (einstellungsFrame == null)
+                einstellungsFrame = new EinstellungsFrame(einstellungen);
+            einstellungsFrame.setVisible(true);
+            einstellungsFrame.toFront();
+        });
+        menu.add(settings).xy(1, 7);
+        
+        JButton resetBtn = new JButton("Reset");
+        resetBtn.addActionListener((ActionEvent evt) -> {
+            reset();
+        });
+        menu.add(resetBtn).xy(1, 9);
+        JPanel menuPanel = menu.build();
+        return menuPanel;
     }
     
     private FormBuilder createAvBuilder(final int numColumns, final int numRows, JLabel operatorLabel) {
