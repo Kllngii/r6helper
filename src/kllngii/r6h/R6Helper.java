@@ -44,6 +44,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSpinner;
+import javax.swing.JTabbedPane;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
@@ -201,9 +202,85 @@ public class R6Helper extends KllngiiApplication {
         frame.setLocation((screensize.width - size.width) / 2, (screensize.height - size.height) / 2);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.X_AXIS));
-        Container root = new Box(BoxLayout.Y_AXIS);
-        frame.getContentPane().add(root);
+        
+        frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
+
+        // Tabs für Gegnerteam und eigenes Team
+        final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.WRAP_TAB_LAYOUT);
+        Container gegnerTabRoot = createGegnerTabContent();
+        tabbedPane.addTab("Gegnerteam", gegnerTabRoot);
+        tabbedPane.addTab("Team", new Box(BoxLayout.Y_AXIS));
+        frame.getContentPane().add(tabbedPane);
+        
+        
+        
+        //// Meldungen ////
+        
+        final Container meldungenRoot = new Box(BoxLayout.Y_AXIS);
+        frame.getContentPane().add(meldungenRoot);
+        meldungenRoot.add(Box.createVerticalStrut(lücke));
+
+        panel_meldung = new JPanel();
+        meldungenRoot.add(panel_meldung);
+
+        meldunglabel = new JLabel("");
+        meldunglabel.setForeground(Color.RED);
+        meldunglabel.setFont(new Font(Font.DIALOG, Font.BOLD, 14));
+        panel_meldung.add(meldunglabel);
+        panel_meldung.setVisible(false);
+
+        meldungenRoot.add(Box.createVerticalGlue());
+        
+        frame.setVisible(true);
+
+        // Timer starten:
+        final int refreshIntervalS = Math.max(0, einstellungen.getRefreshIntervalS());  // negative Werte krachen
+        if(!readWrite) {
+            
+            // Per Timer (in einem eigenen Thread):
+            // Sofort einmal das JSON holen
+            // UND später regelmäßig neu einlesen
+            Timer refreshTimer = new Timer(refreshIntervalS*1000, (ActionEvent e) -> {
+                log.info("Timer feuert - JSON neu einlesen...");
+                ladeAusJson();
+            });
+            refreshTimer.setInitialDelay(0);  // sofort einmal holen
+            if (refreshIntervalS == 0)
+                refreshTimer.setRepeats(false);  // NUR einmal holen
+            else
+                log.info("Timer wird erzeugt, um das JSON alle " + einstellungen.getRefreshIntervalS() + " s neu einzulesen.");
+            einstellungen.setRefreshTimer(refreshTimer);
+            refreshTimer.start();
+        }
+        else {
+            Timer loadOnceTimer = new Timer(0, (ActionEvent e1) -> {
+                log.info("JSON nach dem Start einmal einlesen...");
+                ladeAusJson();
+                
+                // Per Timer das Model regelmäßig neu speichern
+                Timer refreshTimer = new Timer(einstellungen.getRefreshIntervalS()*1000, (ActionEvent e2) -> {
+                    log.info("Timer feuert - JSON neu speichern");
+                    speichereInJSON();
+                });
+                einstellungen.setRefreshTimer(refreshTimer);
+                if (refreshIntervalS != 0) {
+                    log.info("Timer wird gestartet, um das JSON alle " + einstellungen.getRefreshIntervalS() + " s zu speichern.");
+                    refreshTimer.start();
+                }
+
+            });
+            loadOnceTimer.setRepeats(false);
+            loadOnceTimer.start();
+            
+        }
+    }
+
+    private Container createGegnerTabContent() {
+        final Container root = new Box(BoxLayout.X_AXIS);
+
+        final Container leftColumn = new Box(BoxLayout.Y_AXIS);
+        root.add(leftColumn);
+        
         
         
         //// Menü-Buttons am rechten Rand ////
@@ -274,7 +351,7 @@ public class R6Helper extends KllngiiApplication {
         });
         menu.add(resetBtn).xy(1, 9);
         
-        frame.getContentPane().add(menu.build());
+        root.add(menu.build());
 
         
         //// Ebene 1 ////
@@ -296,7 +373,7 @@ public class R6Helper extends KllngiiApplication {
                 .addSeparator("Gegnerteam").xyw(1, 1, 3)
                 .add(rdbtnAngreifer).xy(1, 3)
                 .add(rdbtnVerteidiger).xy(3, 3);
-        root.add(avPanel.build());
+        leftColumn.add(avPanel.build());
 
         
         //// Ebene 2 ////
@@ -330,7 +407,7 @@ public class R6Helper extends KllngiiApplication {
             });
         }
         panel_angriff = angriffBuilder.build();
-        root.add(panel_angriff);
+        leftColumn.add(panel_angriff);
         
         verteidigungCheckboxen = new HashMap<>();
         col = 1;
@@ -354,7 +431,7 @@ public class R6Helper extends KllngiiApplication {
             });
         }
         panel_verteidigung = verteidigungBuilder.build();
-        root.add(panel_verteidigung);
+        leftColumn.add(panel_verteidigung);
         panel_verteidigung.setVisible(false);
 
         // Event-Handler für Auswahl Angriff/Verteidigung:
@@ -375,7 +452,7 @@ public class R6Helper extends KllngiiApplication {
         //// Ebene 3 ////
 
         panel_waffen = new Box(BoxLayout.X_AXIS);
-        root.add(panel_waffen);
+        leftColumn.add(panel_waffen);
         
         
         //// Ebene 4 ////
@@ -411,66 +488,9 @@ public class R6Helper extends KllngiiApplication {
         waffenTypMap.put(Waffentyp.PISTOLE, new WaffenTypLabel(lblP));
         wArt.add(lblP).xy(11, 3);
         
-        root.add(wArt.build());
+        leftColumn.add(wArt.build());
         
-        
-        //// Meldungen ////
-        
-        root.add(Box.createVerticalStrut(lücke));
-
-        panel_meldung = new JPanel();
-        root.add(panel_meldung);
-
-        meldunglabel = new JLabel("");
-        meldunglabel.setForeground(Color.RED);
-        meldunglabel.setFont(new Font(Font.DIALOG, Font.BOLD, 14));
-        panel_meldung.add(meldunglabel);
-        panel_meldung.setVisible(false);
-
-        root.add(Box.createVerticalGlue());
-        
-        frame.setVisible(true);
-
-        // Timer starten:
-        final int refreshIntervalS = Math.max(0, einstellungen.getRefreshIntervalS());  // negative Werte krachen
-        if(!readWrite) {
-            
-            // Per Timer (in einem eigenen Thread):
-            // Sofort einmal das JSON holen
-            // UND später regelmäßig neu einlesen
-            Timer refreshTimer = new Timer(refreshIntervalS*1000, (ActionEvent e) -> {
-                log.info("Timer feuert - JSON neu einlesen...");
-                ladeAusJson();
-            });
-            refreshTimer.setInitialDelay(0);  // sofort einmal holen
-            if (refreshIntervalS == 0)
-                refreshTimer.setRepeats(false);  // NUR einmal holen
-            else
-                log.info("Timer wird erzeugt, um das JSON alle " + einstellungen.getRefreshIntervalS() + " s neu einzulesen.");
-            einstellungen.setRefreshTimer(refreshTimer);
-            refreshTimer.start();
-        }
-        else {
-            Timer loadOnceTimer = new Timer(0, (ActionEvent e1) -> {
-                log.info("JSON nach dem Start einmal einlesen...");
-                ladeAusJson();
-                
-                // Per Timer das Model regelmäßig neu speichern
-                Timer refreshTimer = new Timer(einstellungen.getRefreshIntervalS()*1000, (ActionEvent e2) -> {
-                    log.info("Timer feuert - JSON neu speichern");
-                    speichereInJSON();
-                });
-                einstellungen.setRefreshTimer(refreshTimer);
-                if (refreshIntervalS != 0) {
-                    log.info("Timer wird gestartet, um das JSON alle " + einstellungen.getRefreshIntervalS() + " s zu speichern.");
-                    refreshTimer.start();
-                }
-
-            });
-            loadOnceTimer.setRepeats(false);
-            loadOnceTimer.start();
-            
-        }
+        return root;
     }
     
     private FormBuilder createAvBuilder(final int numColumns, final int numRows, JLabel operatorLabel) {

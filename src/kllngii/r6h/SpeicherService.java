@@ -11,7 +11,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.prefs.Preferences;
 import java.util.stream.Collectors;
 
@@ -23,7 +22,6 @@ import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import kllngii.r6h.model.Einstellungen;
 import kllngii.r6h.model.Gadget;
 import kllngii.r6h.model.Operator;
 import kllngii.r6h.model.R6HelperModel;
