@@ -116,12 +116,12 @@ public class R6HelperModel implements Serializable {
 				verteidiger.add(op);
 			}
 		}
-		
-	spielerRepo = new ArrayList<>();
-	spielerRepo.add(new Spieler("Klln911gii"));
-	
-	team = new ArrayList<>(spielerRepo);
-	
+
+        spielerRepo = new ArrayList<>();
+        spielerRepo.add(new Spieler("Klln911gii"));
+
+        team = new ArrayList<>(spielerRepo);
+
 	}
 	public List<Operator> getOperatoren() {
 		return operatoren;
@@ -146,9 +146,14 @@ public class R6HelperModel implements Serializable {
 	public List<Operator> getSelectedVerteidiger() {
 		return selectedVerteidiger;
 	}
-
-
-	/**
+	
+	public List<Spieler> getSpielerRepo() {
+        return spielerRepo;
+    }
+    public List<Spieler> getTeam() {
+        return team;
+    }
+    /**
 	 * Fügt einen {@link Operator} der Liste der ausgewählten Operatoren
 	 * hinzu oder entfernt ihn daraus.
 	 */
