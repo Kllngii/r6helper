@@ -16,12 +16,20 @@ import kllngii.r6h.model.Spieler;
 public class SpielerlisteController {
     
     private final SpielerlisteView view;
-    private final R6HelperModel model;
+    private R6HelperModel model;
     
     
     public SpielerlisteController(final boolean readWrite, final R6HelperModel model) {
         this.view = new SpielerlisteView(readWrite, model);
+        setModel(model);
+    }
+    
+    /**
+     * Stellt ein neues Model bei Controller und View ein.
+     */
+    public void setModel(final R6HelperModel model) {
         this.model = model;
+        view.setModel(model);
     }
     
     public SpielerlisteView getView() {

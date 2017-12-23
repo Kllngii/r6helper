@@ -25,15 +25,20 @@ import kllngii.r6h.model.Spieler;
 public class SpielerlisteView extends KllngiiView {
     
     private final boolean readWrite;
-    private final R6HelperModel model;
+    private R6HelperModel model;
     
     private JComponent root;
 
     
     public SpielerlisteView(final boolean readWrite, final R6HelperModel model) {
         this.readWrite = readWrite;
+        setModel(model);
+    }
+    
+    public void setModel(final R6HelperModel model) {
         this.model = model;
     }
+
     
     public JComponent getRoot() {
         if (root == null) {

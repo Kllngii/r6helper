@@ -115,13 +115,21 @@ public class SpeicherService {
     public String createJson(R6HelperModel model, Collection<String> errors) {
         JSONObject json = new JSONObject();
 
+        // Gegnerteam
         json.put("gegnerteamAngreifer", model.isGegnerteamAngreifer());
         final List<Operator> gegnerteam = model.isGegnerteamAngreifer() ? model.getSelectedAngreifer() : model.getSelectedVerteidiger();
         JSONArray geg = new JSONArray();
         for (Operator gegner : gegnerteam)
             geg.put(toJson(gegner));
         json.put("gegnerteam", geg);
+        
+        // Eigenes Team
+        JSONArray team = new JSONArray();
+        for (Spieler spieler : model.getTeam())
+            team.put(spieler.toJson());
+        json.put("team", team);
 
+        // Fehler
         if (CollectionUtils.isNotEmpty(errors)) {
             JSONArray fehler = new JSONArray();
             for (String error : errors)

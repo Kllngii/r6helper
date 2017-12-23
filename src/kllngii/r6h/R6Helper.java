@@ -567,7 +567,7 @@ public class R6Helper extends KllngiiView {
             final long time1 = System.currentTimeMillis();
             SpeicherService.ModelWithErrors mwe = speicherService.ladeJson(einstellungen.getUriInput());
             model = mwe.getModel();
-            spielerlisteController = new SpielerlisteController(readWrite, model);
+            spielerlisteController.setModel(model);
             errors.clear();
             errors.addAll(mwe.getErrors());
 
@@ -947,12 +947,17 @@ public class R6Helper extends KllngiiView {
      * Aktualisiert den gesamten View; notwendig z.B. nach dem Laden des Models aus einer Datei.
      */
     private void refreshView() {
+        // Gegnerteam
         rdbtnAngreifer.setSelected(model.isGegnerteamAngreifer());
         panel_angriff.setVisible(model.isGegnerteamAngreifer());
         rdbtnVerteidiger.setSelected(!model.isGegnerteamAngreifer());
         panel_verteidigung.setVisible(!model.isGegnerteamAngreifer());
         setAVCheckboxes(); // Checkboxen passend zum Model setzen
         fillPanelWaffen(); // Änderungen sichtbar machen
+        
+        // Team
+        spielerlisteController.getView().refresh();
+        
         refreshErrors();
     }
     
