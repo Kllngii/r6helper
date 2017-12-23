@@ -11,7 +11,9 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.prefs.Preferences;
 import java.util.stream.Collectors;
 
@@ -123,11 +125,15 @@ public class SpeicherService {
             geg.put(toJson(gegner));
         json.put("gegnerteam", geg);
         
-        // Eigenes Team
+        // Repo aller jemaligen Spieler und eigenes Team
         JSONArray team = new JSONArray();
-        for (Spieler spieler : model.getTeam())
+        for (Spieler spieler : model.getSpielerRepo())
             team.put(spieler.toJson());
-        json.put("team", team);
+        json.put("spielerrepo", team);
+        List<String> spielernamen = new ArrayList<>();
+        for (Spieler spieler : model.getTeam())
+            spielernamen.add(spieler.getName());
+        json.put("team", spielernamen);
 
         // Fehler
         if (CollectionUtils.isNotEmpty(errors)) {
@@ -153,6 +159,24 @@ public class SpeicherService {
             for (Object gegnerObject : json.getJSONArray("gegnerteam")) {
                 Operator gegner = operator(model, (JSONObject) gegnerObject);
                 model.toggleSelected(gegner);
+            }
+        }
+        
+        if (json.has("spielerrepo")) {
+            Set<String> spielernamen = new HashSet<>();
+            if (json.has("team")) {
+                for (Object name : json.getJSONArray("team"))
+                    spielernamen.add((String) name);
+            }
+            for (Object spielerObject : json.getJSONArray("spielerrepo")) {
+                Spieler sp = Spieler.fromJson((JSONObject) spielerObject);
+                
+                // Spieler zum Repo hinzufügen
+                model.getSpielerRepo().add(sp);
+                
+                // Spieler in das Team aufnehmen?
+                if (spielernamen.contains(sp.getName()))
+                    model.getTeam().add(sp);
             }
         }
 

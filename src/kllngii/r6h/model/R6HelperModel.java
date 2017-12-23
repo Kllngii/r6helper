@@ -29,12 +29,12 @@ public class R6HelperModel implements Serializable {
 	 * Alle Spieler, die mindestens einmal mit uns R6 gespielt haben;
 	 * um dauerhaft ihre Namen und Stats aufzubewahren. 
 	 */
-	private final List<Spieler> spielerRepo;
+	private final List<Spieler> spielerRepo = new ArrayList<>();
 	
 	/**
 	 * Die momentan aktiv in unserem Team spielenden Spieler.
 	 */
-	private final List<Spieler> team;
+	private final List<Spieler> team = new ArrayList<>();
 	
 	
 	public R6HelperModel() {
@@ -116,14 +116,8 @@ public class R6HelperModel implements Serializable {
 				verteidiger.add(op);
 			}
 		}
-
-        spielerRepo = new ArrayList<>();
-        spielerRepo.add(new Spieler("Klln911gii"));
-        spielerRepo.add(new Spieler("CLK"));
-
-        team = new ArrayList<>(spielerRepo);
-
 	}
+	
 	public List<Operator> getOperatoren() {
 		return operatoren;
 	}
