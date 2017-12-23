@@ -2,3 +2,5 @@
 /target/
 dependency-reduced-pom.xml
 web/r6Web.html
+r6helper.json
+R6Screenshot.png
