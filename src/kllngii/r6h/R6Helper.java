@@ -792,7 +792,7 @@ public class R6Helper extends KllngiiView {
             }
             
             if (op.getFähigkeit() != Faehigkeit.KEINE) {
-                builder.addLabel(op.getFähigkeit().toString()).xy(11, row);
+                builder.addLabel(op.getFähigkeit().getName()).xy(11, row);
                 if (readWrite) {
                         if (op.getFähigkeit().isAnzahlLimitiert() && op.isFähigkeitÜbrig()) {
                             // Fähigkeit herunterzählen können über Button
