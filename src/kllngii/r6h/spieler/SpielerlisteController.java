@@ -41,13 +41,24 @@ public class SpielerlisteController {
      * @param name
      */
     public void erzeugeSpieler(String name) {
-        //TODO Doppelte Spieler vermeiden?
-        if (StringUtils.isNotBlank(name)) {
-            model.getSpielerRepo().add(new Spieler(name));
-            view.refresh();
+        if (!model.getSpielerRepo().contains(name)) {
+        		if (StringUtils.isNotBlank(name)) {
+        			model.getSpielerRepo().add(new Spieler(name));
+        			view.refresh();
+        		}
         }
     }
     
+    public void loescheSpieler(Spieler s) {
+    		if (model.getSpielerRepo().contains(s)) {
+    			List<Spieler> team = model.getTeam();
+    			if(team.contains(s)) {
+    				team.remove(s);
+    			}
+    			model.getSpielerRepo().remove(s);
+    			
+    		}
+    }
     
     public void toggleSpielerImTeam(Spieler s) {
         if (s == null)
@@ -60,5 +71,18 @@ public class SpielerlisteController {
             team.add(s);
         
         view.refresh();
+    }
+    
+    public boolean isSpielerImTeam(Spieler s) {
+    		if(s != null && s.getName() != null) {
+    			List<Spieler> team = model.getTeam();
+    			if(team.contains(s))
+    				return true;
+    			else
+    				return false;
+    		}
+    		else 
+    			return false;
+    		
     }
 }
