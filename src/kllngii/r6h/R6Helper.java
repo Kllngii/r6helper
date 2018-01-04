@@ -88,8 +88,6 @@ public class R6Helper extends KllngiiView {
 	//TODO Ace und Headshot Counter
 	//Wie Fähigkeiten einrichten
 	
-	//TODO Fähigkeiten Klarnamen brauchen Verwendung
-	
     private final Logger log = Logger.getLogger(getClass());
 
     private final boolean readWrite;
