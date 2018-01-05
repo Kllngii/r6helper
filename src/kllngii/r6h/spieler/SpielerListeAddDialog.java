@@ -4,48 +4,31 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 
 import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.event.ChangeListener;
-
-import kllngii.r6h.R6Helper;
-import kllngii.r6h.model.Spieler;
-
-import javax.swing.event.ChangeEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.JSpinner;
 import javax.swing.JCheckBox;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+
+import kllngii.r6h.model.Spieler;
 
 public class SpielerListeAddDialog extends JDialog {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -696154309824344401L;
 	private final JPanel contentPanel = new JPanel();
-	private JTextField txtName;
+	
+	private final SpielerlisteController controller;
+	
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		try {
-			SpielerListeAddDialog dialog = new SpielerListeAddDialog();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 	/**
 	 * Create the dialog.
 	 */
-	public SpielerListeAddDialog() {
+	public SpielerListeAddDialog(SpielerlisteController _controller) {
+		this.controller = _controller;
+		
+		
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -64,7 +47,7 @@ public class SpielerListeAddDialog extends JDialog {
 		lblAces.setBounds(6, 62, 81, 16);
 		contentPanel.add(lblAces);
 		
-		txtName = new JTextField();
+		final JTextField txtName = new JTextField();
 		txtName.setText("Name");
 		txtName.setBounds(99, 1, 130, 26);
 		contentPanel.add(txtName);
@@ -79,50 +62,39 @@ public class SpielerListeAddDialog extends JDialog {
 		contentPanel.add(txtAce);
 		
 		JCheckBox advancedSettings = new JCheckBox("Erweiterte Einstellungen");
-		advancedSettings.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if(advancedSettings.isSelected()) {
-					lblHeadshots.setVisible(true);
-					lblAces.setVisible(true);
-					txtAce.setEnabled(true);
-					txtHs.setEnabled(true);
-				}
-				else {
-					lblHeadshots.setVisible(false);
-					lblAces.setVisible(false);
-					txtAce.setEnabled(false);
-					txtHs.setEnabled(false);
-				}
+		advancedSettings.addActionListener(e -> {
+			if (advancedSettings.isSelected()) {
+				lblHeadshots.setVisible(true);
+				lblAces.setVisible(true);
+				txtAce.setEnabled(true);
+				txtHs.setEnabled(true);
+			} else {
+				lblHeadshots.setVisible(false);
+				lblAces.setVisible(false);
+				txtAce.setEnabled(false);
+				txtHs.setEnabled(false);
 			}
 		});
 		advancedSettings.setBounds(6, 210, 188, 23);
 		contentPanel.add(advancedSettings);
-		{
-			JPanel buttonPane = new JPanel();
-			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
-			getContentPane().add(buttonPane, BorderLayout.SOUTH);
-			{
-				JButton okButton = new JButton("OK");
-				okButton.addActionListener(new ActionListener() {
-					@SuppressWarnings("synthetic-access")
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						if(txtName.toString() != null) {
-							//FIXME Erzeuge Spieler in SpielerlisteController aufrufen
-							//erzeugeSpieler(new Spieler(name));
-						}
-					}
-				});
-				okButton.setActionCommand("OK");
-				buttonPane.add(okButton);
-				getRootPane().setDefaultButton(okButton);
+		
+		JPanel buttonPane = new JPanel();
+		buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		getContentPane().add(buttonPane, BorderLayout.SOUTH);
+		
+		JButton okButton = new JButton("OK");
+		okButton.addActionListener(event -> {
+				if(txtName.toString() != null) {
+					controller.erzeugeSpieler(new Spieler(txtName.toString()));
+				}
 			}
-			{
-				JButton cancelButton = new JButton("Abbrechen");
-				cancelButton.setActionCommand("Cancel");
-				buttonPane.add(cancelButton);
-			}
-		}
+		);
+		okButton.setActionCommand("OK");
+		buttonPane.add(okButton);
+		getRootPane().setDefaultButton(okButton);
+
+		JButton cancelButton = new JButton("Abbrechen");
+		cancelButton.setActionCommand("Cancel");
+		buttonPane.add(cancelButton);
 	}
 }
