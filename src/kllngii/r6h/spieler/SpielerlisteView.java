@@ -87,25 +87,40 @@ public class SpielerlisteView extends KllngiiView {
             // Name
             JLabel nameLabel = new JLabel(spieler.getName());
             builder.add(nameLabel).xy(1, row);
-            
-            if (readWrite) {
-                // Statistik heraufzählen können über Button
-                final JButton countUpBtn = new JButton(String.valueOf(spieler.getHeadshots()));
-                countUpBtn.setToolTipText("Headshot hinzufügen");
-                countUpBtn.addActionListener((ActionEvent evt) -> {
-                    spieler.increaseHeadshots();
-                    countUpBtn.setText(String.valueOf(spieler.getHeadshots()));
-                });
-                builder.add(countUpBtn).xy(3, row);
-            }
-            else {
-                builder.addLabel(String.valueOf(spieler.getHeadshots())).xy(3, row);
-            }
-            
-            //FIXME Das gleiche UI nochmal für die Aces -> Auslagern in eigene Komponente oder mindestens Methode
+            //FIXME Funktion überprüfen
+            addHeadshot(spieler, row, builder);
+            addAce(spieler, row, builder);
         }
-
         root.add(builder.build());
     }
-    
+    private void addHeadshot(Spieler spieler, int row, FormBuilder builder) {
+    		if (readWrite) {
+            // Statistik heraufzählen können über Button
+            final JButton countHSUpBtn = new JButton(String.valueOf(spieler.getHeadshots()));
+            countHSUpBtn.setToolTipText("Headshot hinzufügen");
+            countHSUpBtn.addActionListener((ActionEvent evt) -> {
+                spieler.increaseHeadshots();
+                countHSUpBtn.setText(String.valueOf(spieler.getHeadshots()));
+            });
+            builder.add(countHSUpBtn).xy(3, row);
+        }
+        else {
+            builder.addLabel(String.valueOf(spieler.getHeadshots())).xy(3, row);
+        }
+    }
+    private void addAce(Spieler spieler, int row, FormBuilder builder) {
+		if (readWrite) {
+        // Statistik heraufzählen können über Button
+        final JButton countAceUpBtn = new JButton(String.valueOf(spieler.getAce()));
+        countAceUpBtn.setToolTipText("Ace hinzufügen");
+        countAceUpBtn.addActionListener((ActionEvent evt) -> {
+            spieler.increaseAce();
+            countAceUpBtn.setText(String.valueOf(spieler.getAce()));
+        });
+        builder.add(countAceUpBtn).xy(5, row);
+    }
+    else {
+        builder.addLabel(String.valueOf(spieler.getAce())).xy(5, row);
+    }
+}
 }

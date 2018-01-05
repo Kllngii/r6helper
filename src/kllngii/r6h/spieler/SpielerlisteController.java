@@ -18,13 +18,13 @@ public class SpielerlisteController {
     private final SpielerlisteView view;
     private R6HelperModel model;
     
-    
     public SpielerlisteController(final boolean readWrite, final R6HelperModel model) {
         this.view = new SpielerlisteView(readWrite, model);
         setModel(model);
     }
-    
-    /**
+   
+
+	/**
      * Stellt ein neues Model bei Controller und View ein.
      */
     public void setModel(final R6HelperModel model) {
@@ -44,6 +44,14 @@ public class SpielerlisteController {
         if (!model.getSpielerRepo().contains(name)) {
         		if (StringUtils.isNotBlank(name)) {
         			model.getSpielerRepo().add(new Spieler(name));
+        			view.refresh();
+        		}
+        }
+    }
+    public void erzeugeSpieler(Spieler sp) {
+        if (!model.getSpielerRepo().contains(sp)) {
+        		if (StringUtils.isNotBlank(sp.getName())) {
+        			model.getSpielerRepo().add(sp);
         			view.refresh();
         		}
         }
