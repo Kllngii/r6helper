@@ -58,6 +58,11 @@ public class Spieler {
         return true;
     }
     
+    @Override
+    public String toString() {
+        return name;
+    }
+    
 
     public String getName() {
 		return name;

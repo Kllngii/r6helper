@@ -3,12 +3,17 @@ package kllngii.r6h.spieler;
 import java.awt.event.ActionEvent;
 import java.util.Collections;
 import java.util.List;
+import java.util.Vector;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JTextField;
+
+import org.apache.log4j.Logger;
 
 import com.jgoodies.forms.builder.FormBuilder;
 
@@ -23,6 +28,8 @@ import kllngii.r6h.model.Spieler;
  * @author Carsten Kelling
  */
 public class SpielerlisteView extends KllngiiView {
+    
+    protected final Logger log = Logger.getLogger(getClass());
     
     private final boolean readWrite;
     private R6HelperModel model;
@@ -61,11 +68,21 @@ public class SpielerlisteView extends KllngiiView {
         List<Spieler> team = model.getTeam();
         final int numRows = team.size();
         final int numCols = 5;
-        FormBuilder builder = FormBuilder.create()
+        FormBuilder builder = FormBuilder.create().debug(false)
                 .padding("6dlu, 12px, 6dlu, 12px");
         if (readWrite) {
-            builder.rows("p, $pgap, " + String.join(", $pgap, ", Collections.nCopies(numRows, "p")))
-                   .columns("left:pref, 6dlu, [60px,pref], 6dlu, [60px,pref]");
+            StringBuilder rowSpec = new StringBuilder("p, $pgap, ");  // Tabellenköpfe
+            if (numRows > 0) {
+                rowSpec.append(String.join(", $lgap, ", Collections.nCopies(numRows, "p")));  // Tabelle mit dem Team
+                rowSpec.append(",");
+                
+            }
+            rowSpec.append("30dlu");
+            rowSpec.append(", p, $pgap");  // "Spieler in das Team aufnehmen"
+            rowSpec.append(", p, $lgap, p");
+
+            builder.rows(rowSpec.toString())
+                   .columns("left:[pref, 400px], 6dlu, [60px,pref], 6dlu, [60px,pref]");
         }
         else {
             builder.rows("p, $lgap, " + String.join(", $lgap, ", Collections.nCopies(numRows, "p")))
@@ -87,10 +104,39 @@ public class SpielerlisteView extends KllngiiView {
             // Name
             JLabel nameLabel = new JLabel(spieler.getName());
             builder.add(nameLabel).xy(1, row);
+            
             //FIXME Funktion überprüfen
             addHeadshot(spieler, row, builder);
             addAce(spieler, row, builder);
+            
+            //FIXME Button zum Entfernen eines Spielers aus dem Team
         }
+        
+        // Spieler dem Team hinzufügen
+        if (readWrite) {
+            row += 2;
+            builder.addTitle("Spieler in das Team aufnehmen").xyw(1, row, numCols);
+            
+            // Auswahl aus Spielerrepo
+            row += 2;
+            
+            //FIXME Eventhandler fehlt: Klick auf repoList -> Spieler zum Team
+            //FIXME Änderungen im Model <-> Änderungen in der Combobox (JComboxBoxModel?)
+            //FIXME Überlegen: In der Combobox nur die Spieler anzeigen, die NICHT im Team sind?
+            JComboBox<Spieler> repoList = new JComboBox<>(new Vector<>(model.getSpielerRepo()));
+            builder.add(repoList).xy(1, row);
+            
+            // Komplett neuen Spieler anlegen
+            row +=2;
+            JTextField newPlayerName = new JTextField();
+            newPlayerName.setColumns(25);
+            JButton createPlayerButton = new JButton("Neu");
+            JButton createAndAddPlayerButton = new JButton("Neu und in's Team");
+            builder.add(newPlayerName).xy(1, row);
+            builder.add(createPlayerButton).xy(3, row);
+            builder.add(createAndAddPlayerButton).xy(5, row);
+        }        
+        
         root.add(builder.build());
     }
     private void addHeadshot(Spieler spieler, int row, FormBuilder builder) {
