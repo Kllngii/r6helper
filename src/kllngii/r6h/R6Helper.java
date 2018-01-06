@@ -71,6 +71,7 @@ import kllngii.r6h.model.R6Map;
 import kllngii.r6h.model.Rekrut;
 import kllngii.r6h.model.Waffe;
 import kllngii.r6h.model.Waffentyp;
+import kllngii.r6h.spieler.SpielerListeAddDialog;
 import kllngii.r6h.spieler.SpielerlisteController;
 
 
@@ -494,6 +495,13 @@ public class R6Helper extends KllngiiView {
                 
             });
             menu.add(jsonSaveButton).xy(1, 5);
+            JButton spielerAddButton = new JButton("Spieler Hinzufügen");
+            spielerAddButton.addActionListener(e -> {
+            	SpielerListeAddDialog dialog = new SpielerListeAddDialog(this.spielerlisteController);
+                dialog.start();
+                
+            });
+            menu.add(spielerAddButton).xy(1, 11);
         }
         JButton settings = new JButton("Einstellungen");
         settings.addActionListener((ActionEvent evt) -> {

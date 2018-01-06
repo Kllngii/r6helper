@@ -17,11 +17,18 @@ public class SpielerListeAddDialog extends JDialog {
 
 	private static final long serialVersionUID = -696154309824344401L;
 	private final JPanel contentPanel = new JPanel();
-	
 	private final SpielerlisteController controller;
+	public void start() {
+		try {
+			SpielerListeAddDialog dialog = new SpielerListeAddDialog(controller);
+			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			dialog.setVisible(true);
+		} 	
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
-
-
 	/**
 	 * Create the dialog.
 	 */
@@ -41,10 +48,12 @@ public class SpielerListeAddDialog extends JDialog {
 		
 		JLabel lblHeadshots = new JLabel("Headshots");
 		lblHeadshots.setBounds(6, 34, 81, 16);
+		lblHeadshots.setVisible(false);
 		contentPanel.add(lblHeadshots);
 		
 		JLabel lblAces = new JLabel("Aces");
 		lblAces.setBounds(6, 62, 81, 16);
+		lblAces.setVisible(false);
 		contentPanel.add(lblAces);
 		
 		final JTextField txtName = new JTextField();
@@ -55,10 +64,12 @@ public class SpielerListeAddDialog extends JDialog {
 		
 		JTextField txtHs = new JTextField();
 		txtHs.setBounds(99, 29, 33, 26);
+		txtHs.setVisible(false);
 		contentPanel.add(txtHs);
 		
 		JTextField txtAce = new JTextField();
 		txtAce.setBounds(99, 57, 33, 26);
+		txtAce.setVisible(false);
 		contentPanel.add(txtAce);
 		
 		JCheckBox advancedSettings = new JCheckBox("Erweiterte Einstellungen");
@@ -89,9 +100,9 @@ public class SpielerListeAddDialog extends JDialog {
 				}
 			}
 		);
-		okButton.setActionCommand("OK");
+//		okButton.setActionCommand("OK");
 		buttonPane.add(okButton);
-		getRootPane().setDefaultButton(okButton);
+//		getRootPane().setDefaultButton(okButton);
 
 		JButton cancelButton = new JButton("Abbrechen");
 		cancelButton.setActionCommand("Cancel");
