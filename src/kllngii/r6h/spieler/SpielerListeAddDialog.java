@@ -95,8 +95,8 @@ public class SpielerListeAddDialog extends JDialog {
 		
 		JButton okButton = new JButton("OK");
 		okButton.addActionListener(event -> {
-				if(txtName.toString() != null) {
-					controller.erzeugeSpieler(new Spieler(txtName.toString()));
+				if (txtName.toString() != null) {
+					controller.erzeugeSpieler(new Spieler(txtName.getText()));
 				}
 			}
 		);

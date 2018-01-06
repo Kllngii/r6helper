@@ -41,13 +41,9 @@ public class SpielerlisteController {
      * @param name
      */
     public void erzeugeSpieler(String name) {
-        if (!model.getSpielerRepo().contains(name)) {
-        		if (StringUtils.isNotBlank(name)) {
-        			model.getSpielerRepo().add(new Spieler(name));
-        			view.refresh();
-        		}
-        }
+        erzeugeSpieler(new Spieler(name));
     }
+    
     public void erzeugeSpieler(Spieler sp) {
         if (!model.getSpielerRepo().contains(sp)) {
         		if (StringUtils.isNotBlank(sp.getName())) {
