@@ -86,8 +86,9 @@ public class R6Helper extends KllngiiView {
 	//TODO Webobefläche erneuern. Kein Screenshot sondern JSON übertragen -> angular Project
 	
 	//TODO Drohnen/Kamera Counter
-	//TODO Ace und Headshot Counter
-	//Wie Fähigkeiten einrichten
+	//TODO Ace und Headshot Counter testen
+	
+	//TODO R6Strats als teil des R6Helpers
 	
     private final Logger log = Logger.getLogger(getClass());
 
