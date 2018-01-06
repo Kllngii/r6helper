@@ -111,6 +111,8 @@ public class SpielerlisteView extends KllngiiView {
             
             //FIXME Button zum Entfernen eines Spielers aus dem Team
         }
+        if (numRows == 0)
+            row++;
         
         // Spieler dem Team hinzufügen
         if (readWrite) {
