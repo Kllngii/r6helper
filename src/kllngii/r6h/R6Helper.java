@@ -578,7 +578,6 @@ public class R6Helper extends KllngiiView {
             errors.clear();
             errors.addAll(mwe.getErrors());
 
-            refreshView();
             final long time2 = System.currentTimeMillis();
             log.info("Ladezeit:  " + (time2 - time1) + "ms");
         }
@@ -589,6 +588,8 @@ public class R6Helper extends KllngiiView {
         finally {
             SwingUtilities.invokeLater(() -> frame.setCursor(Cursor.getDefaultCursor()));
         }
+        
+        refreshView();
 
     }
 
