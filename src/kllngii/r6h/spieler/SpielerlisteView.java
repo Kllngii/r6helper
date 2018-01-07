@@ -33,12 +33,15 @@ public class SpielerlisteView extends KllngiiView {
     
     private final boolean readWrite;
     private R6HelperModel model;
+    private String newPlayer = null;
+    private final SpielerlisteController controller;
     
     private JComponent root;
 
     
-    public SpielerlisteView(final boolean readWrite, final R6HelperModel model) {
+    public SpielerlisteView(final boolean readWrite, final R6HelperModel model, final SpielerlisteController controller) {
         this.readWrite = readWrite;
+        this.controller = controller;
         setModel(model);
     }
     
@@ -126,6 +129,14 @@ public class SpielerlisteView extends KllngiiView {
             //FIXME Änderungen im Model <-> Änderungen in der Combobox (JComboxBoxModel?)
             //FIXME Überlegen: In der Combobox nur die Spieler anzeigen, die NICHT im Team sind?
             JComboBox<Spieler> repoList = new JComboBox<>(new Vector<>(model.getSpielerRepo()));
+            repoList.addActionListener(e ->{
+            		Spieler sp = (Spieler) repoList.getSelectedItem();
+            		//FIXME Vorläufig entfernt man die Spieler auch per ComboBox
+//            	if(!controller.isSpielerImTeam(sp)) {
+            			controller.toggleSpielerImTeam(sp);
+//            		}
+            		
+            });
             builder.add(repoList).xy(1, row);
             
             // Komplett neuen Spieler anlegen
@@ -133,7 +144,21 @@ public class SpielerlisteView extends KllngiiView {
             JTextField newPlayerName = new JTextField();
             newPlayerName.setColumns(25);
             JButton createPlayerButton = new JButton("Neu");
+            createPlayerButton.addActionListener(e -> {
+            		newPlayer = newPlayerName.getText();
+            		if(!newPlayer.isEmpty()) {
+            			controller.erzeugeSpieler(new Spieler(newPlayer));
+            		}
+            });
             JButton createAndAddPlayerButton = new JButton("Neu und in's Team");
+            createAndAddPlayerButton.addActionListener(e -> {
+            		newPlayer = newPlayerName.getText();
+            		if(!newPlayer.isEmpty()) {
+            			Spieler spieler = new Spieler(newPlayer);
+            			controller.erzeugeSpieler(spieler);
+            			controller.toggleSpielerImTeam(spieler);
+            		}
+            });
             builder.add(newPlayerName).xy(1, row);
             builder.add(createPlayerButton).xy(3, row);
             builder.add(createAndAddPlayerButton).xy(5, row);

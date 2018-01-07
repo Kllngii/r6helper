@@ -19,7 +19,7 @@ public class SpielerlisteController {
     private R6HelperModel model;
     
     public SpielerlisteController(final boolean readWrite, final R6HelperModel model) {
-        this.view = new SpielerlisteView(readWrite, model);
+        this.view = new SpielerlisteView(readWrite, model, this);
         setModel(model);
     }
    
