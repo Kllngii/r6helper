@@ -75,11 +75,9 @@ public class R6DBWindow {
 				try {
 					Desktop.getDesktop().browse(url.toURI());
 				} catch (IOException | URISyntaxException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			} catch (MalformedURLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			

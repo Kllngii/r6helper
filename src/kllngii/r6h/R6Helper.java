@@ -85,10 +85,10 @@ public class R6Helper extends KllngiiView {
 	//TODO Optional: Fenster auch auf Java FX umstellbar
 	//TODO Webobefläche erneuern. Kein Screenshot sondern JSON übertragen -> angular Project
 	
-	//TODO Drohnen/Kamera Counter
-	//TODO Ace und Headshot Counter testen
-	
+	//TODO Drohnen/Kamera Counter	
 	//TODO R6Strats als teil des R6Helpers
+	
+	//TODO FTP impementieren
 	
     private final Logger log = Logger.getLogger(getClass());
 

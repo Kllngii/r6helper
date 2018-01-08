@@ -108,11 +108,8 @@ public class SpielerlisteView extends KllngiiView {
             JLabel nameLabel = new JLabel(spieler.getName());
             builder.add(nameLabel).xy(1, row);
             
-            //FIXME Funktion überprüfen
             addHeadshot(spieler, row, builder);
             addAce(spieler, row, builder);
-            
-            //FIXME Button zum Entfernen eines Spielers aus dem Team
         }
         if (numRows == 0)
             row++;
@@ -125,17 +122,10 @@ public class SpielerlisteView extends KllngiiView {
             // Auswahl aus Spielerrepo
             row += 2;
             
-            //FIXME Eventhandler fehlt: Klick auf repoList -> Spieler zum Team
-            //FIXME Änderungen im Model <-> Änderungen in der Combobox (JComboxBoxModel?)
-            //FIXME Überlegen: In der Combobox nur die Spieler anzeigen, die NICHT im Team sind?
             JComboBox<Spieler> repoList = new JComboBox<>(new Vector<>(model.getSpielerRepo()));
             repoList.addActionListener(e ->{
             		Spieler sp = (Spieler) repoList.getSelectedItem();
-            		//FIXME Vorläufig entfernt man die Spieler auch per ComboBox
-//            	if(!controller.isSpielerImTeam(sp)) {
-            			controller.toggleSpielerImTeam(sp);
-//            		}
-            		
+        			controller.toggleSpielerImTeam(sp); 		
             });
             builder.add(repoList).xy(1, row);
             
