@@ -80,15 +80,21 @@ public class R6Helper extends KllngiiView {
 	private static final String ERROR_REKRUT_HAT_ZU_VIELE_GADGETS = "Ein Rekrut darf höchstens " + Rekrut.MAX_GADGETS + " Gadgets haben!";
 	private static final String ERROR_REKRUT_PRIWA_SEKWA_CTU = "Ein Rekrut darf nicht die Waffen von mehr als " + Rekrut.MAX_CTUS + " CTUs haben!";
 	
+	//Sonstiges:
 	//TODO Mehrere Channel einführen, um PW geschützt getrennt Programm zu nutzen
-    
 	//TODO Optional: Fenster auch auf Java FX umstellbar
 	//TODO Webobefläche erneuern. Kein Screenshot sondern JSON übertragen -> angular Project
 	
+	//R6helper-Gegenerteam:
 	//TODO Drohnen/Kamera Counter	
 	//TODO R6Strats als teil des R6Helpers
 	
+	//Einstellungen:
 	//TODO FTP impementieren
+	
+	//R6helper-Team:
+	//TODO KnifeKillCounter
+	//TODO Alten Spieler Entfernen Knopf weg nehmen
 	
     private final Logger log = Logger.getLogger(getClass());
 
