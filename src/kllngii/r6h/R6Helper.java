@@ -84,6 +84,7 @@ public class R6Helper extends KllngiiView {
 	//TODO Mehrere Channel einführen, um PW geschützt getrennt Programm zu nutzen
 	//TODO Optional: Fenster auch auf Java FX umstellbar
 	//TODO Webobefläche erneuern. Kein Screenshot sondern JSON übertragen -> angular Project
+	//FIXME Sehr lange Startzeit, bis alles funktioniert
 	
 	//R6helper-Gegenerteam:
 	//TODO Drohnen/Kamera Counter	
@@ -94,6 +95,9 @@ public class R6Helper extends KllngiiView {
 	
 	//R6helper-Team:
 	//TODO KnifeKillCounter
+	//TODO Win Counter
+	//TODO Top3 anzeigen
+	//TODO Top3 sortierbar nach Aces/Wins/Headshots/etc.
 	//TODO Alten Spieler Entfernen Knopf weg nehmen
 	
     private final Logger log = Logger.getLogger(getClass());
