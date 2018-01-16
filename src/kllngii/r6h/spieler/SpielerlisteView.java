@@ -110,6 +110,7 @@ public class SpielerlisteView extends KllngiiView {
             
             addHeadshot(spieler, row, builder);
             addAce(spieler, row, builder);
+//            addKnife(spieler, row, builder);
         }
         if (numRows == 0)
             row++;
@@ -186,4 +187,15 @@ public class SpielerlisteView extends KllngiiView {
         builder.addLabel(String.valueOf(spieler.getAce())).xy(5, row);
     }
 }
+    private void addKnife(Spieler spieler, int row, FormBuilder builder) {
+    		if (readWrite) {
+    			final JButton countKnifeUpBtn = new JButton(String.valueOf(spieler.getKnifeKills()));
+    	        countKnifeUpBtn.setToolTipText("KnifeKill hinzufügen");
+    	        countKnifeUpBtn.addActionListener((ActionEvent evt) -> {
+    	            spieler.increaseKnifeKills();
+    	            countKnifeUpBtn.setText(String.valueOf(spieler.getKnifeKills()));
+    	        });
+    	        builder.add(countKnifeUpBtn).xy(7, row);
+    		}
+    }
 }
