@@ -12,7 +12,7 @@ public class Einstellungen {
     //------ Variablen ------
     
     // Lesen aus URI
-    private URI uriInput = newURI("https://www.dropbox.com/s/qg32536wsqswir5/r6helper.json?dl=1");
+    private URI uriInput = newURI("https://www.dropbox.com/s/kvdxxjv92u9v3d0/r6helper.json?dl=0");
     
     // Lesen per FTP
     private boolean ftpInput = false;
