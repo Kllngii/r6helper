@@ -85,6 +85,7 @@ public class R6Helper extends KllngiiView {
 	//TODO Optional: Fenster auch auf Java FX umstellbar
 	//TODO Webobefläche erneuern. Kein Screenshot sondern JSON übertragen -> angular Project
 	//FIXME Sehr lange Startzeit, bis alles funktioniert
+	//FIXME Bei Programm start wird manchmal JSON gelöscht
 	
 	//R6helper-Gegenerteam:
 	//TODO Drohnen/Kamera Counter	
