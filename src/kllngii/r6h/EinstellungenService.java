@@ -16,7 +16,7 @@ import kllngii.r6h.model.Einstellungen;
  * @author Carsten Kelling
  */
 public class EinstellungenService {
-
+	
     private static final String KEY = "einstellungen";
 
     private final Logger log = Logger.getLogger(getClass());
@@ -94,6 +94,7 @@ public class EinstellungenService {
             e.setFtpHost(node.get("ftpHost", ""));
             e.setFtpUser(node.get("ftpUser", ""));
             e.setFtpPwd(node.get("ftpPwd", ""));
+            log.info(node.absolutePath());
         }
     }
     

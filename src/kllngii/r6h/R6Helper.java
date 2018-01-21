@@ -69,6 +69,7 @@ import kllngii.r6h.model.Operator;
 import kllngii.r6h.model.R6HelperModel;
 import kllngii.r6h.model.R6Map;
 import kllngii.r6h.model.Rekrut;
+import kllngii.r6h.model.Spieler;
 import kllngii.r6h.model.Waffe;
 import kllngii.r6h.model.Waffentyp;
 import kllngii.r6h.spieler.SpielerListeAddDialog;
@@ -85,7 +86,6 @@ public class R6Helper extends KllngiiView {
 	//TODO Optional: Fenster auch auf Java FX umstellbar
 	//TODO Webobefläche erneuern. Kein Screenshot sondern JSON übertragen -> angular Project
 	//FIXME Sehr lange Startzeit, bis alles funktioniert
-	//FIXME Bei Programm start wird manchmal JSON gelöscht
 	
 	//R6helper-Gegenerteam:
 	//TODO Drohnen/Kamera Counter	
@@ -544,8 +544,13 @@ public class R6Helper extends KllngiiView {
         return av;
     }
     private void reset() {
+    	
+    	List<Spieler> team = model.getTeam();
+    	List<Spieler> spielerRepo = model.getSpielerRepo();
     	model = new R6HelperModel();
     	errors.clear();
+    	model.setTeam(team);
+    	model.setSpielerRepo(spielerRepo);
     	speichereInJSON();
     	refreshView();
     }
