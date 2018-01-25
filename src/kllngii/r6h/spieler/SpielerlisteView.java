@@ -85,7 +85,7 @@ public class SpielerlisteView extends KllngiiView {
             rowSpec.append(", p, $lgap, p");
 
             builder.rows(rowSpec.toString())
-                   .columns("left:[pref, 400px], 6dlu, [60px,pref], 6dlu, [60px,pref]");
+                   .columns("left:[pref, 400px], 6dlu, [60px,pref], 6dlu, [60px,pref], 6dlu, [60px, pref]");
         }
         else {
             builder.rows("p, $lgap, " + String.join(", $lgap, ", Collections.nCopies(numRows, "p")))
@@ -110,7 +110,7 @@ public class SpielerlisteView extends KllngiiView {
             
             addHeadshot(spieler, row, builder);
             addAce(spieler, row, builder);
-//            addKnife(spieler, row, builder);
+            addKnife(spieler, row, builder);
         }
         if (numRows == 0)
             row++;

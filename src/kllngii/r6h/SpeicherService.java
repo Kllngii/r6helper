@@ -42,6 +42,7 @@ public class SpeicherService {
     private static final String MODEL_KEY = "model";
 
     private final Logger log = Logger.getLogger(getClass());
+    private boolean initialisierung = false;
 
 
     public static class ModelWithErrors {
@@ -258,8 +259,13 @@ public class SpeicherService {
     }
 
     public void speichereJson(R6HelperModel model, Collection<String> errors, File datei) throws IOException {
-        String json = createJson(model, errors);
-        FileUtils.writeStringToFile(datei, json, StandardCharsets.UTF_8);
+    		if(initialisierung) {
+    			String json = createJson(model, errors);
+    			FileUtils.writeStringToFile(datei, json, StandardCharsets.UTF_8);
+    		}   
+    		else {
+    			log.warn("Speichere nicht! - Initialisierung nicht erfolgt");
+    		}
     }
 
     /**
@@ -270,11 +276,13 @@ public class SpeicherService {
      */
     public ModelWithErrors ladeJson(File datei) throws IOException, IllegalArgumentException {
         String jsonString = FileUtils.readFileToString(datei, StandardCharsets.UTF_8);
-        return ladeJson(jsonString);
+        initialisierung = true;
+        return ladeJson(jsonString);      
     }
 
     public ModelWithErrors ladeJson(URI uri) throws IOException, IllegalArgumentException {
         String jsonString = IOUtils.toString(uri, StandardCharsets.UTF_8);
+        initialisierung = true;
         return ladeJson(jsonString);
     }
 
@@ -282,7 +290,7 @@ public class SpeicherService {
         if (StringUtils.isBlank(jsonString))
             throw new IllegalArgumentException("Die Datei enthält kein gültiges JSON!");
         JSONObject json = new JSONObject(jsonString);
-
+        initialisierung = true;
         return new ModelWithErrors(getModel(json), getErrors(json));
     }
 

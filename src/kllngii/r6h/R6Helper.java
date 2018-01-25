@@ -10,6 +10,8 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -72,7 +74,6 @@ import kllngii.r6h.model.Rekrut;
 import kllngii.r6h.model.Spieler;
 import kllngii.r6h.model.Waffe;
 import kllngii.r6h.model.Waffentyp;
-import kllngii.r6h.spieler.SpielerListeAddDialog;
 import kllngii.r6h.spieler.SpielerlisteController;
 
 
@@ -95,11 +96,9 @@ public class R6Helper extends KllngiiView {
 	//TODO FTP impementieren
 	
 	//R6helper-Team:
-	//TODO KnifeKillCounter
 	//TODO Win Counter
 	//TODO Top3 anzeigen
 	//TODO Top3 sortierbar nach Aces/Wins/Headshots/etc.
-	//TODO Alten Spieler Entfernen Knopf weg nehmen
 	
     private final Logger log = Logger.getLogger(getClass());
 
@@ -214,7 +213,7 @@ public class R6Helper extends KllngiiView {
         Dimension size = new Dimension(1080, 630);
         frame.setSize(size.width, size.height);
         frame.setLocation((screensize.width - size.width) / 2, (screensize.height - size.height) / 2);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         
         frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
@@ -307,6 +306,14 @@ public class R6Helper extends KllngiiView {
             loadOnceTimer.start();
             
         }
+        frame.addWindowListener(new WindowAdapter(){
+            @SuppressWarnings({ "synthetic-access", "unused" })
+			@Override
+			public void windowClosing(WindowEvent e){
+            		speichereInJSON();
+            		System.exit(0);
+            }
+        });
     }
 
     private Container createGegnerTabContent() {
@@ -507,13 +514,6 @@ public class R6Helper extends KllngiiView {
                 
             });
             menu.add(jsonSaveButton).xy(1, 5);
-            JButton spielerAddButton = new JButton("Spieler Hinzufügen");
-            spielerAddButton.addActionListener(e -> {
-            	SpielerListeAddDialog dialog = new SpielerListeAddDialog(this.spielerlisteController);
-                dialog.start();
-                
-            });
-            menu.add(spielerAddButton).xy(1, 11);
         }
         JButton settings = new JButton("Einstellungen");
         settings.addActionListener((ActionEvent evt) -> {
