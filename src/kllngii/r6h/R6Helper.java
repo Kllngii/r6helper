@@ -467,8 +467,8 @@ public class R6Helper extends KllngiiView {
         FormBuilder menu = FormBuilder.create()
                 .columns("pref")
                 .rows("p, $lgap, p, $pgap, " +
-                      "p, $lgap, p, $pgap, " +
-                      "p, $pgap, p")
+                      "p, $lgap, p, $lgap, " +
+                      "p, $pgap, p, $pgap, p")
                 .padding("6dlu, 12px, 6dlu, 12px");
         
         
@@ -500,12 +500,11 @@ public class R6Helper extends KllngiiView {
             }
         });
         
-        //FIXME Load Button und ComboWeb haben gleiche Position
         JButton jsonLoadButton = new JButton("Laden");
         jsonLoadButton.addActionListener((ActionEvent evt) -> {
             ladeAusJson();
         });
-        menu.add(jsonLoadButton).xy(1, 3);
+        menu.add(jsonLoadButton).xy(1, 5);
 
         if (readWrite) {
             JButton jsonSaveButton = new JButton("Speichern");
@@ -513,7 +512,7 @@ public class R6Helper extends KllngiiView {
                 speichereInJSON();
                 
             });
-            menu.add(jsonSaveButton).xy(1, 5);
+            menu.add(jsonSaveButton).xy(1, 7);
         }
         JButton settings = new JButton("Einstellungen");
         settings.addActionListener((ActionEvent evt) -> {
@@ -522,7 +521,7 @@ public class R6Helper extends KllngiiView {
             einstellungsFrame.setVisible(true);
             einstellungsFrame.toFront();
         });
-        menu.add(settings).xy(1, 7);
+        menu.add(settings).xy(1, 11);
         if(readWrite) {
         		JButton resetBtn = new JButton("Reset");
         		resetBtn.addActionListener((ActionEvent evt) -> {
