@@ -3,4 +3,4 @@
 *Version 1.3.0-SNAPSHOT*
 
 Für Rainbow Six,  
-für den ersten Teil von Operation White Noise.
+für den zweiten Teil von Operation White Noise.
