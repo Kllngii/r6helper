@@ -7,31 +7,34 @@ public class Spieler {
 	private static final String KEY_ACE = "ace";
 	private static final String KEY_HEADSHOT = "headshot";
 	private static final String KEY_KNIFE = "knife";
+	private static final String KEY_POINTS = "points";
 	
 	private final String name;
 	private int hs;
 	private int ace;
 	private int k;
+	private Integer p;
 
 	/**
 	 * Konstruktor für neue Spieler mit Startwerten für die Statistik.
 	 */
 	public Spieler(String name) {
-		this(name, 0, 0, 0);
+		this(name, 0, 0, 0, 0);
 	}
 	
 	/**
 	 * Konstruktor für Spieler, die schon Stats haben (aus dem JSON kommend).
 	 */
-	private Spieler(String name, int headshot, int ace, int knife) {
+	private Spieler(String name, int headshot, int ace, int knife, int point) {
 		this.name = name;
 		this.hs = headshot;
 		this.ace = ace;
 		this.k = knife;
+		this.p = point;
 	}
 	
 	public static Spieler fromJson(JSONObject src) {
-		return new Spieler(src.getString(KEY_NAME), src.optInt(KEY_HEADSHOT, 0), src.optInt(KEY_ACE, 0), src.optInt(KEY_KNIFE, 0));
+		return new Spieler(src.getString(KEY_NAME), src.optInt(KEY_HEADSHOT, 0), src.optInt(KEY_ACE, 0), src.optInt(KEY_KNIFE, 0), src.optInt(KEY_POINTS, 0));
 	}
 	
 	
@@ -97,6 +100,15 @@ public class Spieler {
         trg.put(KEY_HEADSHOT, getHeadshots());
         trg.put(KEY_ACE, getAce());
         trg.put(KEY_KNIFE, getKnifeKills());
+        trg.put(KEY_POINTS, getP());
         return trg;
     }
+
+	public int getP() {
+		return p;
+	}
+
+	public void increaseP(Integer i) {
+		Integer.sum(p, i);
+	}
 }

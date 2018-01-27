@@ -86,10 +86,9 @@ public class R6Helper extends KllngiiView {
 	//TODO Mehrere Channel einführen, um PW geschützt getrennt Programm zu nutzen
 	//TODO Optional: Fenster auch auf Java FX umstellbar
 	//TODO Webobefläche erneuern. Kein Screenshot sondern JSON übertragen -> angular Project
-	//FIXME Sehr lange Startzeit, bis alles funktioniert
 	
 	//R6helper-Gegenerteam:
-	//TODO Drohnen/Kamera Counter	
+	//TODO Drohnen/Kamera Counter
 	//TODO R6Strats als teil des R6Helpers
 	
 	//Einstellungen:

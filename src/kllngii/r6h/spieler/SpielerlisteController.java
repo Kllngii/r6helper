@@ -89,4 +89,15 @@ public class SpielerlisteController {
     			return false;
     		
     }
+    /**
+     * Rechnet die Punkte für die Top3 Liste aus.
+     * @param list
+     */
+    public void addPoints(List<Spieler> list) {
+    		for(Spieler s : list) {
+    			s.increaseP(s.getAce()*5);
+    			s.increaseP(s.getHeadshots());
+    			s.increaseP(s.getKnifeKills()*2);
+    		}
+    }
 }
