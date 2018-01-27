@@ -500,7 +500,7 @@ public class R6Helper extends KllngiiView {
             }
         });
         
-        
+        //FIXME Load Button und ComboWeb haben gleiche Position
         JButton jsonLoadButton = new JButton("Laden");
         jsonLoadButton.addActionListener((ActionEvent evt) -> {
             ladeAusJson();
@@ -523,12 +523,14 @@ public class R6Helper extends KllngiiView {
             einstellungsFrame.toFront();
         });
         menu.add(settings).xy(1, 7);
+        if(readWrite) {
+        		JButton resetBtn = new JButton("Reset");
+        		resetBtn.addActionListener((ActionEvent evt) -> {
+        			reset();
+        		});
+        		menu.add(resetBtn).xy(1, 9);
+        }
         
-        JButton resetBtn = new JButton("Reset");
-        resetBtn.addActionListener((ActionEvent evt) -> {
-            reset();
-        });
-        menu.add(resetBtn).xy(1, 9);
         JPanel menuPanel = menu.build();
         return menuPanel;
     }
