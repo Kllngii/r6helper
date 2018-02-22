@@ -89,7 +89,6 @@ public class R6Helper extends KllngiiView {
 	
 	//R6helper-Gegenerteam:
 	//TODO Drohnen/Kamera Counter
-	//TODO R6Strats als teil des R6Helpers
 	
 	//Einstellungen:
 	//TODO FTP impementieren
