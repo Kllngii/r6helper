@@ -21,6 +21,8 @@ public enum Waffe {
 	PDW9("PDW9", Waffentyp.STURM, Ctu.GEO),
 	MK14EBR("Mk-14EBR", Waffentyp.STURM, Ctu._707SBM),
 	M762("M762", Waffentyp.STURM, Ctu.GROM),
+	V308("V.308", Waffentyp.STURM, Ctu.CBRN),
+	SPEAR("SPEAR.308", Waffentyp.STURM, Ctu.CBRN),
 //	Shotguns	
 	M590A1("M590A1", Waffentyp.SHOTGUN, Ctu.SAS),
 	M1014("M1014", Waffentyp.SHOTGUN, Ctu.FBI),

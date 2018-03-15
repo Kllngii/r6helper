@@ -15,6 +15,7 @@ public enum Ctu {
 	SDU,
 	_707SBM,
 	CTU,
+	CBRN,
 	;
 	
 }

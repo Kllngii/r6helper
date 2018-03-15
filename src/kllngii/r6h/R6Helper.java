@@ -88,6 +88,7 @@ public class R6Helper extends KllngiiView {
 	//TODO Webobefläche erneuern. Kein Screenshot sondern JSON übertragen -> angular Project
 	
 	//R6helper-Gegenerteam:
+	//FIXME Gadgets werden nicht per JSON gespeichert
 	//TODO Drohnen/Kamera Counter
 	
 	//Einstellungen:
@@ -466,10 +467,10 @@ public class R6Helper extends KllngiiView {
                 .columns("pref")
                 .rows("p, $lgap, p, $pgap, " +
                       "p, $lgap, p, $lgap, " +
-                      "p, $pgap, p, $pgap, p")
+                      "p, $pgap, p, $pgap, p, $pgap, p")
                 .padding("6dlu, 12px, 6dlu, 12px");
         
-        
+        //TODO JComboBox für r6maps und R6DB Auswahl 
         JButton btnWeb = new JButton("Externe Rainbow Programme");
         JComboBox<R6Map> comboWeb = new JComboBox<R6Map>(R6Map.values());
         if (Desktop.isDesktopSupported()) {

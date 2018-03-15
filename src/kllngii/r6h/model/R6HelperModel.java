@@ -68,6 +68,8 @@ public class R6HelperModel implements Serializable {
 		_o.add(new Operator(ANGREIFER, "Ying", T95, SIX12, Arrays.asList(Q929), Arrays.asList(RAU_GRANATE, SPRENGLADUNG), YNG, Ctu.SDU));
 		_o.add(new Operator(ANGREIFER, "Zofia", Arrays.asList(LMGE, M762), Arrays.asList(RG15), Arrays.asList(SPRENGLADUNG, CLAYMORE), Faehigkeit.ZFA, Ctu.GROM));
 		_o.add(new Operator(ANGREIFER, "Dokkaebi", Arrays.asList(BOSG122, MK14EBR), Arrays.asList(C75, SMG12), Arrays.asList(RAU_GRANATE, CLAYMORE), Faehigkeit.DKB, Ctu._707SBM));
+		_o.add(new Operator(ANGREIFER, "Lion", Arrays.asList(V308, _417, SG_CQB), Arrays.asList(LFP586, P9), Arrays.asList(), Faehigkeit.LION, Ctu.CBRN));
+		_o.add(new Operator(ANGREIFER, "Finka", Arrays.asList(SPEAR, SASG12, _6P41), Arrays.asList(PMM, GSH18), Arrays.asList(), Faehigkeit.FNKA, Ctu.CBRN));
 //		
 		_o.add(new Rekrut(ANGREIFER, "Rekrut Blau",Arrays.asList(L85A2, M590A1, AR33, G36C, R4C, _556XI, M1014,F2, _417, SG_CQB, AK12, BAL_SCHILD, AUGA2, _552C),  Arrays.asList(SMG11, P2_26,_57USG, M45_MEUSOC, P9, LFP586, GSH18, PMM, P12), Rekrut.ANGREIFER_GADGETS));
 		_o.add(new Rekrut(ANGREIFER, "Rekrut Gelb",Arrays.asList(L85A2, M590A1, AR33, G36C, R4C, _556XI, M1014,F2, _417, SG_CQB, AK12, BAL_SCHILD, AUGA2, _552C),  Arrays.asList(SMG11, P2_26,_57USG, M45_MEUSOC, P9, LFP586, GSH18, PMM, P12), Rekrut.ANGREIFER_GADGETS));
