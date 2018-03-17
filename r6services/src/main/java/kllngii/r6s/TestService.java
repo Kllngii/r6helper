@@ -1,5 +1,6 @@
 package kllngii.r6s;
 
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
@@ -7,8 +8,12 @@ import javax.ws.rs.Path;
 public class TestService {
 
     @GET
-    @Path("ping")
     public String ping() {
         return "Pong!";
+    }
+    
+    @DELETE
+    public void deletePing(String body) {
+        System.out.println("Ich lösche jetzt den " + body);
     }
 }
