@@ -30,6 +30,11 @@ import kllngii.r6h.model.Operator;
 import kllngii.r6h.model.R6HelperModel;
 import kllngii.r6h.model.Spieler;
 import kllngii.r6h.model.Waffe;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 
 /**
@@ -261,7 +266,26 @@ public class SpeicherService {
     public void speichereJson(R6HelperModel model, Collection<String> errors, File datei) throws IOException {
     		if(initialisierung) {
     			String json = createJson(model, errors);
-    			FileUtils.writeStringToFile(datei, json, StandardCharsets.UTF_8);
+    			
+    			String url = null;  //FIXME Url statt File haben!
+    			if (url.startsWith("file://")) {
+    			    FileUtils.writeStringToFile(datei, json, StandardCharsets.UTF_8);
+    			}
+    			else {
+        			// PUT per HTTP an eine URL:
+        			final MediaType JSON_TYPE = MediaType.parse("application/json; charset=utf-8");
+    
+        			OkHttpClient client = new OkHttpClient();
+    
+        			RequestBody body = RequestBody.create(JSON_TYPE, json);
+        			Request request = new Request.Builder()
+        		      .url(url)
+        		      .put(body)
+        		      .build();
+        			Response response = client.newCall(request).execute();
+        			if (! response.isSuccessful())
+        			    log.warn("Speichern des JSON an URL war nicht erfolgreich. Status=" + response.code() + ", URL=" + url);
+        		}
     		}   
     		else {
     			log.warn("Speichere nicht! - Initialisierung nicht erfolgt");
