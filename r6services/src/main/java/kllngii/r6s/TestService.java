@@ -13,7 +13,7 @@ public class TestService {
 
     @GET
     public String ping() {
-        return "Pong! " + new Date();
+        return "Pong um " + new Date();
     }
     
     @POST
