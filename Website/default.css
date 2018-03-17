@@ -1,0 +1,19 @@
+@charset "UTF-8";
+body {
+	font-family: 'Lucida Grande', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	text-shadow: gray;
+    padding: 200px;
+	font-size: 13px;
+	background-repeat:no-repeat;
+	background-size: cover;
+	background-attachment: fixed;
+	background-image: radial-gradient(#acacac, #808080);
+}
+.head {
+	color: #000000;
+}
+.footer {
+	position: absolute;
+    bottom: 30px;
+    width: 100%;
+}
