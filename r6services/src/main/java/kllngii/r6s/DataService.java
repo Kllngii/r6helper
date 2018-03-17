@@ -7,12 +7,16 @@ import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 import java.util.Arrays;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.InternalServerErrorException;
+import javax.ws.rs.OPTIONS;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -30,7 +34,21 @@ public class DataService {
     private static final String FILENAME = "r6helper.json";
     private static final String EMPTY_JSON = "{}";
     
+    /** The HTTP {@code Access-Control-Allow-Origin} header field name. */
+    public static final String ACCESS_CONTROL_ALLOW_ORIGIN = "Access-Control-Allow-Origin";
+    public static final String ACCESS_CONTROL_ALLOW_ORIGIN_VALUE = "*" /*"http://mine.kelling.de:8080"*/;
+
+    public static final String ACCESS_CONTROL_ALLOW_METHODS = "Access-Control-Allow-Methods";
+    public static final String ACCESS_CONTROL_ALLOW_HEADERS = "Access-Control-Allow-Headers";
+    public static final String ACCESS_CONTROL_MAX_AGE = "Access-Control-Max-Age";
+
+    
     private final Logger log = LoggerFactory.getLogger(getClass());
+    
+    
+    private void accessControlAllowOrigin(HttpServletResponse response) {
+        response.setHeader(ACCESS_CONTROL_ALLOW_ORIGIN, ACCESS_CONTROL_ALLOW_ORIGIN_VALUE);
+    }
     
     
     /**
@@ -40,7 +58,9 @@ public class DataService {
     @GET
     @Path("all")
     @Produces("application/json")
-    public String getAll() {
+    public String getAll(@Context HttpServletResponse response) {
+        accessControlAllowOrigin(response);
+        
         java.nio.file.Path infile = Paths.get(FILENAME);
         byte[] bytes = null;
         try {
@@ -63,13 +83,27 @@ public class DataService {
         return json;
     }
     
+    @OPTIONS
+    @Path("all")
+    @Produces("text/plain")
+    public Response optionsAll() {
+        return Response.ok()
+                .header(ACCESS_CONTROL_ALLOW_ORIGIN, ACCESS_CONTROL_ALLOW_ORIGIN_VALUE)
+                .header(ACCESS_CONTROL_ALLOW_METHODS, "PUT, DELETE, OPTIONS")
+                .header(ACCESS_CONTROL_ALLOW_HEADERS, "Content-Type")
+                .header(ACCESS_CONTROL_MAX_AGE, 86400)
+                .build();
+    }
+    
     /**
      * Überschreibt die Datei r6helper.json vollständig.
      */
     @PUT
     @Path("all")
     @Consumes("application/json")
-    public void putAll(String json) {
+    public void putAll(String json, @Context HttpServletResponse response) {
+        accessControlAllowOrigin(response);
+        
         json = StringUtils.defaultIfBlank(json, EMPTY_JSON);
         log.info("Neue JSON-Daten: {}", json);
         
