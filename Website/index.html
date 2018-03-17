@@ -2,16 +2,20 @@
 <html>
 	<head>
 		<meta charset="UTF-8" contenteditable="false" name="r6helper"/>
-		<meta http-equiv="refresh" content="5">
 		<title>R6Helper</title>
 		<link rel="stylesheet" href="index.css">
 		<link rel="stylesheet" href="default.css">
-		<script type="text/javascript" src="file:////Users/lasse_kelling/Dropbox/R6/r6helper.js">
-		</script>
+<!-- 		<script type="text/javascript" src="file:////Users/lasse_kelling/Dropbox/R6/r6helper.js"></script> -->
 		<script type="text/javascript" src="index.js">
 		</script>
 	</head>
-	<body onload="parseJSON()">
+	<body onload="init()">
+	
+		<p style="text-align: right">
+			Stand: <span id="zeitstempel"></span>
+		</p>
+		
+	
 		<table contenteditable="false" id="table">
 			<tr id="header" align="center" class="head">
 				<td><p>Operator</p></td>

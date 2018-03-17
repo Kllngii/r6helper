@@ -1,14 +1,9 @@
-		function getJson() {
-			return r6helperdata;
-			
-//			let url = "https://www.dropbox.com/s/kvdxxjv92u9v3d0/r6helper.json?dl=1";
-//			let url = "file:////Users/lasse_kelling/Dropbox/R6/r6helper.json";
-//			let json = {};
-//			
-//			fetch(url)
-//				.then(res => json = res.json())
-//				.catch(err => { throw err });
-			
+
+		/**
+		 * Nur zu Testzwecken
+		 */
+		function getJsonSynchron() {
+//			return r6helperdata;
 			
 //			return {"gegnerteam": [
 //		        {
@@ -48,15 +43,39 @@
 		}
 		
 		function init() {
-			parseJSON();
+			//parseJSON(getJsonSynchron());
 			
-			// Wieder aktivieren, wenn das JSON direkt vom Server geholt werden kann:
-			// setTimeout(parseJSON, 1000);
+			getAndParseJSON();
+			
+			// Nur aktivieren, wenn das JSON direkt vom Server geholt werden kann:
+			setInterval(getAndParseJSON, 2000);
 		}
-		function parseJSON() {
-			let json = getJson();
+		
+		function getAndParseJSON() {
+//			let url = "https://www.dropbox.com/s/kvdxxjv92u9v3d0/r6helper.json?dl=1";
+//			let url = "file:////Users/lasse_kelling/Dropbox/R6/r6helper.json";
+			let url = "http://192.168.2.10:8080/r6/service/data/all";
+			
+			fetch(url)
+				.then(response => {
+//					console.log("Response ist da.")
+					return response.json();
+				})
+				.then(json => {
+//					console.log("JSON wurde erfolgreich geholt.", json);
+					parseJSON(json);
+				})
+				.catch(err => { 
+					console.error("Fehler beim Holen des JSON: " + err);
+					throw err ;
+				});
+		}
+		
+		function parseJSON(json) {
 			var op1na, op1pri, op1sek, op1life, op1gadgets;
 			var op2na, op2pri, op2sek, op2life, op2gadgets;
+			
+			document.getElementById("zeitstempel").innerHTML = new Date().toLocaleTimeString("de-DE");
 			
 			for (let i = 0; i <= 4; i++) {
 				zeigeGegner(i, json);
@@ -67,7 +86,11 @@
 			let row = document.getElementById("op" + (i+1));
 			let none = "KEINE";
 			
-			if (json.gegnerteam.length >= i) {
+			if (json.gegnerteam == undefined || json.gegnerteam.length == 0) {
+				if (i == 0)
+					row.querySelector(".name").innerHTML = "Daten enthalten kein Gegnerteam!";
+			}
+			else if (json.gegnerteam.length >= i) {
 				let gegner = json.gegnerteam[i];
 				row.querySelector(".name").innerHTML = gegner.name;
 				if(gegner.primärwaffe != undefined && gegner.primärwaffe.name != undefined) {
