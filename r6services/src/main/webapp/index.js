@@ -48,13 +48,14 @@
 			getAndParseJSON();
 			
 			// Nur aktivieren, wenn das JSON direkt vom Server geholt werden kann:
-			setInterval(getAndParseJSON, 2000);
+			setInterval(getAndParseJSON, 1000);
 		}
 		
 		function getAndParseJSON() {
 //			let url = "https://www.dropbox.com/s/kvdxxjv92u9v3d0/r6helper.json?dl=1";
 //			let url = "file:////Users/lasse_kelling/Dropbox/R6/r6helper.json";
-			let url = "http://192.168.2.10:8080/r6/service/data/all";
+//			let url = "http://192.168.2.10:8080/r6/service/data/all";
+			let url = "/r6/service/data/all";
 			
 			fetch(url)
 				.then(response => {
@@ -90,7 +91,7 @@
 				if (i == 0)
 					row.querySelector(".name").innerHTML = "Daten enthalten kein Gegnerteam!";
 			}
-			else if (json.gegnerteam.length >= i) {
+			else if (json.gegnerteam.length > i) {
 				let gegner = json.gegnerteam[i];
 				row.querySelector(".name").innerHTML = gegner.name;
 				if(gegner.primärwaffe != undefined && gegner.primärwaffe.name != undefined) {
@@ -109,6 +110,15 @@
 					}
 				}
 				row.querySelector(".faehig").innerHTML = none;
+			}
+			else {
+				// Zeilen, die nicht von einem Gegner belegt sind, leeren
+				row.querySelector(".name").innerHTML = " ";
+				row.querySelector(".priwa").innerHTML = " ";
+				row.querySelector(".sekwa").innerHTML = " ";
+				row.querySelector(".life").innerHTML = " ";
+				row.querySelector(".gadget").innerHTML = " ";
+				row.querySelector(".faehig").innerHTML = " ";
 			}
 
 		}
