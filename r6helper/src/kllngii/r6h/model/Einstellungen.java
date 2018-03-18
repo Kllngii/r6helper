@@ -22,7 +22,7 @@ public class Einstellungen {
     
 
     // Speichern in eine Datei
-    private File dateiOutput = new File("r6helper.json");
+    private String urlOutput = "r6helper.json";
     
     // Speichern per FTP
     private boolean ftpOutput = false;
@@ -51,15 +51,14 @@ public class Einstellungen {
     }
 
 
-    public File getDateiOutput() {
-        return dateiOutput;
+    public String getUrlOutput() {
+        return urlOutput;
     }
 
-    public void setDateiOutput(File dateiOutput) {
-        this.dateiOutput = dateiOutput;
+    public void setUrlOutput(String urlOutput) {
+        this.urlOutput = urlOutput;
     }
 
-    
     public boolean isFtpOutput() {
         return ftpOutput;
     }

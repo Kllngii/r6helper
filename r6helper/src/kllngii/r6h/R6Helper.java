@@ -557,7 +557,7 @@ public class R6Helper extends KllngiiView {
     private void speichereInJSON() {
     	try {
     		final long time1 = System.currentTimeMillis();
-            speicherService.speichereJson(model, errors, einstellungen.getDateiOutput());
+            speicherService.speichereJson(model, errors, einstellungen.getUrlOutput());
             final long time2 = System.currentTimeMillis();
             log.info("Speicherzeit:  "+(time2-time1)+"ms"); 
             
@@ -567,15 +567,17 @@ public class R6Helper extends KllngiiView {
                     + StringUtils.defaultIfEmpty(ex.getMessage(), ex.toString()));
         }
     	
-    	try {
-    	    saveScreenshot(new File(einstellungen.getDateiOutput().getParentFile(), "R6Screenshot.png"));
-    	} catch (Exception ex) {
-            log.error("Fehler beim Speichern des Screenshots!", ex);
-            showError("Fehler beim Speichern des Screenshots: "
-                    + StringUtils.defaultIfEmpty(ex.getMessage(), ex.toString()));
-        }
-		
-	}
+    	if (speicherService.isFileUrl(einstellungen.getUrlOutput())) {
+        	try {
+        	    File dateiOutput = new File(einstellungen.getUrlOutput());
+        	    saveScreenshot(new File(dateiOutput.getParentFile(), "R6Screenshot.png"));
+        	} catch (Exception ex) {
+                log.error("Fehler beim Speichern des Screenshots!", ex);
+                showError("Fehler beim Speichern des Screenshots: "
+                        + StringUtils.defaultIfEmpty(ex.getMessage(), ex.toString()));
+            }
+    	    }
+    	}
 
     private void ladeAusJson() {
         try {

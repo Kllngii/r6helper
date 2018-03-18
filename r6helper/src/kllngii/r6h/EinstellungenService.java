@@ -49,7 +49,7 @@ public class EinstellungenService {
         node.putInt("refreshIntervalS", e.getRefreshIntervalS());
         
         // -- Schreiben
-        node.put("dateiOutput", e.getDateiOutput().toString());
+        node.put("dateiOutput", e.getUrlOutput());
         node.putBoolean("ftpOutput", e.isFtpOutput());
         node.put("ftpHost", e.getFtpHost());
         node.put("ftpUser", e.getFtpUser());
@@ -89,7 +89,7 @@ public class EinstellungenService {
             
             
             // -- Schreiben
-            e.setDateiOutput(new File(node.get("dateiOutput", "r6helper.json")));
+            e.setUrlOutput(node.get("dateiOutput", "r6helper.json"));
             e.setFtpOutput(node.getBoolean("ftpOutput", false));
             e.setFtpHost(node.get("ftpHost", ""));
             e.setFtpUser(node.get("ftpUser", ""));

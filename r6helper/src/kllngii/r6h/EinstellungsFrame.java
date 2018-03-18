@@ -186,7 +186,7 @@ public class EinstellungsFrame extends JFrame {
 	    
 	    
 	    // -- Schreiben
-	    model.setDateiOutput(new File(dateiOutput.getText()));
+	    model.setUrlOutput(dateiOutput.getText());
 	    model.setFtpOutput(rbSchreibenPerFtp.isSelected());
 	    model.setFtpHost(ftpHost.getText());
 	    model.setFtpUser(ftpUser.getText());
@@ -203,7 +203,7 @@ public class EinstellungsFrame extends JFrame {
         refreshInterval.setText("" + model.getRefreshIntervalS());
         
         // -- Speichern
-        dateiOutput.setText((model.getDateiOutput() == null) ? "" : model.getDateiOutput().toString());
+        dateiOutput.setText((model.getUrlOutput() == null) ? "" : model.getUrlOutput());
         if (model.isFtpOutput())
             rbSchreibenPerFtp.setSelected(true);
         else

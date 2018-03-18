@@ -262,13 +262,23 @@ public class SpeicherService {
             json.getJSONArray("fehler").forEach(it -> errors.add(it.toString()));
         return errors;
     }
+    
+    public boolean isFileUrl(String url) {
+        url = StringUtils.defaultString(url);
+        if (url.startsWith("file://"))
+            return true;
+        else if (url.startsWith("http://") || url.startsWith("https://") || url.startsWith("ftp://"))
+            return false;
+        else
+            return true;  // relative Dateiangabe
+    }
 
-    public void speichereJson(R6HelperModel model, Collection<String> errors, File datei) throws IOException {
+    public void speichereJson(R6HelperModel model, Collection<String> errors, String url) throws IOException {
     		if(initialisierung) {
     			String json = createJson(model, errors);
     			
-    			String url = null;  //FIXME Url statt File haben!
-    			if (url.startsWith("file://")) {
+    			if (isFileUrl(url)) {
+    			    File datei = new File(url);
     			    FileUtils.writeStringToFile(datei, json, StandardCharsets.UTF_8);
     			}
     			else {
@@ -282,9 +292,10 @@ public class SpeicherService {
         		      .url(url)
         		      .put(body)
         		      .build();
-        			Response response = client.newCall(request).execute();
-        			if (! response.isSuccessful())
-        			    log.warn("Speichern des JSON an URL war nicht erfolgreich. Status=" + response.code() + ", URL=" + url);
+        			try (Response response = client.newCall(request).execute()) {
+            			if (! response.isSuccessful())
+            			    log.warn("Speichern des JSON an URL war nicht erfolgreich. Status=" + response.code() + ", URL=" + url);
+        			}
         		}
     		}   
     		else {
