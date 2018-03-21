@@ -3,7 +3,6 @@ package kllngii.r6h;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.prefs.BackingStoreException;

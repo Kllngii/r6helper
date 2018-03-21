@@ -88,13 +88,16 @@ public class R6Helper extends KllngiiView {
 	//TODO Webobefläche erneuern. Kein Screenshot sondern JSON übertragen -> angular Project
 	
 	//R6helper-Gegenerteam:
-	//FIXME Gadgets werden nicht per JSON gespeichert
+	//FIXME Fähigkeiten werden nicht per JSON gespeichert
 	//TODO Drohnen/Kamera Counter
 	
 	//Einstellungen:
 	//TODO FTP impementieren
 	
 	//R6helper-Team:
+	//TODO Death Counter
+	//TODO Kill Counter
+	//TODO KD Berechnen
 	//TODO Win Counter
 	//TODO Top3 anzeigen
 	//TODO Top3 sortierbar nach Aces/Wins/Headshots/etc.

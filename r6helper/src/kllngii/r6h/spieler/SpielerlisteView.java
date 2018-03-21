@@ -70,7 +70,7 @@ public class SpielerlisteView extends KllngiiView {
         // Pseudo-Tabelle - Layout festlegen:
         List<Spieler> team = model.getTeam();
         final int numRows = team.size();
-        final int numCols = 5;
+        final int numCols = 7;
         FormBuilder builder = FormBuilder.create().debug(false)
                 .padding("6dlu, 12px, 6dlu, 12px");
         if (readWrite) {
@@ -96,6 +96,7 @@ public class SpielerlisteView extends KllngiiView {
         builder.addTitle("Spieler").xy(1, row)
                .add(title("Headshots")).xy(3, row)
                .add(title("Aces")).xy(5, row)
+               .add(title("Knifes")).xy(7, row)
                .addSeparator("").xyw(1, 2, numCols);
         
         for (final Spieler spieler : team) {

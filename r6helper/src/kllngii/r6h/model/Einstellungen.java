@@ -1,6 +1,5 @@
 package kllngii.r6h.model;
 
-import java.io.File;
 import java.net.URI;
 
 import javax.swing.Timer;

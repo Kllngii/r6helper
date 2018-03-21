@@ -1,6 +1,5 @@
 package kllngii.r6h;
 
-import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.prefs.BackingStoreException;
