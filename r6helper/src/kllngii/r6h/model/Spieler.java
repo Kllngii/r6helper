@@ -25,7 +25,7 @@ public class Spieler {
 	 * Konstruktor für neue Spieler mit Startwerten für die Statistik.
 	 */
 	public Spieler(String name) {
-		this(name, 0, 0, 0, 0, 0, 0, 0.0);
+		this(name, 0, 0, 0, 0, 0, 1, 0.0);
 	}
 	
 	/**
@@ -43,7 +43,7 @@ public class Spieler {
 	}
 	
 	public static Spieler fromJson(JSONObject src) {
-		return new Spieler(src.getString(KEY_NAME), src.optInt(KEY_HEADSHOT, 0), src.optInt(KEY_ACE, 0), src.optInt(KEY_KNIFE, 0), src.optInt(KEY_POINTS, 0), src.optInt(KEY_KILLS, 0), src.optInt(KEY_DEATHS, 0), src.optDouble(KEY_KD, 0.0));
+		return new Spieler(src.getString(KEY_NAME), src.optInt(KEY_HEADSHOT, 0), src.optInt(KEY_ACE, 0), src.optInt(KEY_KNIFE, 0), src.optInt(KEY_POINTS, 0), src.optInt(KEY_KILLS, 0), src.optInt(KEY_DEATHS, 1), src.optDouble(KEY_KD, 0.0));
 	}
 	
 	
@@ -138,5 +138,10 @@ public class Spieler {
 	}
 	public void increaseDeaths() {
 		deaths++;
+	}
+
+	public void increaseKills(int i) {
+		kills = kills+i;
+		
 	}
 }

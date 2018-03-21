@@ -85,7 +85,7 @@ public class SpielerlisteView extends KllngiiView {
             rowSpec.append(", p, $lgap, p");
 
             builder.rows(rowSpec.toString())
-                   .columns("left:[pref, 400px], 6dlu, [60px,pref], 6dlu, [60px,pref], 6dlu, [60px, pref]");
+                   .columns("left:[pref, 400px], 6dlu, [60px,pref], 6dlu, [60px,pref], 6dlu, [60px, pref], 6dlu, [60px, pref], 6dlu, [60px, pref], 6dlu, [60px, pref]");
         }
         else {
             builder.rows("p, $lgap, " + String.join(", $lgap, ", Collections.nCopies(numRows, "p")))
@@ -97,6 +97,9 @@ public class SpielerlisteView extends KllngiiView {
                .add(title("Headshots")).xy(3, row)
                .add(title("Aces")).xy(5, row)
                .add(title("Knifes")).xy(7, row)
+               .add(title("Kills")).xy(9, row)
+               .add(title("Deaths")).xy(11, row)
+               .add(title("KD")).xy(13, row)
                .addSeparator("").xyw(1, 2, numCols);
         
         for (final Spieler spieler : team) {
@@ -112,6 +115,9 @@ public class SpielerlisteView extends KllngiiView {
             addHeadshot(spieler, row, builder);
             addAce(spieler, row, builder);
             addKnife(spieler, row, builder);
+            addKills(spieler, row, builder);
+            addDeaths(spieler, row, builder);
+            addKD(spieler, row, builder);
         }
         if (numRows == 0)
             row++;
@@ -166,6 +172,7 @@ public class SpielerlisteView extends KllngiiView {
             countHSUpBtn.addActionListener((ActionEvent evt) -> {
                 spieler.increaseHeadshots();
                 countHSUpBtn.setText(String.valueOf(spieler.getHeadshots()));
+                spieler.increaseKills();
             });
             builder.add(countHSUpBtn).xy(3, row);
         }
@@ -180,6 +187,7 @@ public class SpielerlisteView extends KllngiiView {
         countAceUpBtn.setToolTipText("Ace hinzufügen");
         countAceUpBtn.addActionListener((ActionEvent evt) -> {
             spieler.increaseAce();
+            spieler.increaseKills(5);
             countAceUpBtn.setText(String.valueOf(spieler.getAce()));
         });
         builder.add(countAceUpBtn).xy(5, row);
@@ -194,9 +202,40 @@ public class SpielerlisteView extends KllngiiView {
     	        countKnifeUpBtn.setToolTipText("KnifeKill hinzufügen");
     	        countKnifeUpBtn.addActionListener((ActionEvent evt) -> {
     	            spieler.increaseKnifeKills();
+    	            spieler.increaseKills();
     	            countKnifeUpBtn.setText(String.valueOf(spieler.getKnifeKills()));
     	        });
     	        builder.add(countKnifeUpBtn).xy(7, row);
     		}
+    }
+    private void addKills(Spieler spieler, int row, FormBuilder builder) {
+		if (readWrite) {
+			final JButton countKillsUpBtn = new JButton(String.valueOf(spieler.getKills()));
+	        countKillsUpBtn.setToolTipText("Kill hinzufügen");
+	        countKillsUpBtn.addActionListener((ActionEvent evt) -> {
+	            spieler.increaseKills();
+	            countKillsUpBtn.setText(String.valueOf(spieler.getKills()));
+	        });
+	        builder.add(countKillsUpBtn).xy(9, row);
+	        
+		}
+    }
+    private void addDeaths(Spieler spieler, int row, FormBuilder builder) {
+		if (readWrite) {
+			final JButton countDeathUpBtn = new JButton(String.valueOf(spieler.getDeaths()));
+	        countDeathUpBtn.setToolTipText("Kill hinzufügen");
+	        countDeathUpBtn.addActionListener((ActionEvent evt) -> {
+	            spieler.increaseDeaths();
+	            countDeathUpBtn.setText(String.valueOf(spieler.getDeaths()));
+	        });
+	        builder.add(countDeathUpBtn).xy(11, row);
+		}
+    }
+    private void addKD(Spieler spieler, int row, FormBuilder builder) {
+		if (readWrite) {
+		    final JLabel kd = new JLabel();
+			kd.setText(String.valueOf(spieler.getKD()));
+	        builder.add(kd).xy(13, row);
+		}
     }
 }
