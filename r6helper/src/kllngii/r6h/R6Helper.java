@@ -88,6 +88,7 @@ public class R6Helper extends KllngiiView {
 	
 	//R6helper-Gegenerteam:
 	//TODO Drohnen/Kamera Counter
+	//FIXME Das neuste DLC hat Waffen von 2 CTUs
 	
 	//Einstellungen:
 	//TODO FTP implementieren
