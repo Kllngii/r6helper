@@ -187,6 +187,9 @@ public class Operator implements Serializable {
         if (isFähigkeitÜbrig())
             fähigkeitAnzahlÜbrig--;
     }
+    public void setFähigkeit(int i) {
+    	fähigkeitAnzahlÜbrig = i;
+    }
 
     public void reset() {
 	    lifepoints = DEFAULT_LIFEPOINTS;

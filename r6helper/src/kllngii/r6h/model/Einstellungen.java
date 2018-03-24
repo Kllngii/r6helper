@@ -11,7 +11,7 @@ public class Einstellungen {
     //------ Variablen ------
     
     // Lesen aus URI
-    private URI uriInput = newURI("https://www.dropbox.com/s/kvdxxjv92u9v3d0/r6helper.json?dl=0");
+    private URI uriInput = newURI("http://192.168.2.10:8080/r6/service/data/all");
     
     // Lesen per FTP
     private boolean ftpInput = false;

@@ -229,6 +229,9 @@ public class SpeicherService {
             }
             op.setSelectedGadgets(selectedGadgets);
         }
+        if(json.has("fähigkeit")) {
+        	op.setFähigkeit(json.getInt("fähigkeit"));
+        }
         if (json.has("lifepoints"))
             op.setLifepoints(json.getInt("lifepoints"));
 
@@ -245,6 +248,8 @@ public class SpeicherService {
         if (CollectionUtils.isNotEmpty(op.getSelectedGadgets()))
             trg.put("gadgets", new JSONArray(op.getSelectedGadgets().stream().map(g -> g.getName()).collect(Collectors.toList())));
         trg.put("lifepoints", op.getLifepoints());
+        if(op.getFähigkeit().name() != null)
+        	trg.put("fähigkeit", op.getFähigkeitAnzahlÜbrig());
         return trg;
     }
 
@@ -272,7 +277,6 @@ public class SpeicherService {
         else
             return true;  // relative Dateiangabe
     }
-
     public void speichereJson(R6HelperModel model, Collection<String> errors, String url) throws IOException {
     		if(initialisierung) {
     			String json = createJson(model, errors);

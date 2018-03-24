@@ -85,19 +85,15 @@ public class R6Helper extends KllngiiView {
 	//Sonstiges:
 	//TODO Mehrere Channel einführen, um PW geschützt getrennt Programm zu nutzen
 	//TODO Optional: Fenster auch auf Java FX umstellbar
-	//TODO Webobefläche erneuern. Kein Screenshot sondern JSON übertragen -> angular Project
 	
 	//R6helper-Gegenerteam:
-	//FIXME Fähigkeiten werden nicht per JSON gespeichert
 	//TODO Drohnen/Kamera Counter
 	
 	//Einstellungen:
-	//TODO FTP impementieren
+	//TODO FTP implementieren
 	
 	//R6helper-Team:
-	//TODO Death Counter
-	//TODO Kill Counter
-	//TODO KD Berechnen
+	//FIXME KD erneuert sich nicht
 	//TODO Win Counter
 	//TODO Top3 anzeigen
 	//TODO Top3 sortierbar nach Aces/Wins/Headshots/etc.
@@ -572,8 +568,9 @@ public class R6Helper extends KllngiiView {
     	
     	if (speicherService.isFileUrl(einstellungen.getUrlOutput())) {
         	try {
-        	    File dateiOutput = new File(einstellungen.getUrlOutput());
+        	    File dateiOutput = new File(einstellungen.getUrlOutput());          
         	    saveScreenshot(new File(dateiOutput.getParentFile(), "R6Screenshot.png"));
+        	    log.info("Der Dateipfad ist: "+dateiOutput.getParentFile());
         	} catch (Exception ex) {
                 log.error("Fehler beim Speichern des Screenshots!", ex);
                 showError("Fehler beim Speichern des Screenshots: "
