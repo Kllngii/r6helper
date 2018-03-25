@@ -48,6 +48,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
@@ -465,37 +466,64 @@ public class R6Helper extends KllngiiView {
         
         FormBuilder menu = FormBuilder.create()
                 .columns("pref")
-                .rows("p, $lgap, p, $pgap, " +
+                .rows("p, $lgap, p, $lgap, p, $lgap, p, $pgap, " +
                       "p, $lgap, p, $lgap, " +
                       "p, $pgap, p, $pgap, p, $pgap, p")
                 .padding("6dlu, 12px, 6dlu, 12px");
         
-        //TODO JComboBox für r6maps und R6DB Auswahl 
-        JButton btnWeb = new JButton("Externe Rainbow Programme");
+        JComboBox<WebTyp> chooseWeb = new JComboBox<WebTyp>(WebTyp.values());
+        JButton btnWeb = new JButton("R6 Programme");
         JComboBox<R6Map> comboWeb = new JComboBox<R6Map>(R6Map.values());
+        JTextField webText = new JTextField();
         if (Desktop.isDesktopSupported()) {
             btnWeb.setEnabled(true);
         } else {
             btnWeb.setEnabled(false);
         }
-        menu.add(btnWeb).xy(1, 1);
-        menu.add(comboWeb).xy(1, 3);
+        menu.add(chooseWeb).xy(1, 1);
+        menu.add(btnWeb).xy(1, 3);
+        menu.add(comboWeb).xy(1, 5);
+        menu.add(webText).xy(1, 7);
         btnWeb.addActionListener((ActionEvent evt) -> {
             URL url = null;
-            try {
-            	
-                url = new URL("http://www.r6maps.com/"+comboWeb.getItemAt(comboWeb.getSelectedIndex()).getUrl());
-
-                try {
-                	R6DBWindow.main(null);
-                    Desktop.getDesktop().browse(url.toURI());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (URISyntaxException e) {
-                    e.printStackTrace();
-                }
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
+            if(chooseWeb.getSelectedItem() == WebTyp.R6HELPER) {
+            		try {
+            			if(readWrite) {
+            				url = new URL("http://192.168.2.10:8080/r6/");
+            			}
+            			else {
+            				url = new URL("http://www.mine.kelling.de:8080/r6/");
+            			}
+					log.info("Knopf gedrückt - URL: "+url);
+					Desktop.getDesktop().browse(url.toURI());
+				}
+            		catch (IOException | URISyntaxException e) {
+					e.printStackTrace();
+				}
+            }
+            if(chooseWeb.getSelectedItem() == WebTyp.R6DB) {
+            		try {
+					url = new URL(kllngii.r6h.model.R6DB.createUrl(webText.getText()));
+					log.info("Knopf gedrückt - URL: "+url);
+					Desktop.getDesktop().browse(url.toURI());
+				}
+            		catch (IOException | URISyntaxException e) {
+					e.printStackTrace();
+				}
+            }
+            if(chooseWeb.getSelectedItem() == WebTyp.R6MAP) {
+	            	try {
+					url = new URL("http://www.r6maps.com/"+comboWeb.getItemAt(comboWeb.getSelectedIndex()).getUrl());
+					log.info("Knopf gedrückt - URL: "+url);
+					Desktop.getDesktop().browse(url.toURI());
+				}
+	            	catch (IOException | URISyntaxException e) {
+					e.printStackTrace();
+				}
+            }
+            else {
+            		log.info("Das sollte nicht passieren! - WebTyp ist: "+chooseWeb.getSelectedItem());
+            		log.info("Knopf gedrückt - URL: "+url);
             }
         });
         
@@ -503,7 +531,7 @@ public class R6Helper extends KllngiiView {
         jsonLoadButton.addActionListener((ActionEvent evt) -> {
             ladeAusJson();
         });
-        menu.add(jsonLoadButton).xy(1, 5);
+        menu.add(jsonLoadButton).xy(1, 9);
 
         if (readWrite) {
             JButton jsonSaveButton = new JButton("Speichern");
@@ -511,7 +539,7 @@ public class R6Helper extends KllngiiView {
                 speichereInJSON();
                 
             });
-            menu.add(jsonSaveButton).xy(1, 7);
+            menu.add(jsonSaveButton).xy(1, 11);
         }
         JButton settings = new JButton("Einstellungen");
         settings.addActionListener((ActionEvent evt) -> {
@@ -520,13 +548,13 @@ public class R6Helper extends KllngiiView {
             einstellungsFrame.setVisible(true);
             einstellungsFrame.toFront();
         });
-        menu.add(settings).xy(1, 11);
+        menu.add(settings).xy(1, 15);
         if(readWrite) {
         		JButton resetBtn = new JButton("Reset");
         		resetBtn.addActionListener((ActionEvent evt) -> {
         			reset();
         		});
-        		menu.add(resetBtn).xy(1, 9);
+        		menu.add(resetBtn).xy(1, 13);
         }
         
         JPanel menuPanel = menu.build();
