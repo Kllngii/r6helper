@@ -109,19 +109,16 @@ public class Spieler {
         trg.put(KEY_HEADSHOT, getHeadshots());
         trg.put(KEY_ACE, getAce());
         trg.put(KEY_KNIFE, getKnifeKills());
-        trg.put(KEY_POINTS, getP());
+        trg.put(KEY_POINTS, getPoints());
         trg.put(KEY_KILLS, getKills());
         trg.put(KEY_DEATHS, getDeaths());
         trg.put(KEY_KD, getKD());
         return trg;
     }
 
-	public int getP() {
+	public int getPoints() {
+		p = kills*100+ace*750-deaths*75;
 		return p;
-	}
-
-	public void increaseP(Integer i) {
-		Integer.sum(p, i);
 	}
 	public int getKills() {
 		return kills;
