@@ -15,7 +15,6 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -65,7 +64,6 @@ import com.jgoodies.looks.plastic.PlasticXPLookAndFeel;
 import com.jgoodies.looks.plastic.theme.ExperienceRoyale;
 import com.jgoodies.validation.view.ValidationResultViewFactory;
 
-import kllngii.r6h.model.Ctu;
 import kllngii.r6h.model.Einstellungen;
 import kllngii.r6h.model.Faehigkeit;
 import kllngii.r6h.model.Gadget;
@@ -80,10 +78,6 @@ import kllngii.r6h.spieler.SpielerlisteController;
 
 
 public class R6Helper extends KllngiiView {
-	private static final String ERROR_AKTIVIERE_HÖCHSTENS_N_OPERATOR = "Aktiviere höchstens " + R6HelperModel.MAX_TEAMGRÖSSE + " Operator!";
-	private static final String ERROR_REKRUT_HAT_ZU_VIELE_GADGETS = "Ein Rekrut darf höchstens " + Rekrut.MAX_GADGETS + " Gadgets haben!";
-	private static final String ERROR_REKRUT_PRIWA_SEKWA_CTU = "Ein Rekrut darf nicht die Waffen von mehr als " + Rekrut.MAX_CTUS + " CTUs haben!";
-	
 	//Sonstiges:
 	//TODO Mehrere Channel einführen, um PW geschützt getrennt Programm zu nutzen
 	//TODO Optional: Fenster auch auf Java FX umstellbar
@@ -697,13 +691,13 @@ public class R6Helper extends KllngiiView {
         List<Operator> selectedOps = (rdbtnAngreifer.isSelected()) ? model.getSelectedAngreifer()
                 : model.getSelectedVerteidiger();
         showErrorIf(() -> selectedOps.size() > R6HelperModel.MAX_TEAMGRÖSSE,
-                ERROR_AKTIVIERE_HÖCHSTENS_N_OPERATOR);
+                Konst.ERROR_AKTIVIERE_HÖCHSTENS_N_OPERATOR);
 
         // Hat einer zu viele Gadgets?
         final Predicate<List<Operator>> einRekrutHatZuVieleGadgets = (_ops) -> _ops.stream()
                 .filter(o -> o instanceof Rekrut).anyMatch(r -> r.getSelectedGadgets().size() > Rekrut.MAX_GADGETS);
         showErrorIf(() -> einRekrutHatZuVieleGadgets.test(selectedOps),
-                ERROR_REKRUT_HAT_ZU_VIELE_GADGETS);
+                Konst.ERROR_REKRUT_HAT_ZU_VIELE_GADGETS);
 
         panel_waffen.removeAll();
         
@@ -752,10 +746,10 @@ public class R6Helper extends KllngiiView {
                     if ( prim != null && secW.getSelectedItem() != null && 
                          ((Waffe) secW.getSelectedItem()).getC() != prim.getC() && op.isRekrut()) {
                     	secW.setSelectedItem(null);
-                    	showError(ERROR_REKRUT_PRIWA_SEKWA_CTU);
+                    	showError(Konst.ERROR_REKRUT_PRIWA_SEKWA_CTU);
                     }
                     else
-                    	removeError(ERROR_REKRUT_PRIWA_SEKWA_CTU);
+                    	removeError(Konst.ERROR_REKRUT_PRIWA_SEKWA_CTU);
                     showWaffentyp();
                 });
                 
@@ -778,10 +772,10 @@ public class R6Helper extends KllngiiView {
                     if ( sec != null && primW.getSelectedItem() != null && 
                     	 ((Waffe) primW.getSelectedItem()).getC() != sec.getC() && op.isRekrut()) {
                     	primW.setSelectedItem(null);
-                    	showError(ERROR_REKRUT_PRIWA_SEKWA_CTU);
+                    	showError(Konst.ERROR_REKRUT_PRIWA_SEKWA_CTU);
                     }
                     else
-                    	removeError(ERROR_REKRUT_PRIWA_SEKWA_CTU);
+                    	removeError(Konst.ERROR_REKRUT_PRIWA_SEKWA_CTU);
                     showWaffentyp();
                 });
                 
@@ -802,7 +796,7 @@ public class R6Helper extends KllngiiView {
                 
                 if (dieserRekrutHatZuVieleGadgets.test(rekrut)) {
                     nameLabel.setIcon(ValidationResultViewFactory.getErrorIcon());
-                    nameLabel.setToolTipText(ERROR_REKRUT_HAT_ZU_VIELE_GADGETS);
+                    nameLabel.setToolTipText(Konst.ERROR_REKRUT_HAT_ZU_VIELE_GADGETS);
                 }
                 
                 // Checkboxen, um *2* Gadgets auszuwählen
@@ -897,7 +891,7 @@ public class R6Helper extends KllngiiView {
                 
                 if (dieserRekrutHatZuVieleGadgets.test(rekrut)) {
                     nameLabel.setIcon(ValidationResultViewFactory.getErrorIcon());
-                    nameLabel.setToolTipText(ERROR_REKRUT_HAT_ZU_VIELE_GADGETS);
+                    nameLabel.setToolTipText(Konst.ERROR_REKRUT_HAT_ZU_VIELE_GADGETS);
                 }
                 else {
                     nameLabel.setIcon(null);
@@ -906,7 +900,7 @@ public class R6Helper extends KllngiiView {
                 
                 List<Operator> _ops = (rdbtnAngreifer.isSelected()) ? model.getSelectedAngreifer()
                         : model.getSelectedVerteidiger();
-                showErrorIf(() -> einRekrutHatZuVieleGadgets.test(_ops), ERROR_REKRUT_HAT_ZU_VIELE_GADGETS);
+                showErrorIf(() -> einRekrutHatZuVieleGadgets.test(_ops), Konst.ERROR_REKRUT_HAT_ZU_VIELE_GADGETS);
             });
             
             builder.add(cb).xy(2*col-1, row);
@@ -950,7 +944,7 @@ public class R6Helper extends KllngiiView {
         else {
             // Fehler-Icon oben anzeigen
             for (String error : errors) {
-                if (ERROR_AKTIVIERE_HÖCHSTENS_N_OPERATOR.equals(error)) {
+                if (Konst.ERROR_AKTIVIERE_HÖCHSTENS_N_OPERATOR.equals(error)) {
                     addErrorMarker(angriffOpLabel, error);
                     addErrorMarker(verteidigungOpLabel, error);
                     break;
