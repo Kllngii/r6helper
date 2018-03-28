@@ -195,4 +195,7 @@ public class Operator implements Serializable {
 	    lifepoints = DEFAULT_LIFEPOINTS;
 	    fähigkeitAnzahlÜbrig = fähigkeit.getAnzahl();
 	}
+    public boolean isRekrut() {
+    	return false;
+    }
 }

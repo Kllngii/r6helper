@@ -77,5 +77,9 @@ public class Rekrut extends Operator {
 			selectedGadgets.add(gadget);
 		}
 	}
+	@Override
+	public boolean isRekrut() {
+		return true;
+	}
 
 }
