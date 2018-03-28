@@ -65,6 +65,7 @@ import com.jgoodies.looks.plastic.PlasticXPLookAndFeel;
 import com.jgoodies.looks.plastic.theme.ExperienceRoyale;
 import com.jgoodies.validation.view.ValidationResultViewFactory;
 
+import kllngii.r6h.model.Ctu;
 import kllngii.r6h.model.Einstellungen;
 import kllngii.r6h.model.Faehigkeit;
 import kllngii.r6h.model.Gadget;
@@ -89,7 +90,6 @@ public class R6Helper extends KllngiiView {
 	
 	//R6helper-Gegenerteam:
 	//TODO Drohnen/Kamera Counter
-	//FIXME Das neuste DLC hat Waffen von 2 CTUs
 	
 	//Einstellungen:
 	//TODO FTP implementieren
@@ -748,8 +748,9 @@ public class R6Helper extends KllngiiView {
                 primW.addActionListener((ActionEvent evt) -> {
                 	Waffe prim = (Waffe) primW.getSelectedItem();
                     op.setSelectedPrimärwaffe(prim);
+                    //Check ob Spieler ein Rekrut ist
                     if ( prim != null && secW.getSelectedItem() != null && 
-                         ((Waffe) secW.getSelectedItem()).getC() != prim.getC() ) {
+                         ((Waffe) secW.getSelectedItem()).getC() != prim.getC() && op.isRekrut()) {
                     	secW.setSelectedItem(null);
                     	showError(ERROR_REKRUT_PRIWA_SEKWA_CTU);
                     }
@@ -775,7 +776,7 @@ public class R6Helper extends KllngiiView {
                 	Waffe sec = (Waffe) secW.getSelectedItem();
                     op.setSelectedSekundärwaffe(sec);
                     if ( sec != null && primW.getSelectedItem() != null && 
-                    	 ((Waffe) primW.getSelectedItem()).getC() != sec.getC() ) {
+                    	 ((Waffe) primW.getSelectedItem()).getC() != sec.getC() && op.isRekrut()) {
                     	primW.setSelectedItem(null);
                     	showError(ERROR_REKRUT_PRIWA_SEKWA_CTU);
                     }
