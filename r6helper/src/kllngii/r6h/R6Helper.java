@@ -488,36 +488,38 @@ public class R6Helper extends KllngiiView {
             			else {
             				url = new URL("http://www.mine.kelling.de:8080/r6/");
             			}
-					log.info("Knopf gedrückt - URL: "+url);
-					Desktop.getDesktop().browse(url.toURI());
+            			log.info("Knopf gedrückt - URL: "+url);
+            			Desktop.getDesktop().browse(url.toURI());
 				}
             		catch (IOException | URISyntaxException e) {
-					e.printStackTrace();
+            			logFehler("Website kann nicht geöffnet werden!");
+            			e.printStackTrace();
 				}
             }
             if(chooseWeb.getSelectedItem() == WebTyp.R6DB) {
             		try {
-					url = new URL(kllngii.r6h.model.R6DB.createUrl(webText.getText()));
-					log.info("Knopf gedrückt - URL: "+url);
-					Desktop.getDesktop().browse(url.toURI());
+            			url = new URL(kllngii.r6h.model.R6DB.createUrl(webText.getText()));
+            			log.info("Knopf gedrückt - URL: "+url);
+            			Desktop.getDesktop().browse(url.toURI());
 				}
             		catch (IOException | URISyntaxException e) {
-					e.printStackTrace();
+            			logFehler("Website kann nicht geöffnet werden!");
+            			e.printStackTrace();
 				}
             }
             if(chooseWeb.getSelectedItem() == WebTyp.R6MAP) {
 	            	try {
-					url = new URL("http://www.r6maps.com/"+comboWeb.getItemAt(comboWeb.getSelectedIndex()).getUrl());
-					log.info("Knopf gedrückt - URL: "+url);
-					Desktop.getDesktop().browse(url.toURI());
+	            		url = new URL("http://www.r6maps.com/"+comboWeb.getItemAt(comboWeb.getSelectedIndex()).getUrl());
+	            		log.info("Knopf gedrückt - URL: "+url);
+	            		Desktop.getDesktop().browse(url.toURI());
 				}
 	            	catch (IOException | URISyntaxException e) {
-					e.printStackTrace();
+	            		e.printStackTrace();
+	            		logFehler("Website kann nicht geöffnet werden!");
 				}
             }
             else {
-            		log.info("Das sollte nicht passieren! - WebTyp ist: "+chooseWeb.getSelectedItem());
-            		log.info("Knopf gedrückt - URL: "+url);
+            		logFehler("Das sollte nicht passieren! - WebTyp ist: "+chooseWeb.getSelectedItem());
             }
         });
         
@@ -1023,6 +1025,9 @@ public class R6Helper extends KllngiiView {
         comp.paint(image.getGraphics()); // alternately use .printAll(..)
 
         ImageIO.write(image, "PNG", file);
+    }
+    private void logFehler(String s) {
+    	log.warn(s);
     }
 
 }
