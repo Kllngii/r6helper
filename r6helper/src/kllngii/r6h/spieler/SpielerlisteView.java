@@ -2,6 +2,7 @@ package kllngii.r6h.spieler;
 
 import java.awt.event.ActionEvent;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
@@ -35,6 +36,8 @@ public class SpielerlisteView extends KllngiiView {
     private R6HelperModel model;
     private String newPlayer = null;
     private final SpielerlisteController controller;
+    private HashMap<Spieler, JLabel> kdlist = new HashMap<Spieler, JLabel>();
+    private HashMap<Spieler, JButton> killlist = new HashMap<Spieler, JButton>();
     
     private JComponent root;
 
@@ -157,9 +160,16 @@ public class SpielerlisteView extends KllngiiView {
             			controller.toggleSpielerImTeam(spieler);
             		}
             });
+            JButton clearButton = new JButton("Team leeren");
+            clearButton.addActionListener(e -> {
+            		for(Spieler sp : team) {
+            			controller.toggleSpielerImTeam(sp);
+            		}
+            });
             builder.add(newPlayerName).xy(1, row);
             builder.add(createPlayerButton).xy(3, row);
             builder.add(createAndAddPlayerButton).xy(5, row);
+            builder.add(clearButton).xy(7, row);
         }        
         
         root.add(builder.build());
@@ -173,8 +183,11 @@ public class SpielerlisteView extends KllngiiView {
                 spieler.increaseHeadshots();
                 countHSUpBtn.setText(String.valueOf(spieler.getHeadshots()));
                 spieler.increaseKills();
+                refreshKills(spieler);
+                refreshKD(spieler);
             });
             builder.add(countHSUpBtn).xy(3, row);
+            
         }
         else {
             builder.addLabel(String.valueOf(spieler.getHeadshots())).xy(3, row);
@@ -189,8 +202,11 @@ public class SpielerlisteView extends KllngiiView {
             spieler.increaseAce();
             spieler.increaseKills(5);
             countAceUpBtn.setText(String.valueOf(spieler.getAce()));
+            refreshKills(spieler);
+            refreshKD(spieler);
         });
         builder.add(countAceUpBtn).xy(5, row);
+        
     }
     else {
         builder.addLabel(String.valueOf(spieler.getAce())).xy(5, row);
@@ -204,8 +220,11 @@ public class SpielerlisteView extends KllngiiView {
     	            spieler.increaseKnifeKills();
     	            spieler.increaseKills();
     	            countKnifeUpBtn.setText(String.valueOf(spieler.getKnifeKills()));
+    	            refreshKills(spieler);
+    	            refreshKD(spieler);
     	        });
     	        builder.add(countKnifeUpBtn).xy(7, row);
+    	        
     		}
     }
     private void addKills(Spieler spieler, int row, FormBuilder builder) {
@@ -215,8 +234,10 @@ public class SpielerlisteView extends KllngiiView {
 	        countKillsUpBtn.addActionListener((ActionEvent evt) -> {
 	            spieler.increaseKills();
 	            countKillsUpBtn.setText(String.valueOf(spieler.getKills()));
+	            refreshKD(spieler);
 	        });
 	        builder.add(countKillsUpBtn).xy(9, row);
+	        killlist.put(spieler, countKillsUpBtn);
 	        
 		}
     }
@@ -227,15 +248,25 @@ public class SpielerlisteView extends KllngiiView {
 	        countDeathUpBtn.addActionListener((ActionEvent evt) -> {
 	            spieler.increaseDeaths();
 	            countDeathUpBtn.setText(String.valueOf(spieler.getDeaths()));
+	            refreshKD(spieler);
 	        });
 	        builder.add(countDeathUpBtn).xy(11, row);
+	        
 		}
     }
     private void addKD(Spieler spieler, int row, FormBuilder builder) {
 		if (readWrite) {
-		    final JLabel kd = new JLabel();
+		    JLabel kd = new JLabel();
 			kd.setText(String.valueOf(spieler.getKD()));
 	        builder.add(kd).xy(13, row);
+	        
+	        kdlist.put(spieler, kd);
 		}
+    }
+    private void refreshKD(Spieler spieler) {
+    	kdlist.get(spieler).setText(String.valueOf(spieler.getKD()));
+    }
+    private void refreshKills(Spieler spieler) {
+    	killlist.get(spieler).setText(String.valueOf(spieler.getKills()));
     }
 }
