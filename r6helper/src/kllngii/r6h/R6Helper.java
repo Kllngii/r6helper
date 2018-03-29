@@ -469,6 +469,8 @@ public class R6Helper extends KllngiiView {
         JButton btnWeb = new JButton("R6 Programme");
         JComboBox<R6Map> comboWeb = new JComboBox<R6Map>(R6Map.values());
         JTextField webText = new JTextField();
+        webText.setToolTipText("Spielername");
+        webText.setText("Spielername");
         if (Desktop.isDesktopSupported()) {
             btnWeb.setEnabled(true);
         } else {
