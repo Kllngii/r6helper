@@ -73,7 +73,7 @@ public class SpielerlisteView extends KllngiiView {
         // Pseudo-Tabelle - Layout festlegen:
         List<Spieler> team = model.getTeam();
         final int numRows = team.size();
-        final int numCols = 7;
+        final int numCols = 13;
         FormBuilder builder = FormBuilder.create().debug(false)
                 .padding("6dlu, 12px, 6dlu, 12px");
         if (readWrite) {
@@ -88,7 +88,7 @@ public class SpielerlisteView extends KllngiiView {
             rowSpec.append(", p, $lgap, p");
 
             builder.rows(rowSpec.toString())
-                   .columns("left:[pref, 400px], 6dlu, [60px,pref], 6dlu, [60px,pref], 6dlu, [60px, pref], 6dlu, [60px, pref], 6dlu, [60px, pref], 6dlu, [60px, pref]");
+                   .columns("left:[pref, 100px], 6dlu, [60px,pref], 6dlu, [60px,pref], 6dlu, [60px, pref], 6dlu, [60px, pref], 6dlu, [60px, pref], 6dlu, [30px, pref]");
         }
         else {
             builder.rows("p, $lgap, " + String.join(", $lgap, ", Collections.nCopies(numRows, "p")))

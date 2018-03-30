@@ -7,3 +7,5 @@ R6Screenshot.png
 pom.properties
 r6services/target
 r6helper/target
+r6helper/target/classes
+r6services/src/main/webapp/download
