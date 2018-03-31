@@ -3,7 +3,6 @@ package kllngii.r6h;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
-import java.awt.Cursor;
 import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -51,7 +50,6 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 
@@ -128,7 +126,7 @@ public class R6Helper extends KllngiiView {
     private final Map<Waffentyp, WaffenTypLabel> waffenTypMap = new LinkedHashMap<>();
 
     private final SpeicherService speicherService = new SpeicherService();
-
+    
     private static class WaffenTypLabel {
         private final String text;
         private final JLabel label;
@@ -258,51 +256,47 @@ public class R6Helper extends KllngiiView {
         
         frame.setVisible(true);
 
-        // Timer starten:
+        // JSON einmal laden,
+        // dann ggf.Refresh-Threads starten:
         final int refreshIntervalS = Math.max(0, einstellungen.getRefreshIntervalS());  // negative Werte krachen
         if(!readWrite) {
             
-            // Per Timer (in einem eigenen Thread):
-            // Sofort einmal das JSON holen
-            // UND später regelmäßig neu einlesen
-            Timer refreshTimer = new Timer(Math.max(refreshIntervalS*1000, 100), (ActionEvent e) -> {
-                log.info("Timer feuert - JSON neu einlesen...");
-                ladeAusJson();
-            });
-            refreshTimer.setInitialDelay(0);  // sofort einmal holen
-            if (refreshIntervalS == 0)
-                refreshTimer.setRepeats(false);  // NUR einmal holen
-            else
-                log.info("Timer wird erzeugt, um das JSON alle " + einstellungen.getRefreshIntervalS() + " s neu einzulesen.");
-            einstellungen.setRefreshTimer(refreshTimer);
-            refreshTimer.start();
-        }
-        else {
-            Timer loadOnceTimer = new Timer(100, (ActionEvent e1) -> {
+            if (refreshIntervalS == 0) {
                 log.info("JSON nach dem Start einmal einlesen...");
                 ladeAusJson();
+            }
+            else {
+                // In einem eigenen Thread:
+                // Sofort einmal das JSON holen
+                // UND später regelmäßig neu einlesen
+                Runnable refreshRunnable = () -> {
+                    log.info("Refresh läuft - JSON neu einlesen...");
+                    ladeAusJson();
+                };
+                einstellungen.setRefreshRunnable(refreshRunnable, "JSON neu einlesen");
+            }
+        }
+        else {
+            log.info("JSON nach dem Start einmal einlesen...");
+            ladeAusJson();
                 
-                // Per Timer das Model regelmäßig neu speichern
-                Timer refreshTimer = new Timer(einstellungen.getRefreshIntervalS()*1000, (ActionEvent e2) -> {
-                    log.info("Timer feuert - JSON neu speichern");
+            if (refreshIntervalS > 0) {
+                // In einem eigenen Thread das Model regelmäßig neu speichern
+                Runnable refreshRunnable = () -> {
+                    log.info("Refresh läuft - JSON neu speichern");
                     speichereInJSON();
-                });
-                einstellungen.setRefreshTimer(refreshTimer);
-                if (refreshIntervalS != 0) {
-                    log.info("Timer wird gestartet, um das JSON alle " + einstellungen.getRefreshIntervalS() + " s zu speichern.");
-                    refreshTimer.start();
-                }
-
-            });
-            loadOnceTimer.setInitialDelay(0);
-            loadOnceTimer.setRepeats(false);
-            loadOnceTimer.start();
-            
+                };
+                einstellungen.setRefreshRunnable(refreshRunnable, "JSON neu speichern");
+            }
         }
         frame.addWindowListener(new WindowAdapter(){
             @SuppressWarnings({ "synthetic-access", "unused" })
 			@Override
 			public void windowClosing(WindowEvent e){
+                log.info("windowClosing...");
+                
+                einstellungen.shutdown();
+                
             		speichereInJSON();
             		System.exit(0);
             }
@@ -584,7 +578,7 @@ public class R6Helper extends KllngiiView {
     		final long time1 = System.currentTimeMillis();
             speicherService.speichereJson(model, errors, einstellungen.getUrlOutput());
             final long time2 = System.currentTimeMillis();
-            log.info("Speicherzeit:  "+(time2-time1)+"ms"); 
+            log.info("Speicherzeit: "+(time2-time1)+"ms"); 
             
         } catch (Exception ex) {
             log.error("Fehler beim Speichern des JSON!", ex);
@@ -593,48 +587,47 @@ public class R6Helper extends KllngiiView {
         }
     	
     	if (speicherService.isFileUrl(einstellungen.getUrlOutput())) {
-        	try {
-        	    File dateiOutput = new File(einstellungen.getUrlOutput());          
-        	    saveScreenshot(new File(dateiOutput.getParentFile(), "R6Screenshot.png"));
-        	    log.info("Der Dateipfad ist: "+dateiOutput.getParentFile());
-        	} catch (Exception ex) {
-                log.error("Fehler beim Speichern des Screenshots!", ex);
-                showError("Fehler beim Speichern des Screenshots: "
-                        + StringUtils.defaultIfEmpty(ex.getMessage(), ex.toString()));
+            	try {
+            	    File dateiOutput = new File(einstellungen.getUrlOutput());          
+            	    saveScreenshot(new File(dateiOutput.getParentFile(), "R6Screenshot.png"));
+            	    log.info("Der Dateipfad ist: "+dateiOutput.getParentFile());
+            	} catch (Exception ex) {
+                    log.error("Fehler beim Speichern des Screenshots!", ex);
+                    showError("Fehler beim Speichern des Screenshots: "
+                            + StringUtils.defaultIfEmpty(ex.getMessage(), ex.toString()));
             }
-    	    }
     	}
+    }
 
     private void ladeAusJson() {
         try {
+            long timeAll = System.currentTimeMillis();
             log.info("Lade JSON...");
             
-            // Im richtigen Thread (EDT) den Mauszeiger auf "Warten" setzen:
-            if (!SwingUtilities.isEventDispatchThread())
-                SwingUtilities.invokeAndWait(() -> frame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR)));
-            else
-                frame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-
-            final long time1 = System.currentTimeMillis();
+            long timeLoad = System.currentTimeMillis();
             SpeicherService.ModelWithErrors mwe = speicherService.ladeJson(einstellungen.getUriInput());
             model = mwe.getModel();
             spielerlisteController.setModel(model);
             errors.clear();
             errors.addAll(mwe.getErrors());
+            timeLoad = System.currentTimeMillis() - timeLoad;
 
-            final long time2 = System.currentTimeMillis();
-            log.info("Ladezeit:  " + (time2 - time1) + "ms");
+            long timeUi = System.currentTimeMillis();
+            if (SwingUtilities.isEventDispatchThread())
+                refreshView();
+            else
+                SwingUtilities.invokeAndWait(() -> refreshView());
+            timeUi = System.currentTimeMillis() - timeUi;
+            
+            timeAll = System.currentTimeMillis() - timeAll;
+            log.info("Ladezeit: " + timeAll + "ms (" + 
+                    timeLoad + " JSON holen und verarbeiten, " +
+                    timeUi + " UI aktualisieren)");
         }
         catch (Exception ex) {
             log.error("Fehler beim Laden des JSON!", ex);
             showError("Fehler beim Laden des JSON: " + StringUtils.defaultIfEmpty(ex.getMessage(), ex.toString()));
         }
-        finally {
-            SwingUtilities.invokeLater(() -> frame.setCursor(Cursor.getDefaultCursor()));
-        }
-        
-        refreshView();
-
     }
 
     private void showWaffentyp() {
