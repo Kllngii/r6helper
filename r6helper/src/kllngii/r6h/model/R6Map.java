@@ -22,6 +22,10 @@ public enum R6Map {
 	Wolkenkratzer("/#skyscraper/1/all", "Wolkenkratzer"),
 //	Year 2
 	Küste("/#coastline/1/all", "Küste"),
+	Freizeitpark("/#themepark/1/all", "Freizeitpark"),
+	Turm("/#Tower/1/all", "Turm"),
+//  Year 3
+	
 	;
 	
 	private final String url;
