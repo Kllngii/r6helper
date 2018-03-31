@@ -18,7 +18,9 @@ public class R6HelperModel implements Serializable {
     public static final int MAX_TEAMGRÖSSE = 5;
     
     private boolean gegnerteamAngreifer = true;
-
+    
+    private Integer kamerasZerstört = 0;
+    
 	private final List<Operator> operatoren;
 	private final List<Operator> angreifer;
 	private final List<Operator> verteidiger;
@@ -205,5 +207,17 @@ public class R6HelperModel implements Serializable {
             op.reset();
         for (Operator op : selectedVerteidiger)
             op.reset();
+        setKamerasZerstört(0);
     }
+
+	public Integer getKamerasZerstört() {
+		return kamerasZerstört;
+	}
+
+	public void setKamerasZerstört(Integer kamerasZerstört) {
+		this.kamerasZerstört = kamerasZerstört;
+	}
+	public void increaseKamerasZerstört() {
+		kamerasZerstört++;
+	}
 }
