@@ -86,13 +86,31 @@ public class SpielerlisteView extends KllngiiView {
             rowSpec.append("30dlu");
             rowSpec.append(", p, $pgap");  // "Spieler in das Team aufnehmen"
             rowSpec.append(", p, $lgap, p");
+            
+            StringBuilder cols = new StringBuilder();
+            cols.append("left:[pref, 100px], 6dlu");
+            cols.append(", [60px,pref], 6dlu");
+            cols.append(", [60px,pref], 6dlu");
+            cols.append(", [60px, pref], 6dlu");
+            cols.append(", [60px, pref], 6dlu");
+            cols.append(", [60px, pref], 6dlu");
+            cols.append(", [30px, pref]");
 
             builder.rows(rowSpec.toString())
-                   .columns("left:[pref, 100px], 6dlu, [60px,pref], 6dlu, [60px,pref], 6dlu, [60px, pref], 6dlu, [60px, pref], 6dlu, [60px, pref], 6dlu, [30px, pref]");
+                   .columns(cols.toString());
         }
         else {
+            StringBuilder cols = new StringBuilder();
+            cols.append("left:pref, 12dlu");
+            cols.append(", pref, 12dlu");
+            cols.append(", pref, 12dlu");
+            cols.append(", pref, 12dlu");
+            cols.append(", pref, 12dlu");
+            cols.append(", pref, 12dlu");
+            cols.append(", pref");
+            
             builder.rows("p, $lgap, " + String.join(", $lgap, ", Collections.nCopies(numRows, "p")))
-                   .columns("left:pref, 12dlu, pref, 12dlu, pref");
+                   .columns(cols.toString());
         }
         
         int row = 1;
