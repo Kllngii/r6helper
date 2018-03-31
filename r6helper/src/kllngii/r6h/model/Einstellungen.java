@@ -1,8 +1,11 @@
 package kllngii.r6h.model;
 
 import java.net.URI;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
-import javax.swing.Timer;
+import org.apache.log4j.Logger;
 
 public class Einstellungen {
     
@@ -10,14 +13,19 @@ public class Einstellungen {
     
     //------ Variablen ------
     
+    private final Logger log = Logger.getLogger(getClass());
+    
     // Lesen aus URI
     private URI uriInput = newURI("http://192.168.2.10:8080/r6/service/data/all");
     
     // Lesen per FTP
     private boolean ftpInput = false;
     
+    private final ScheduledThreadPoolExecutor refreshThreadPool = new ScheduledThreadPoolExecutor(1);
     private int refreshIntervalS = DEFAULT_REFRESH_INTERVAL_S;
-    private Timer refreshTimer = null;
+    private Runnable refreshRunnable = null;
+    private String refreshAufgabe = null;
+    private ScheduledFuture<?> refreshFuture = null;
     
 
     // Speichern in eine Datei
@@ -104,6 +112,10 @@ public class Einstellungen {
             throw new RuntimeException(ex);
         }
     }
+    
+    public ScheduledThreadPoolExecutor getRefreshThreadPool() {
+        return refreshThreadPool;
+    }
 
     public int getRefreshIntervalS() {
         return refreshIntervalS;
@@ -111,30 +123,45 @@ public class Einstellungen {
 
     /**
      * Merkt sich das gewünschte neue Refresh-Intervall und
-     * ändert den Timer (falls vorhanden).
+     * startet den Job (falls vorhanden) im refreshThreadPool mit dem aktuellen Intervall neu.
      */
     public void setRefreshIntervalS(int refreshIntervalS) {
         this.refreshIntervalS = refreshIntervalS;
-        if (refreshTimer != null) {
+        if (refreshFuture != null) {
             if (refreshIntervalS > 0) {
-                refreshTimer.setDelay(refreshIntervalS*1000);
-                refreshTimer.setRepeats(true);
-                if (! refreshTimer.isRunning()) {
-                    refreshTimer.start();
-                }
+                refreshFuture.cancel(false);
+                setRefreshRunnable(refreshRunnable, refreshAufgabe);
             }
             else {
-                if (refreshTimer.isRunning())
-                    refreshTimer.stop();
+                refreshFuture.cancel(false);
             }
         }
     }
 
-    public Timer getRefreshTimer() {
-        return refreshTimer;
+    public void setRefreshRunnable(Runnable r, String aufgabe) {
+        refreshRunnable = r;
+        refreshAufgabe = aufgabe;
+        
+        long delay = Math.max(refreshIntervalS*1000L, 100L);
+        refreshFuture = refreshThreadPool.scheduleAtFixedRate(r, 0, delay, TimeUnit.MILLISECONDS);
+        log.info("Runnable wurde geschedulet. Aufgabe: "+ aufgabe + ", Intervall: " + delay + " ms.");
     }
+    
+    
+    /**
+     * Beendet den Threadpool für die Hintergrund-Aktualisierungen und wartet auf das Ende eventuell
+     * noch laufender Threads.
+     */
+    public void shutdown() {
+        log.info("Shutdown start");
+        refreshThreadPool.shutdown();
+        try {
+            refreshThreadPool.awaitTermination(5, TimeUnit.SECONDS);
+        }
+        catch (InterruptedException e1) {
+            log.info("", e1);
+        }
+        log.info("Shutdown end");
 
-    public void setRefreshTimer(Timer refreshTimer) {
-        this.refreshTimer = refreshTimer;
     }
 }
