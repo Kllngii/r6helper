@@ -270,7 +270,7 @@ public class R6Helper extends KllngiiView {
                 // Sofort einmal das JSON holen
                 // UND später regelmäßig neu einlesen
                 Runnable refreshRunnable = () -> {
-                    log.info("Refresh läuft - JSON neu einlesen...");
+                    log.debug("Refresh läuft - JSON neu einlesen...");
                     ladeAusJson();
                 };
                 einstellungen.setRefreshRunnable(refreshRunnable, "JSON neu einlesen");
@@ -283,7 +283,7 @@ public class R6Helper extends KllngiiView {
             if (refreshIntervalS > 0) {
                 // In einem eigenen Thread das Model regelmäßig neu speichern
                 Runnable refreshRunnable = () -> {
-                    log.info("Refresh läuft - JSON neu speichern");
+                    log.debug("Refresh läuft - JSON neu speichern");
                     speichereInJSON();
                 };
                 einstellungen.setRefreshRunnable(refreshRunnable, "JSON neu speichern");
@@ -575,10 +575,14 @@ public class R6Helper extends KllngiiView {
     }
     private void speichereInJSON() {
     	try {
-    		final long time1 = System.currentTimeMillis();
+    		long time1 = System.currentTimeMillis();
             speicherService.speichereJson(model, errors, einstellungen.getUrlOutput());
-            final long time2 = System.currentTimeMillis();
-            log.info("Speicherzeit: "+(time2-time1)+"ms"); 
+            time1 = System.currentTimeMillis() - time1;
+            
+            if (time1 < 1000)
+                log.debug("Speicherzeit: "+ time1 +"ms"); 
+            else
+                log.info("Speicherzeit erhöht: "+ time1 +"ms"); 
             
         } catch (Exception ex) {
             log.error("Fehler beim Speichern des JSON!", ex);
@@ -620,7 +624,12 @@ public class R6Helper extends KllngiiView {
             timeUi = System.currentTimeMillis() - timeUi;
             
             timeAll = System.currentTimeMillis() - timeAll;
-            log.info("Ladezeit: " + timeAll + "ms (" + 
+            if (timeAll < 1000)
+                log.debug("Ladezeit: " + timeAll + "ms (" + 
+                        timeLoad + " JSON holen und verarbeiten, " +
+                        timeUi + " UI aktualisieren)");
+            else
+                log.info("Ladezeit erhöht: " + timeAll + "ms (" + 
                     timeLoad + " JSON holen und verarbeiten, " +
                     timeUi + " UI aktualisieren)");
         }
