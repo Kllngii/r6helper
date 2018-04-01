@@ -140,6 +140,7 @@ public class SpeicherService {
         for (Spieler spieler : model.getTeam())
             spielernamen.add(spieler.getName());
         json.put("team", spielernamen);
+        json.put("kameras", model.getKamerasZerstört());
 
         // Fehler
         if (CollectionUtils.isNotEmpty(errors)) {
@@ -185,7 +186,9 @@ public class SpeicherService {
                     model.getTeam().add(sp);
             }
         }
-
+        if(json.has("kameras")) {
+        	model.setKamerasZerstört(json.getInt("kameras"));
+        }
         return model;
     }
 
