@@ -82,6 +82,7 @@ public class R6Helper extends KllngiiView {
 	
 	//R6helper-Gegenerteam:
 	//TODO Drohnen/Kamera Counter
+	//TODO Rangrechner, der Durchschnitt ausrechnet
 	
 	//Einstellungen:
 	//TODO FTP implementieren
