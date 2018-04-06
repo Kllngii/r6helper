@@ -5,10 +5,7 @@
     <artifactId>r6services</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
-<<<<<<< HEAD
     <name>r6</name>
-=======
->>>>>>> Projekt r6services angelegt.
     <dependencies>
         <dependency>
             <groupId>javax</groupId>
@@ -16,7 +13,6 @@
             <version>7.0</version>
             <scope>provided</scope>
         </dependency>
-<<<<<<< HEAD
         		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
@@ -48,11 +44,6 @@
 				</configuration>
 			</plugin>
 		</plugins>
-=======
-    </dependencies>
-    <build>
-        <finalName>r6services</finalName>
->>>>>>> Projekt r6services angelegt.
     </build>
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
