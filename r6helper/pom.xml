@@ -104,4 +104,8 @@
 	</dependencies>
 	<description>Programm für Ranked-Runden in Rainbow Six Siege um die Gegner Waffen und Gadgets sich zu merken.</description>
 	<url>mine.kelling.de:8080/r6/</url>
+	<properties>
+		<name>r6helper</name>
+		<version>1.4.0</version>
+	</properties>
 </project>
