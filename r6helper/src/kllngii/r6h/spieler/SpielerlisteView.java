@@ -180,9 +180,8 @@ public class SpielerlisteView extends KllngiiView {
             });
             JButton clearButton = new JButton("Team leeren");
             clearButton.addActionListener(e -> {
-            		for(Spieler sp : team) {
-            			controller.toggleSpielerImTeam(sp);
-            		}
+            		team.clear();
+            		refresh();
             });
             builder.add(newPlayerName).xy(1, row);
             builder.add(createPlayerButton).xy(3, row);
