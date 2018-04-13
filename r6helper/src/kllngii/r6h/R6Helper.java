@@ -196,18 +196,21 @@ public class R6Helper extends KllngiiView {
      * Initialize the contents of the frame.
      */
     private void initialize() {
+    	
         spielerlisteController = new SpielerlisteController(readWrite, model);
 
         frame = new JFrame();
         frame.setTitle("R6 Helper");
-
         Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
         Dimension size = new Dimension(1080, 630);
         frame.setSize(size.width, size.height);
         frame.setLocation((screensize.width - size.width) / 2, (screensize.height - size.height) / 2);
-//      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
-        
+        log.info("Baue jetzt den Frame");
+        if(Toolkit.getDefaultToolkit().getImage("icon.jpg") != null) {
+        	frame.setIconImage(Toolkit.getDefaultToolkit().getImage("icon.jpg"));
+        }
+        else
+        	log.warn("Icon wurde nicht gefunden! " + Toolkit.getDefaultToolkit().getImage("icon.jpg"));
         frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
 
         
@@ -302,6 +305,7 @@ public class R6Helper extends KllngiiView {
             		System.exit(0);
             }
         });
+        log.info("Frame fertig gebaut.");
     }
 
     private Container createGegnerTabContent() {
