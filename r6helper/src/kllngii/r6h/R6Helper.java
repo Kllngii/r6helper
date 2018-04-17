@@ -88,6 +88,7 @@ public class R6Helper extends KllngiiView {
 	//TODO FTP implementieren
 	
 	//R6helper-Team:
+	//FIXME RO Modus nicht voll funktionsfähig
 	//TODO Win Counter
 	//TODO Top3 anzeigen
 	//TODO Top3 sortierbar nach Aces/Wins/Headshots/etc.
