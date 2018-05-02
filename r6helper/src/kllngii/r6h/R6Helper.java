@@ -52,7 +52,6 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -83,6 +82,7 @@ public class R6Helper extends KllngiiView {
 	//R6helper-Gegenerteam:
 	//TODO Drohnen/Kamera Counter
 	//TODO Rangrechner, der Durchschnitt ausrechnet
+	//FIXME An kommendes MID-Season Reinforcement anpassen
 	
 	//Einstellungen:
 	//TODO FTP implementieren

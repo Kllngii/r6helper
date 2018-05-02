@@ -10,7 +10,9 @@ public enum Gadget {
 	KON_GRANATE("Kontaktgranate"),
 	C4("Nitro-Handy"),
 	STA_DRAHT("Stacheldraht"),
-	MOBI("Mobiler Schild")
+	MOBI("Mobiler Schild"),
+	//Ab Y3.1.5 neue Kamera
+	BP_CAM("Bulletproof Cam")
 	;
 	
 	

@@ -80,6 +80,7 @@ public class R6HelperModel implements Serializable {
 		_o.add(new Rekrut(ANGREIFER, "Rekrut Rot",Arrays.asList(L85A2, M590A1, AR33, G36C, R4C, _556XI, M1014,F2, _417, SG_CQB, AK12, BAL_SCHILD, AUGA2, _552C),  Arrays.asList(SMG11, P2_26,_57USG, M45_MEUSOC, P9, LFP586, GSH18, PMM, P12), Rekrut.ANGREIFER_GADGETS));
 		
 //		Verteidiger
+		//Doc, Mute, Castle, Vigil, Caveira bekommen BP_Cam
 		_o.add(new Operator(VERTEIDIGER, "Smoke", FMG9, M590A1, Arrays.asList(SMG11, P2_26), Arrays.asList(KON_GRANATE, STA_DRAHT), SMK, Ctu.SAS));
 		_o.add(new Operator(VERTEIDIGER, "Mute", MP5K, M590A1, Arrays.asList(P2_26), Arrays.asList(MOBI, C4), MTE, Ctu.SAS));	
 		_o.add(new Operator(VERTEIDIGER, "Castle", UMP45, M1014, Arrays.asList(M45_MEUSOC, _57USG), Arrays.asList(MOBI,STA_DRAHT), CSTL, Ctu.FBI));

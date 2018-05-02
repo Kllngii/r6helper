@@ -17,7 +17,7 @@ public enum Faehigkeit {
 	ZFA(6, "Doppellauf-Granatwerfer"),
 	YNG(3, "Candela"),
 	DKB(2, "Handy-Hack"),
-	LION(3, "EE-Eins-Drohne"),
+	LION(2, "EE-Eins-Drohne"),
 	FNKA(3, "Adrenalinschub"),
 	
 	SMK(3, "Smoke"),
