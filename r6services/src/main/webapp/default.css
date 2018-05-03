@@ -11,9 +11,30 @@ body {
 }
 .head {
 	color: #000000;
+	font-weight: normal;
+	text-decoration: none;
+	font-size: medium;
+	font-family: Arial, Arial Black;
+	font-style: normal;
+	text-align: center
 }
 .footer {
 	position: absolute;
     bottom: 30px;
     width: 100%;
+	color: Black;
+	font-weight: normal;
+	text-decoration: none;
+	font-size: small;
+	font-family: Arial, DIN Alternate, Arial Black;
+	font-style: normal;
+	text-align: left
+}
+table {
+	margin-left: auto;
+    margin-right: auto;
+  	text-align: center;
+  	vertical-align: middle;
+	color: #fcfcfc;
+  	border-collapse: collapse;
 }
