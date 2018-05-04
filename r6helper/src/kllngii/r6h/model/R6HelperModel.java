@@ -68,10 +68,10 @@ public class R6HelperModel implements Serializable {
 		_o.add(new Operator(ANGREIFER, "Buck", C8SWF, CAMRS, Arrays.asList(MK19MM), Arrays.asList(SPL_GRANATE, STU_GRANATE), SKEL, Ctu.JTF2));
 		_o.add(new Operator(ANGREIFER, "Blackbeard", MK17CQB, SR25, Arrays.asList(D50), Arrays.asList(STU_GRANATE, SPRENGLADUNG),BLC, Ctu.NAVYSEALS));
 		_o.add(new Operator(ANGREIFER, "Capitao", PARA308, M249, Arrays.asList(PRB92), Arrays.asList(STU_GRANATE, SPRENGLADUNG),CAP, Ctu.BOPE));
-		_o.add(new Operator(ANGREIFER, "Hibana", TYPE89, SUPERNOVA, Arrays.asList(P229, BEARING9), Arrays.asList(STU_GRANATE, CLAYMORE), Faehigkeit.HIB, Ctu.SAT));
+		_o.add(new Operator(ANGREIFER, "Hibana", TYPE89, SUPERNOVA, Arrays.asList(P229, BEARING9), Arrays.asList(STU_GRANATE, SPRENGLADUNG), Faehigkeit.HIB, Ctu.SAT));
 		_o.add(new Operator(ANGREIFER, "Jackal", C7E, PDW9, ITA12L, Arrays.asList(ITA12S, USP40), Arrays.asList(RAU_GRANATE, SPRENGLADUNG), KEINE, Ctu.GEO));
 //		
-		_o.add(new Operator(ANGREIFER, "Ying", T95, SIX12, Arrays.asList(Q929), Arrays.asList(RAU_GRANATE, SPRENGLADUNG), YNG, Ctu.SDU));
+		_o.add(new Operator(ANGREIFER, "Ying", T95, SIX12, Arrays.asList(Q929), Arrays.asList(RAU_GRANATE, CLAYMORE), YNG, Ctu.SDU));
 		_o.add(new Operator(ANGREIFER, "Zofia", Arrays.asList(LMGE, M762), Arrays.asList(RG15), Arrays.asList(SPRENGLADUNG, CLAYMORE), Faehigkeit.ZFA, Ctu.GROM));
 		_o.add(new Operator(ANGREIFER, "Dokkaebi", Arrays.asList(BOSG122, MK14EBR), Arrays.asList(C75, SMG12), Arrays.asList(RAU_GRANATE, CLAYMORE), Faehigkeit.DKB, Ctu._707SBM));
 		_o.add(new Operator(ANGREIFER, "Lion", Arrays.asList(V308, _417, SG_CQB), Arrays.asList(LFP586, P9), Arrays.asList(), Faehigkeit.LION, Ctu.CBRN));
@@ -230,7 +230,7 @@ public class R6HelperModel implements Serializable {
 		return spielerToxic;
 	}
 
-	public void addToxic(Toxic sp) {
-		this.spielerToxic.add(sp);
+	public void setToxic(List<Toxic> spielerToxic) {
+		this.spielerToxic = spielerToxic;
 	}
 }
