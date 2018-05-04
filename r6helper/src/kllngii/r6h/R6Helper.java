@@ -93,6 +93,8 @@ public class R6Helper extends KllngiiView {
 	//TODO Top3 anzeigen
 	//TODO Top3 sortierbar nach Aces/Wins/Headshots/etc.
 	
+	//R6helper-Toxic:
+	//TODO Eigenen Tab für Toxic-Spielerliste
     private final Logger log = Logger.getLogger(getClass());
 
     private final boolean readWrite;

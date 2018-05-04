@@ -11,6 +11,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import kllngii.r6h.Toxic;
+
 public class R6HelperModel implements Serializable {
 	
     private static final long serialVersionUID = -2815739085224590803L;
@@ -26,6 +28,7 @@ public class R6HelperModel implements Serializable {
 	private final List<Operator> verteidiger;
 	private final List<Operator> selectedAngreifer;
 	private final List<Operator> selectedVerteidiger;
+	private List<Toxic> spielerToxic;
 	
 	/** 
 	 * Alle Spieler, die mindestens einmal mit uns R6 gespielt haben;
@@ -44,6 +47,7 @@ public class R6HelperModel implements Serializable {
 	    
 		selectedAngreifer = new ArrayList<>();
 		selectedVerteidiger = new ArrayList<>();
+		spielerToxic = new ArrayList<>();
 		
 		
 		List<Operator> _o = new ArrayList<>();
@@ -220,5 +224,13 @@ public class R6HelperModel implements Serializable {
 	}
 	public void increaseKamerasZerstört() {
 		kamerasZerstört++;
+	}
+
+	public List<Toxic> getToxic() {
+		return spielerToxic;
+	}
+
+	public void addToxic(Toxic sp) {
+		this.spielerToxic.add(sp);
 	}
 }

@@ -126,6 +126,14 @@ public class SpeicherService {
         // Gegnerteam
         json.put("gegnerteamAngreifer", model.isGegnerteamAngreifer());
         final List<Operator> gegnerteam = model.isGegnerteamAngreifer() ? model.getSelectedAngreifer() : model.getSelectedVerteidiger();
+        final List<Toxic> toxicspieler = model.getToxic();
+        
+        JSONArray tox = new JSONArray();
+        for(Toxic t : toxicspieler) {
+        	tox.put(toJson(t));
+        }
+        json.put("toxicteam", tox);
+        
         JSONArray geg = new JSONArray();
         for (Operator gegner : gegnerteam)
             geg.put(toJson(gegner));
@@ -261,6 +269,12 @@ public class SpeicherService {
         trg.put("name", w.getName());
         trg.put("typ", w.getTyp());
         return trg;
+    }
+    private JSONObject toJson(Toxic c) {
+    	JSONObject trg = new JSONObject();
+    	trg.put("name", c.getName());
+    	trg.put("grund", c.getGrund());
+    	return trg;
     }
 
 
