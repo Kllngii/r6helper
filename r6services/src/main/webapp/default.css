@@ -9,19 +9,19 @@ body {
 	background-attachment: fixed;
 	background-image: radial-gradient(#acacac, #808080);
 }
-.head {
-	color: #000000;
-	font-weight: normal;
+#header {
+	color: white;
+	font-weight: bold;
 	text-decoration: none;
 	font-size: medium;
 	font-family: Arial, Arial Black;
 	font-style: normal;
 	text-align: center
 }
-.footer {
+#footer {
 	position: absolute;
     bottom: 30px;
-    width: 100%;
+    width: 60%;
 	color: Black;
 	font-weight: bold;
 	text-decoration: none;
