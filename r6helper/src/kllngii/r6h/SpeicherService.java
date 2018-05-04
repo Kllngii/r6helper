@@ -274,6 +274,7 @@ public class SpeicherService {
     	JSONObject trg = new JSONObject();
     	trg.put("name", c.getName());
     	trg.put("grund", c.getGrund());
+        log.info("Erzeuge JSONObject: " + trg.toString(1));
     	return trg;
     }
 
