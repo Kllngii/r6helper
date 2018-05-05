@@ -9,7 +9,7 @@ public enum Faehigkeit {
 	EXO(2, "Exotherme-Sprengladung"),
 	TWI(2, "Schockdrohne"),
 	FUZ(3, "Clustercharge"),
-	BLI(5, "Blitzschild"),
+	BLI(4, "Blitzschild"),
 	SKEL(21, "Skeletonshotgun"),
 	BLC(2, "Waffenschild"),
 	CAP(4, "Bolzen"),
