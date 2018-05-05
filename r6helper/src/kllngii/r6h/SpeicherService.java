@@ -30,6 +30,7 @@ import kllngii.r6h.model.Operator;
 import kllngii.r6h.model.R6HelperModel;
 import kllngii.r6h.model.Spieler;
 import kllngii.r6h.model.Waffe;
+import kllngii.r6h.toxic.ToxiclisteView;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -127,10 +128,11 @@ public class SpeicherService {
         json.put("gegnerteamAngreifer", model.isGegnerteamAngreifer());
         final List<Operator> gegnerteam = model.isGegnerteamAngreifer() ? model.getSelectedAngreifer() : model.getSelectedVerteidiger();
         final List<Toxic> toxicspieler = model.getToxic();
-        
+        log.info("Toxiclist ist wie erwartet leer: " + toxicspieler.isEmpty());
         JSONArray tox = new JSONArray();
         for(Toxic t : toxicspieler) {
         	tox.put(toJson(t));
+        	log.info("ToxicSpieler: " + t.getName() + " wurde hinzugefügt.");
         }
         json.put("toxicteam", tox);
         

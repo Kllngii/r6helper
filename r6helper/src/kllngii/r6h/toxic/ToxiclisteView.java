@@ -24,6 +24,7 @@ protected final Logger log = Logger.getLogger(getClass());
     private R6HelperModel model;
     private String newPlayer = null;
     private final ToxiclisteController controller;
+    private List<Toxic> toxicteam;
     
     private JComponent root;
     
@@ -54,7 +55,7 @@ protected final Logger log = Logger.getLogger(getClass());
             root = new Box(BoxLayout.X_AXIS);
         
         // Pseudo-Tabelle - Layout festlegen:
-        List<Toxic> toxicteam = model.getToxic();
+        toxicteam = model.getToxic();
         final int numRows = toxicteam.size();
         final int numCols = 13;
         FormBuilder builder = FormBuilder.create().debug(false)
@@ -133,4 +134,12 @@ protected final Logger log = Logger.getLogger(getClass());
         }
         root.add(builder.build());
     }
+
+	public List<Toxic> getToxicteam() {
+		return toxicteam;
+	}
+
+	public void setToxicteam(List<Toxic> toxicteam) {
+		this.toxicteam = toxicteam;
+	}
 }
