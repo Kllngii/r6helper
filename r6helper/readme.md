@@ -2,5 +2,6 @@
 
 *Version 1.4.0-SNAPSHOT*
 
-Für Rainbow Six,  
-für den ersten Teil von Operation Chimera
+Für Rainbow Six Sieges zweiten Teil von Operation Chimera
+
+_Y3.S1.H2_
