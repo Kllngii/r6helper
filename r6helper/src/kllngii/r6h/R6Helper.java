@@ -212,6 +212,7 @@ public class R6Helper extends KllngiiView {
         frame.setSize(size.width, size.height);
         frame.setLocation((screensize.width - size.width) / 2, (screensize.height - size.height) / 2);
         log.info("Baue jetzt den Frame");
+        long timestart = timerStart();
         if(Toolkit.getDefaultToolkit().getImage("icon.jpg") != null) {
         	frame.setIconImage(Toolkit.getDefaultToolkit().getImage("icon.jpg"));
         }
@@ -270,7 +271,7 @@ public class R6Helper extends KllngiiView {
         meldungenRoot.add(Box.createVerticalGlue());
         
         frame.setVisible(true);
-
+        log.info("Framebau abgeschlossen nach: " + timerEnd(timestart) + "ms");
         // JSON einmal laden,
         // dann ggf.Refresh-Threads starten:
         final int refreshIntervalS = Math.max(0, einstellungen.getRefreshIntervalS());  // negative Werte krachen
@@ -1046,6 +1047,14 @@ public class R6Helper extends KllngiiView {
     }
     private void logFehler(String s) {
     	log.warn(s);
+    }
+    private long timerStart() {
+    	long time1 = System.currentTimeMillis();
+        return time1;
+    }
+    private long timerEnd(long time1) {
+    	long time2 = System.currentTimeMillis() - time1;
+    	 return time2;
     }
 
 }
