@@ -79,11 +79,11 @@ public class R6Helper extends KllngiiView {
 	//Sonstiges:
 	//TODO Mehrere Channel einführen, um PW geschützt getrennt Programm zu nutzen
 	//TODO Optional: Fenster auch auf Java FX umstellbar
+	//FIXME Wenn der R6Helper kein Internet hat startet der Frame nicht.
 	
 	//R6helper-Gegenerteam:
 	//TODO Drohnen/Kamera Counter
 	//TODO Rangrechner, der Durchschnitt ausrechnet
-	//FIXME An kommendes MID-Season Reinforcement anpassen
 	
 	//Einstellungen:
 	//TODO FTP implementieren
@@ -95,7 +95,7 @@ public class R6Helper extends KllngiiView {
 	//TODO Top3 sortierbar nach Aces/Wins/Headshots/etc.
 	
 	//R6helper-Toxic:
-	//TODO Eigenen Tab für Toxic-Spielerliste
+	//FIXME Toxicspieler werden nicht in das Model gespeichert.
     private final Logger log = Logger.getLogger(getClass());
 
     private final boolean readWrite;
