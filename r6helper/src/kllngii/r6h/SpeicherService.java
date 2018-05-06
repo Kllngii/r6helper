@@ -177,6 +177,12 @@ public class SpeicherService {
                 model.toggleSelected(gegner);
             }
         }
+        if (json.has("toxicteam")) {
+        	for(Object toxicObject : json.getJSONArray("toxicteam")) {
+        		Toxic t = Toxic.fromJSON((JSONObject) toxicObject);
+        		model.getToxic().add(t);
+        	}
+        }
         
         if (json.has("spielerrepo")) {
             Set<String> spielernamen = new HashSet<>();

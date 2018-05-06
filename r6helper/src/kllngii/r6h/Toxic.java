@@ -1,5 +1,7 @@
 package kllngii.r6h;
 
+import org.json.JSONObject;
+
 public class Toxic {
 	private String name;
 	private String grund;
@@ -19,5 +21,8 @@ public class Toxic {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public static Toxic fromJSON(JSONObject src) {
+		return new Toxic(src.getString("name"), src.getString("grund"));
 	}
 }
