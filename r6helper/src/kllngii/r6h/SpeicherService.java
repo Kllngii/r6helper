@@ -30,7 +30,6 @@ import kllngii.r6h.model.Operator;
 import kllngii.r6h.model.R6HelperModel;
 import kllngii.r6h.model.Spieler;
 import kllngii.r6h.model.Waffe;
-import kllngii.r6h.toxic.ToxiclisteView;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

@@ -1,13 +1,9 @@
 package kllngii.r6h.toxic;
 
-import java.util.List;
-
 import org.apache.commons.lang3.StringUtils;
 
 import kllngii.r6h.Toxic;
 import kllngii.r6h.model.R6HelperModel;
-import kllngii.r6h.model.Spieler;
-import kllngii.r6h.spieler.SpielerlisteView;
 
 public class ToxiclisteController {
 	private final ToxiclisteView view;
