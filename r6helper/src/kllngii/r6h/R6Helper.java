@@ -90,6 +90,7 @@ public class R6Helper extends KllngiiView {
 	
 	//R6helper-Team:
 	//FIXME RO Modus nicht voll funktionsfähig
+	//FIXME Frame soll sich unabhängig von der Verfügbarkeit der Json aufbauen
 	//TODO Win Counter
 	//TODO Top3 anzeigen
 	//TODO Top3 sortierbar nach Aces/Wins/Headshots/etc.
