@@ -71,7 +71,7 @@ public class R6HelperModel implements Serializable {
 		_o.add(new Operator(ANGREIFER, "Hibana", TYPE89, SUPERNOVA, Arrays.asList(P229, BEARING9), Arrays.asList(STU_GRANATE, SPRENGLADUNG), Faehigkeit.HIB, Ctu.SAT));
 		_o.add(new Operator(ANGREIFER, "Jackal", C7E, PDW9, ITA12L, Arrays.asList(ITA12S, USP40), Arrays.asList(RAU_GRANATE, SPRENGLADUNG), KEINE, Ctu.GEO));
 //		
-		_o.add(new Operator(ANGREIFER, "Ying", T95, SIX12, Arrays.asList(Q929), Arrays.asList(RAU_GRANATE, CLAYMORE), YNG, Ctu.SDU));
+		_o.add(new Operator(ANGREIFER, "Ying", T95, SIX12, Arrays.asList(Q929), Arrays.asList(SPRENGLADUNG, CLAYMORE), YNG, Ctu.SDU));
 		_o.add(new Operator(ANGREIFER, "Zofia", Arrays.asList(LMGE, M762), Arrays.asList(RG15), Arrays.asList(SPRENGLADUNG, CLAYMORE), Faehigkeit.ZFA, Ctu.GROM));
 		_o.add(new Operator(ANGREIFER, "Dokkaebi", Arrays.asList(BOSG122, MK14EBR), Arrays.asList(C75, SMG12), Arrays.asList(RAU_GRANATE, CLAYMORE), Faehigkeit.DKB, Ctu._707SBM));
 		_o.add(new Operator(ANGREIFER, "Lion", Arrays.asList(V308, _417, SG_CQB), Arrays.asList(LFP586, P9), Arrays.asList(), Faehigkeit.LION, Ctu.CBRN));

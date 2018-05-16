@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.net.URI;
 
 import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPClientConfig;
 import org.apache.commons.net.ftp.FTPReply;
 
 public class FTPZugriff {
@@ -26,6 +27,8 @@ public class FTPZugriff {
 	 */
 	public void getFileFTP(URI server, boolean login, String username, String password, String filename, String serverfilename, URI path) {
 		FTPClient client = new FTPClient();
+		FTPClientConfig config = new FTPClientConfig();
+		client.configure(config);
 		
 		try {
 			client.connect(server.toString());
@@ -73,7 +76,7 @@ public class FTPZugriff {
 
 	}
 	/**
-	 * @return null oder Fehlercode
+	 * @return null oder <code>reply</code> Fehlercode
 	 * 
 	 * @param server IP-Adresse des Servers
 	 * @param login Gibt an, ob Login erforderlich
