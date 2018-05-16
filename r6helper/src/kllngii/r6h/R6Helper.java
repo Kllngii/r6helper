@@ -1,5 +1,6 @@
 package kllngii.r6h;
 
+import java.awt.AWTException;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -7,6 +8,9 @@ import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.MouseInfo;
+import java.awt.Point;
+import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
@@ -1056,6 +1060,32 @@ public class R6Helper extends KllngiiView {
     private long timerEnd(long time1) {
     	long time2 = System.currentTimeMillis() - time1;
     	 return time2;
+    }
+    //TODO Funktion benutzen, um Bildschirmschoner zu umgehen
+    @SuppressWarnings("unused")
+	private void inaktiv() {
+    	
+    	Point start = MouseInfo.getPointerInfo().getLocation();
+    	
+    	try {
+			Thread.sleep(120000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+    	
+    	Point end = MouseInfo.getPointerInfo().getLocation();
+    	
+    	Robot robot;
+		try {
+			robot = new Robot();
+			if(start.getLocation() == end.getLocation()) {
+	    		robot.mouseMove(end.x + 1, end.y);
+	        	robot.mouseMove(end.x, end.y);
+	    	}
+		} catch (AWTException e) {
+			e.printStackTrace();
+		}
+    	
     }
 
 }
