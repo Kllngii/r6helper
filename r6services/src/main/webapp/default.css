@@ -1,14 +1,4 @@
 @charset "UTF-8";
-body {
-	font-family: 'Lucida Grande', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-	text-shadow: gray;
-    padding: 200px;
-	font-size: 13px;
-	background-repeat:no-repeat;
-	background-size: cover;
-	background-attachment: fixed;
-	background-image: radial-gradient(#acacac, #808080);
-}
 #header {
 	color: white;
 	font-weight: bold;
@@ -17,6 +7,9 @@ body {
 	font-family: Arial, Arial Black;
 	font-style: normal;
 	text-align: center
+}
+a {
+    color: hotpink;
 }
 #footer {
 	position: absolute;
@@ -37,4 +30,39 @@ table {
   	vertical-align: middle;
 	color: #fcfcfc;
   	border-collapse: collapse;
+}
+.page__image {
+    z-index: 0;
+    -o-object-fit: cover;
+    object-fit: cover;
+    width: 100%;
+    top: 0;
+    height: 100%;
+    left: 0;
+    opacity: 0.5;
+    top: -60px;
+    height: calc(100% + 60px);
+    opacity: .3;
+    position: absolute;
+    -webkit-filter: saturate(130%) contrast(120%);
+    filter: saturate(130%) contrast(120%)
+}
+.page__dust {
+    z-index: 0;
+    -o-object-fit: cover;
+    object-fit: cover;
+    width: 100%;
+    top: 0;
+    height: 100%;
+    left: 0;
+    opacity: 0.5;
+    top: -60px;
+    height: calc(100% + 60px);
+    opacity: .3;
+    position: absolute;
+    background-color: black;
+    background-blend-mode: multiply;
+}
+body {
+	background-color: black;
 }

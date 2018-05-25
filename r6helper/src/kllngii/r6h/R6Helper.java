@@ -311,11 +311,12 @@ public class R6Helper extends KllngiiView {
             }
         }
         frame.addWindowListener(new WindowAdapter(){
-            @SuppressWarnings({ "synthetic-access", "unused" })
+            
+			@SuppressWarnings("synthetic-access")
 			@Override
 			public void windowClosing(WindowEvent e){
                 log.info("windowClosing...");
-                
+                e.getWindow().dispose();
                 einstellungen.shutdown();
                 
             		speichereInJSON();
@@ -1062,30 +1063,39 @@ public class R6Helper extends KllngiiView {
     	 return time2;
     }
     //TODO Funktion benutzen, um Bildschirmschoner zu umgehen
+    /**
+     * Der {@link R6Helper} soll durch diese Methode nicht den Bildschirmschoner aktivieren
+     * @throws InterruptedException 
+     */
     @SuppressWarnings("unused")
-	private void inaktiv() {
+	private void inaktiv() throws InterruptedException {
     	
     	Point start = MouseInfo.getPointerInfo().getLocation();
-    	
-    	try {
-			Thread.sleep(120000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-    	
-    	Point end = MouseInfo.getPointerInfo().getLocation();
-    	
-    	Robot robot;
-		try {
-			robot = new Robot();
-			if(start.getLocation() == end.getLocation()) {
-	    		robot.mouseMove(end.x + 1, end.y);
-	        	robot.mouseMove(end.x, end.y);
+    	while(true) {
+	    	long time = System.currentTimeMillis();
+	    	while(true) {
+	    		 Point current = MouseInfo.getPointerInfo().getLocation();
+	    		if(start.getLocation() == current.getLocation()) {
+	    			if(System.currentTimeMillis() <= time+120000) {
+	    				break;
+	    			}
+	    			Thread.sleep(10);
+	    		}
+	    		start = MouseInfo.getPointerInfo().getLocation();
+	    		Thread.sleep(10);
 	    	}
-		} catch (AWTException e) {
-			e.printStackTrace();
-		}
-    	
+	    	
+	    	Point end = MouseInfo.getPointerInfo().getLocation();
+	    	
+			Robot robot;
+			try {
+				robot = new Robot();
+				robot.mouseMove(end.x + 1, end.y);
+			    robot.mouseMove(end.x, end.y);	
+			} catch (AWTException e) {
+				e.printStackTrace();
+			}
+    	}
     }
 
 }
