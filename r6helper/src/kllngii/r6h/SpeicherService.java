@@ -292,7 +292,11 @@ public class SpeicherService {
             json.getJSONArray("fehler").forEach(it -> errors.add(it.toString()));
         return errors;
     }
-    
+    /**
+     * 
+     * @param url Die Unbekannte Addresse
+     * @return True -> ist Datei False -> ist keine Datei
+     */
     public boolean isFileUrl(String url) {
         url = StringUtils.defaultString(url);
         if (url.startsWith("file://"))

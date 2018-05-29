@@ -28,6 +28,7 @@ public enum Rang {
 	
 	DIAMANT("Diamant", 20),
 	
+	NORANK("Kein Rang", 0)
 	;
 	
 	private String name;
@@ -37,6 +38,15 @@ public enum Rang {
 		this.name = name;
 		this.rang = rang;
 	}
+	public static Rang getRangWithInt(int i) {
+		for(Rang r : Rang.values()) {
+			if(r.getRang().equals(i)) {
+				return r;
+			}
+		}
+		return null;
+	}
+	
 	public String getName() {
 		return name;
 	}
