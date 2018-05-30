@@ -9,11 +9,13 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.prefs.Preferences;
 import java.util.stream.Collectors;
 
@@ -121,6 +123,7 @@ public class SpeicherService {
      * Wandelt ein {@link R6HelperModel} (den Zustand dieser Applikation) in einen JSON-String um.
      */
     public String createJson(R6HelperModel model, Collection<String> errors) {
+    	long startTime = System.currentTimeMillis();
         JSONObject json = new JSONObject();
 
         // Gegnerteam
@@ -158,6 +161,7 @@ public class SpeicherService {
         }
 
         String result = json.toString(4);
+        log.info("Speicherzeit: " + (System.currentTimeMillis() - startTime) + "ms");
         return result;
     }
 
