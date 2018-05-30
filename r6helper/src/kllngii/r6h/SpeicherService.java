@@ -127,11 +127,9 @@ public class SpeicherService {
         json.put("gegnerteamAngreifer", model.isGegnerteamAngreifer());
         final List<Operator> gegnerteam = model.isGegnerteamAngreifer() ? model.getSelectedAngreifer() : model.getSelectedVerteidiger();
         final List<Toxic> toxicspieler = model.getToxic();
-        log.info("Toxiclist ist wie erwartet leer: " + toxicspieler.isEmpty());
         JSONArray tox = new JSONArray();
         for(Toxic t : toxicspieler) {
         	tox.put(toJson(t));
-        	log.info("ToxicSpieler: " + t.getName() + " wurde hinzugefügt.");
         }
         json.put("toxicteam", tox);
         
@@ -281,7 +279,6 @@ public class SpeicherService {
     	JSONObject trg = new JSONObject();
     	trg.put("name", c.getName());
     	trg.put("grund", c.getGrund());
-        log.info("Erzeuge JSONObject: " + trg.toString(1));
     	return trg;
     }
 
