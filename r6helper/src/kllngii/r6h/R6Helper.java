@@ -8,6 +8,7 @@ import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.Robot;
@@ -18,6 +19,8 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -77,7 +80,6 @@ import kllngii.r6h.model.Waffe;
 import kllngii.r6h.model.Waffentyp;
 import kllngii.r6h.spieler.SpielerlisteController;
 import kllngii.r6h.toxic.ToxiclisteController;
-
 
 public class R6Helper extends KllngiiView {
 	//Sonstiges:
@@ -205,7 +207,7 @@ public class R6Helper extends KllngiiView {
     /**
      * Initialize the contents of the frame.
      */
-    private void initialize() {
+	private void initialize() {
     	
         spielerlisteController = new SpielerlisteController(readWrite, model);
         toxiclisteController = new ToxiclisteController(readWrite, model);
@@ -218,8 +220,34 @@ public class R6Helper extends KllngiiView {
         frame.setLocation((screensize.width - size.width) / 2, (screensize.height - size.height) / 2);
         log.info("Baue jetzt den Frame");
         long timestart = timerStart();
+        log.info(System.getProperty("os.name"));
         if(Toolkit.getDefaultToolkit().getImage("icon.jpg") != null) {
+        	//Icon für Windows setzen
         	frame.setIconImage(Toolkit.getDefaultToolkit().getImage("icon.jpg"));
+        	//Icon für Mac setzen
+        	try {
+				@SuppressWarnings("rawtypes")
+				Class util = Class.forName("com.apple.eawt.Application");
+        		
+        		@SuppressWarnings("unchecked")
+				Method getApplication = util.getMethod("getApplication", new Class[0]);
+        		Object application = getApplication.invoke(util);
+        		
+        		@SuppressWarnings("rawtypes")
+				Class params[] = new Class[1];
+        		params[0] = Image.class;
+        		
+        		@SuppressWarnings("unchecked")
+				Method setDockIconImage = util.getMethod("setDockIconImage", params);
+        		URL url = R6Helper.class.getClassLoader().getResource("icon.jpg");
+        		
+        		log.info(url);
+        		Image image = Toolkit.getDefaultToolkit().getImage(url);
+        		setDockIconImage.invoke(application, image);
+        	} 
+        	catch (ClassNotFoundException | NoSuchMethodException  | InvocationTargetException | IllegalAccessException e1) {
+        		log.warn("Klasse für ICON auf Mac nicht gefunden!", e1);
+        	}
         }
         else
         	log.warn("Icon wurde nicht gefunden! " + Toolkit.getDefaultToolkit().getImage("icon.jpg"));
