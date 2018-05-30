@@ -239,8 +239,8 @@ public class R6Helper extends KllngiiView {
         		
         		@SuppressWarnings("unchecked")
 				Method setDockIconImage = util.getMethod("setDockIconImage", params);
-        		URL url = R6Helper.class.getClassLoader().getResource("icon.jpg");
-        		
+//        		URL url = R6Helper.class.getClassLoader().getResource("icon.jpg");
+        		URL url = R6Helper.class.getClassLoader().getResource("diamond.png");
         		log.info(url);
         		Image image = Toolkit.getDefaultToolkit().getImage(url);
         		setDockIconImage.invoke(application, image);
@@ -318,6 +318,10 @@ public class R6Helper extends KllngiiView {
                 // In einem eigenen Thread:
                 // Sofort einmal das JSON holen
                 // UND später regelmäßig neu einlesen
+//            	BasicThreadFactory factory = new BasicThreadFactory.Builder()
+//            		     .namingPattern("JSONPool-%d")
+//            		     .build();
+//            	einstellungen.getRefreshThreadPool().setThreadFactory(factory);
                 Runnable refreshRunnable = () -> {
                     log.debug("Refresh läuft - JSON neu einlesen...");
                     ladeAusJson();
