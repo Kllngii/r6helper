@@ -2,7 +2,6 @@ package kllngii.r6h.DB;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -132,8 +131,8 @@ public class DBRequest {
 		return result;
 	}
 	
-	public String getPlayer(String Playername) {
-		JSONArray js = new JSONArray(getSearchDataFromServer("Klln911gii"));
+	public String getPlayer(String playername) {
+		JSONArray js = new JSONArray(getSearchDataFromServer(playername));
 		JSONObject json = js.getJSONObject(0);
 		String id = json.getString("id");
 		return getPlayerDataFromServer(id);

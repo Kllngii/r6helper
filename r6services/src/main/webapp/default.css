@@ -8,7 +8,16 @@
 	font-style: normal;
 	text-align: center
 }
-a {
+a:active {
+	color: white;
+}
+a:hover {
+	color: blue;
+}
+a:visited {
+	color: pink;
+}
+a:link {
     color: hotpink;
 }
 #footer {
