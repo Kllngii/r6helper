@@ -226,20 +226,16 @@ public class R6Helper extends KllngiiView {
         	frame.setIconImage(Toolkit.getDefaultToolkit().getImage("icon.jpg"));
         	//Icon für Mac setzen
         	try {
-				@SuppressWarnings("rawtypes")
-				Class util = Class.forName("com.apple.eawt.Application");
         		
-        		@SuppressWarnings("unchecked")
+				Class<?> util = Class.forName("com.apple.eawt.Application");
+				
 				Method getApplication = util.getMethod("getApplication", new Class[0]);
         		Object application = getApplication.invoke(util);
         		
-        		@SuppressWarnings("rawtypes")
-				Class params[] = new Class[1];
+				Class<?> params[] = new Class[1];
         		params[0] = Image.class;
         		
-        		@SuppressWarnings("unchecked")
 				Method setDockIconImage = util.getMethod("setDockIconImage", params);
-//        		URL url = R6Helper.class.getClassLoader().getResource("icon.jpg");
         		URL url = R6Helper.class.getClassLoader().getResource("diamond.png");
         		log.info(url);
         		Image image = Toolkit.getDefaultToolkit().getImage(url);
