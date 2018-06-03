@@ -8,10 +8,12 @@
 <!-- 		<script type="text/javascript" src="file:////Users/lasse_kelling/Dropbox/R6/r6helper.js"></script> -->
 		<script type="text/javascript" src="team.js">
 		</script>
+		<script type="text/javascript" src="script/jquery3.3.1.min.js">
+		</script>
 	</head>
 	<body onload="init()">
-		<img src="img/background.jpg" class="page__image"/>
 		<img src="img/dust.jpg" class="page__dust"/>
+		<img src="img/background.jpg" class="page__image"/>
 		<p style="text-align: right">
 			Stand: <span id="zeitstempel"></span>
 		</p>
@@ -19,58 +21,13 @@
 	
 		<table contenteditable="false" id="table">
 			<tr id="header" align="center" class="head">
-				<td><p>Name</p></td>
-				<td><p>Kills</p></td>
-				<td><p>Tode</p></td>
-				<td><p>Knife Kills</p></td>
-				<td><p>Ace</p></td>
-				<td><p>KD</p></td>
-				<td><p>Headshot</p></td>
-			</tr>
-			<tr id="team1" align="center">
-				<td><p class="name" ></p></td>
-				<td><p class="kills"></p></td>
-				<td><p class="tode" ></p></td>
-				<td><p class="knife"></p></td>
-				<td><p class="ace"></p></td>
-				<td><p class="kd"></p></td>
-				<td><p class="headshot"></p></td>
-			</tr>
-			<tr id="team2" align="center">
-				<td><p class="name" ></p></td>
-				<td><p class="kills"></p></td>
-				<td><p class="tode" ></p></td>
-				<td><p class="knife"></p></td>
-				<td><p class="ace"></p></td>
-				<td><p class="kd"></p></td>
-				<td><p class="headshot"></p></td>
-			</tr>
-			<tr id="team3" align="center">
-				<td><p class="name" ></p></td>
-				<td><p class="kills"></p></td>
-				<td><p class="tode" ></p></td>
-				<td><p class="knife"></p></td>
-				<td><p class="ace"></p></td>
-				<td><p class="kd"></p></td>
-				<td><p class="headshot"></p></td>
-			</tr>
-			<tr id="team4" align="center">
-				<td><p class="name" ></p></td>
-				<td><p class="kills"></p></td>
-				<td><p class="tode" ></p></td>
-				<td><p class="knife"></p></td>
-				<td><p class="ace"></p></td>
-				<td><p class="kd"></p></td>
-				<td><p class="headshot"></p></td>
-			</tr>
-			<tr id="team5" align="center">
-				<td><p class="name" ></p></td>
-				<td><p class="kills"></p></td>
-				<td><p class="tode" ></p></td>
-				<td><p class="knife"></p></td>
-				<td><p class="ace"></p></td>
-				<td><p class="kd"></p></td>
-				<td><p class="headshot"></p></td>
+				<td><p> Name </p></td>
+				<td><p> Kills </p></td>
+				<td><p> Tode </p></td>
+				<td><p> Knifes </p></td>
+				<td><p> Ace </p></td>
+				<td><p> KD </p></td>
+				<td><p> Headshot </p></td>
 			</tr>
 		</table>
 		<iframe id="footer" src="footer.html" height="100"  width="400" draggable="false" style="border: none;"></iframe>
