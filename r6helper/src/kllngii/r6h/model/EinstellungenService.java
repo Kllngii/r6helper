@@ -1,4 +1,4 @@
-package kllngii.r6h;
+package kllngii.r6h.model;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -7,7 +7,7 @@ import java.util.prefs.Preferences;
 
 import org.apache.log4j.Logger;
 
-import kllngii.r6h.model.Einstellungen;
+import kllngii.r6h.Konst;
 
 /**
  * Service, um die Einstellungen {@link Einstellungen} über den Lauf des Programmes hinaus zu speichern und wieder zu laden.

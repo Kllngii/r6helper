@@ -20,7 +20,6 @@ import com.jgoodies.forms.builder.FormBuilder;
 
 import kllngii.r6h.KllngiiView;
 import kllngii.r6h.model.R6HelperModel;
-import kllngii.r6h.model.Spieler;
 
 /**
  * Erstellt das UI für das eigene Team (eine Liste von {@link Spieler}n.

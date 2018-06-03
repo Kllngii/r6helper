@@ -2,7 +2,6 @@ package kllngii.r6h.toxic;
 
 import org.apache.commons.lang3.StringUtils;
 
-import kllngii.r6h.Toxic;
 import kllngii.r6h.model.R6HelperModel;
 
 public class ToxiclisteController {

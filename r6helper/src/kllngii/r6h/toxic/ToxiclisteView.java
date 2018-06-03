@@ -14,7 +14,6 @@ import org.apache.log4j.Logger;
 import com.jgoodies.forms.builder.FormBuilder;
 
 import kllngii.r6h.KllngiiView;
-import kllngii.r6h.Toxic;
 import kllngii.r6h.model.R6HelperModel;
 
 public class ToxiclisteView extends KllngiiView {

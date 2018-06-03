@@ -1,4 +1,4 @@
-package kllngii.r6h;
+package kllngii.r6h.model;
 
 
 import java.io.ByteArrayInputStream;
@@ -25,11 +25,9 @@ import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import kllngii.r6h.model.Gadget;
-import kllngii.r6h.model.Operator;
-import kllngii.r6h.model.R6HelperModel;
-import kllngii.r6h.model.Spieler;
-import kllngii.r6h.model.Waffe;
+import kllngii.r6h.Konst;
+import kllngii.r6h.spieler.Spieler;
+import kllngii.r6h.toxic.Toxic;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

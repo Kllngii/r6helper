@@ -1,4 +1,4 @@
-package kllngii.r6h.model;
+package kllngii.r6h.spieler;
 
 import org.json.JSONObject;
 

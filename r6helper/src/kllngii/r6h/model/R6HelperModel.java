@@ -11,7 +11,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import kllngii.r6h.Toxic;
+import kllngii.r6h.spieler.Spieler;
+import kllngii.r6h.toxic.Toxic;
 
 public class R6HelperModel implements Serializable {
 	

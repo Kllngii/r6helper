@@ -21,6 +21,7 @@ import org.apache.log4j.Logger;
 import com.jgoodies.forms.builder.FormBuilder;
 
 import kllngii.r6h.model.Einstellungen;
+import kllngii.r6h.model.EinstellungenService;
 
 public class EinstellungsFrame extends JFrame {
 

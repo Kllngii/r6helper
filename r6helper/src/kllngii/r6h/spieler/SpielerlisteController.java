@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
 import kllngii.r6h.model.R6HelperModel;
-import kllngii.r6h.model.Spieler;
 
 /**
  * Der Controller zum {@link SpielerlisteView}, um Spieler zu bearbeiten,
