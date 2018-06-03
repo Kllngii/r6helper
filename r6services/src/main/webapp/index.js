@@ -59,11 +59,11 @@
 			
 			fetch(url)
 				.then(response => {
-//					console.log("Response ist da.")
+					console.log("Response ist da.")
 					return response.json();
 				})
 				.then(json => {
-//					console.log("JSON wurde erfolgreich geholt.", json);
+					console.log("JSON wurde erfolgreich geholt.", json);
 					parseJSON(json);
 				})
 				.catch(err => { 
@@ -73,9 +73,6 @@
 		}
 		
 		function parseJSON(json) {
-			var op1na, op1pri, op1sek, op1life, op1gadgets;
-			var op2na, op2pri, op2sek, op2life, op2gadgets;
-			
 			document.getElementById("zeitstempel").innerHTML = new Date().toLocaleTimeString("de-DE");
 			
 			for (let i = 0; i <= 4; i++) {

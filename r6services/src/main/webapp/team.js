@@ -1,6 +1,6 @@
 		function init() {
 			getAndParseJSON();
-			setInterval(getAndParseJSON, 1000);
+			//setInterval(getAndParseJSON, 1000);
 		}
 		
 		function getAndParseJSON() {
@@ -8,63 +8,42 @@
 			
 			fetch(url)
 				.then(response => {
-//					console.log("Response ist da.")
+					console.log("Daten wurden erfolgreich geholt.");
 					return response.json();
-				})
-				.then(json => {
-//					console.log("JSON wurde erfolgreich geholt.", json);
-					parseJSON(json);
 				})
 				.catch(err => { 
 					console.error("Fehler beim Holen des JSON: " + err);
+					alert("Fehler beim Holen des JSON: 1" + err);
 					throw err ;
+				})
+				.then(json => {
+					console.log("JSON wurde ausgepackt.", json);
+					zeigeTeam(json);
+				})
+				.catch(err => { 
+					console.error("Fehler beim Verarbeiten des JSON: " + err);
+					alert("Fehler beim Verarbeiten des JSON: " + err);
+					throw err;
 				});
 		}
-		
-		function parseJSON(json) {
-			
+		function zeigeTeam(json) {
 			document.getElementById("zeitstempel").innerHTML = new Date().toLocaleTimeString("de-DE");
-			
-			for (let i = 0; i <= 4; i++) {
-				zeigeTeam(i, json);
+			for (let team of json.spielerrepo) {
+				$('#table').append(`<tr>
+						<td><p class="name" >0</p></td>
+						<td><p class="kills">0</p></td>
+						<td><p class="tode" >0</p></td>
+						<td><p class="knife">0</p></td>
+						<td><p class="ace">0</p></td>
+						<td><p class="kd">0</p></td>
+						<td><p class="headshot"></p></td>
+					</tr>`);
+				$('.name:last').text(team.name);
+				$('.kills:last').text(team.kills);
+				$('.tode:last').text(team.deaths);
+				$('.knife:last').text(team.knife);
+				$('.ace:last').text(team.ace);
+				$('.kd:last').text(team.kd);
+				$('.headshot:last').text(team.headshot);
 			}
-		}
-		
-		function zeigeTeam(i, json) {
-			let row = document.getElementById("spielerrepo" + (i+1));
-			let none = "KEINE";
-			
-			if (json.spielerrepo == undefined || json.team.length == 0) {
-				if (i == 0)
-					row.querySelector(".name").innerHTML = "Daten enthalten kein Team!";
-			}
-			else if (json.spielerrepo.length > i) {
-				let team = json.spielerrepo[i];
-				row.querySelector(".name").innerHTML = team.name;
-				if(team.deaths != undefined) {
-					row.querySelector(".tode").innerHTML = team.tode;
-				}
-				if(team.kills != undefined) {
-					row.querySelector(".kills").innerHTML = team.kills;
-				}
-				if(team.kd != undefined) {
-					row.querySelector(".kd").innerHTML = team.kd;
-				}
-				if(team.ace != undefined) {
-					row.querySelector(".ace").innerHTML = team.ace;
-				}
-				if(team.knife != undefined) {
-					row.querySelector(".knife").innerHTML = team.knife;
-				}
-			}
-			else {
-				// Zeilen, die nicht von einem Gegner belegt sind, leeren
-				row.querySelector(".name").innerHTML = " ";
-				row.querySelector(".priwa").innerHTML = " ";
-				row.querySelector(".sekwa").innerHTML = " ";
-				row.querySelector(".life").innerHTML = " ";
-				row.querySelector(".gadget").innerHTML = " ";
-				row.querySelector(".faehig").innerHTML = " ";
-			}
-
 		}
