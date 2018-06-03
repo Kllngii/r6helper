@@ -19,8 +19,10 @@ public class DBRequest {
 	
 	public static void main(String[] args) {
 		DBRequest requ = new DBRequest();
-		String json = requ.getPlayer("Klln911gii");
-		requ.setValues(json);
+		List<String> spieler = new ArrayList<String>();
+		spieler.add("Klln911gii");
+		spieler.add("Feurigel14");
+		requ.comparePlayers(spieler);
 	}
 	
 	private DBValues setValues(String jsonString) {
@@ -49,10 +51,6 @@ public class DBRequest {
 		seasons.add(r);
 		player.setSeasons(seasons);
 		
-		for(Rank ra : player.getSeasons()) {
-			System.out.println("Season: " + ra.getSeason() + " Rang: " + ra.getRang());
-		}
-		
 		GeneralStats general = new GeneralStats();
 		JSONObject stats = json.getJSONObject("stats").getJSONObject("general");
 		
@@ -75,11 +73,34 @@ public class DBRequest {
 		
 		player.setGeneralStats(general);
 		
-		//TODO Die Stats aus JSON holen
-		
+		//Stats aus JSON holen
+		JSONObject statsBomb = json.getJSONObject("stats").getJSONObject("bomb");
+		JSONObject statsCasual = json.getJSONObject("stats").getJSONObject("casual");
+		JSONObject statsHostage = json.getJSONObject("stats").getJSONObject("hostage");
+		List<Stats> statsList = new ArrayList<>();
+		statsList.add(getStatsJSON(statsBomb));
+		statsList.add(getStatsJSON(statsCasual));
+		statsList.add(getStatsJSON(statsHostage));
+		player.setStats(statsList);
 		return player;
 	}
 
+	private Stats getStatsJSON(JSONObject stats) {
+		Stats s = new Stats();
+		if(stats.has("bestScore"))
+			s.setBestScore(stats.getInt("bestScore"));
+		s.setRoundsLost(stats.getInt("lost"));
+		s.setRoundsPlayed(stats.getInt("played"));
+		s.setRoundsWon(stats.getInt("won"));
+		//TODO Spielmodus aus der JSON holen
+		s.setSpielmodus(null);
+		return s;
+	}
+	/**
+	 * 
+	 * @param id Die ID des Spielers, siehe {@link getPlayer}
+	 * @return Die JSON des Spielers für die {@link setValues} Methode
+	 */
 	private String getPlayerDataFromServer(String id) {
 		String result = null;
 		final String url = "https://r6db.com/api/v2/players/" + id + "?platform=PS4&update=false";
@@ -96,7 +117,6 @@ public class DBRequest {
 			    log.warn("Laden der Daten von URL war nicht erfolgreich. Status=" + response.code() + ", URL=" + url);
 			
 			result = response.body().string();
-			log.info(result);
 		}
 		catch (IOException ex) {
 		    log.warn("Laden der Daten von URL war nicht erfolgreich. Exception=" + ex + ", URL=" + url);
@@ -105,6 +125,11 @@ public class DBRequest {
 		return result;
 		
 	}
+	/**
+	 * 
+	 * @param name Name des Strings
+	 * @return Das JSON für die {@link getPlayer} Methode
+	 */
 	private String getSearchDataFromServer(String name) {
 		String result = null;
 		// Per HTTP-GET Daten von einer URL holen:
@@ -122,7 +147,6 @@ public class DBRequest {
 			    log.warn("Laden der Daten von URL war nicht erfolgreich. Status=" + response.code() + ", URL=" + url);
 			
 			result = response.body().string();
-			log.info(result);
 		}
 		catch (IOException ex) {
 		    log.warn("Laden der Daten von URL war nicht erfolgreich. Exception=" + ex + ", URL=" + url);
@@ -130,11 +154,69 @@ public class DBRequest {
 		
 		return result;
 	}
-	
+	/**
+	 * 
+	 * @param playername Spielername
+	 * @return Das JSON des Spielers
+	 */
 	public String getPlayer(String playername) {
 		JSONArray js = new JSONArray(getSearchDataFromServer(playername));
 		JSONObject json = js.getJSONObject(0);
 		String id = json.getString("id");
 		return getPlayerDataFromServer(id);
+	}
+	
+	/**
+	 * 
+	 * @param db Die gesetzten DBValues, siehe {@link setValues}
+	 */
+	private void printSpieler(DBValues db) {
+		log.info("--------------");
+		log.info("Name: " + db.getName());
+		log.info("Level: " + db.getLevel());
+		log.info("ID: " + db.getId());
+		GeneralStats gs = db.getGeneralStats();
+		List<Stats> stats = db.getStats();
+		log.info("Assists: " + gs.getAssists());
+		log.info("Höchste Punktzahl: " + gs.getBestScore());
+		log.info("Kugeln geschossen: " + gs.getBulletsFired());
+		log.info("Kugeln getroffen: " + gs.getBulletsHit());
+		log.info("DownButNotOut: " + gs.getDbno());
+		log.info("Tode: " + gs.getDeaths());
+		log.info("Gadgets zerstört: " + gs.getGadgetsDestroyed());
+		log.info("Headshots: " + gs.getHeadshotKills());
+		log.info("Kills: " + gs.getKills());
+		log.info("Melee Kills: " + gs.getMeleeKills());
+		log.info("Runden Verloren: " + gs.getRoundsLost());
+		log.info("Runden Gewonnen: " + gs.getRoundsWon());
+		log.info("Runden gespielt: " + gs.getRoundsPlayed());
+		log.info("Spielmodus: " + gs.getSpielmodus());
+		log.info("Selbstmorde: " + gs.getSuicides());
+		
+		for(Stats st : stats) {
+			log.info("--------------");
+			log.info("Spielmodus: " + st.getSpielmodus());
+			log.info("Runden gewonnen: " + st.getRoundsWon());
+			log.info("Runden gespielt: " + st.getRoundsPlayed());
+			log.info("Runden verloren: " + st.getRoundsLost());
+			log.info("Höchste Punktzahl: " + st.getBestScore());
+		}
+		
+		List<Rank> seasons = db.getSeasons();
+		for(Rank r : seasons) {
+			log.info("--------------");
+			log.info("Season: " + r.getSeason());
+			log.info("Rang: " + r.getRang().getName());
+		}
+		
+	}
+	/**
+	 *Methode um Spieler zu vergleichen
+	 * @param player Eine Liste von Spielernamen
+	 */
+	public void comparePlayers(List<String> player) {
+		for(String p : player) {
+			printSpieler(setValues(getPlayer(p)));
+		}
 	}
 }
