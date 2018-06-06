@@ -35,6 +35,8 @@ public enum Faehigkeit {
 	BLCKMIRROR(2, "Blackmirror"),
 	ELA(3, "GRZMOT"),
 	LSN(7, "GU"),
+	PRISM(3, "Prisma"),
+	EVILEYE(1, "Böses Auge"),
 	
 	;
 	private final int anzahl;

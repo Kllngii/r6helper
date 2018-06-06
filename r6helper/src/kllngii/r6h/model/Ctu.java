@@ -16,6 +16,7 @@ public enum Ctu {
 	_707SBM,
 	CTU,
 	CBRN,
+	GIS,
 	;
 	
 }

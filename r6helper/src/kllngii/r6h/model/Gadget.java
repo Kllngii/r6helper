@@ -11,7 +11,6 @@ public enum Gadget {
 	C4("Nitro-Handy"),
 	STA_DRAHT("Stacheldraht"),
 	MOBI("Mobiler Schild"),
-	//Ab Y3.1.5 neue Kamera
 	BP_CAM("Bulletproof Cam")
 	;
 	

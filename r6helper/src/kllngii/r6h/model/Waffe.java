@@ -23,6 +23,7 @@ public enum Waffe {
 	M762("M762", Waffentyp.STURM, Ctu.GROM),
 	V308("V.308", Waffentyp.STURM, Ctu.CBRN),
 	SPEAR("SPEAR.308", Waffentyp.STURM, Ctu.CBRN),
+	ALDA556("ALDA 5.56", Waffentyp.STURM, Ctu.GIS),
 //	Shotguns	
 	M590A1("M590A1", Waffentyp.SHOTGUN, Ctu.SAS),
 	M1014("M1014", Waffentyp.SHOTGUN, Ctu.FBI),
@@ -39,6 +40,8 @@ public enum Waffe {
 	SIX12SD("Six12SD", Waffentyp.SHOTGUN, Ctu.SDU),
 	FO12("Fo-12", Waffentyp.SHOTGUN, Ctu.GROM),
 	BOSG122("BOSG.12.2", Waffentyp.SHOTGUN, Ctu._707SBM),
+	ACS12("ACS12", Waffentyp.SHOTGUN, Ctu.GIS),
+	BAILIFF410("BaiLiff .410", Waffentyp.SHOTGUN, Ctu.GIS),
 	
 //	DMRs	
 	_417("417", Waffentyp.DMR, Ctu.GIGN),
@@ -62,6 +65,7 @@ public enum Waffe {
 	M45_MEUSOC("M45-MEUSOC", Waffentyp.PISTOLE, Ctu.FBI),
 	Q929("Q-929", Waffentyp.PISTOLE, Ctu.SDU),
 	RG15("RG15", Waffentyp.PISTOLE, Ctu.GROM),
+	KREATOS("Kreatos .357", Waffentyp.PISTOLE, Ctu.GIS),
 
 //	Reihenfeuerwaffen
 	BEARING9("Bearing 9", Waffentyp.REIHEN, Ctu.SAT),
@@ -98,6 +102,7 @@ public enum Waffe {
 	T5SMG("T-5 SMG", Waffentyp.MP, Ctu.SDU),
 	SCORPION("Scorpion EVO 3 A1", Waffentyp.MP, Ctu.GROM),
 	K1A("K1-A", Waffentyp.MP, Ctu._707SBM),
+	MX4("Mx4", Waffentyp.MP, Ctu.GIS),
 	;
 	
 	
