@@ -78,12 +78,11 @@ public class R6HelperModel implements Serializable {
 		_o.add(new Operator(ANGREIFER, "Lion", Arrays.asList(V308, _417, SG_CQB), Arrays.asList(LFP586, P9), Arrays.asList(), Faehigkeit.LION, Ctu.CBRN));
 		_o.add(new Operator(ANGREIFER, "Finka", Arrays.asList(SPEAR, SASG12, _6P41), Arrays.asList(PMM, GSH18), Arrays.asList(), Faehigkeit.FNKA, Ctu.CBRN));
 //		
-		_o.add(new Rekrut(ANGREIFER, "Rekrut Blau",Arrays.asList(L85A2, M590A1, AR33, G36C, R4C, _556XI, M1014,F2, _417, SG_CQB, AK12, BAL_SCHILD, AUGA2, _552C),  Arrays.asList(SMG11, P2_26,_57USG, M45_MEUSOC, P9, LFP586, GSH18, PMM, P12), Rekrut.ANGREIFER_GADGETS));
-		_o.add(new Rekrut(ANGREIFER, "Rekrut Gelb",Arrays.asList(L85A2, M590A1, AR33, G36C, R4C, _556XI, M1014,F2, _417, SG_CQB, AK12, BAL_SCHILD, AUGA2, _552C),  Arrays.asList(SMG11, P2_26,_57USG, M45_MEUSOC, P9, LFP586, GSH18, PMM, P12), Rekrut.ANGREIFER_GADGETS));
-		_o.add(new Rekrut(ANGREIFER, "Rekrut Orange",Arrays.asList(L85A2, M590A1, AR33, G36C, R4C, _556XI, M1014,F2, _417, SG_CQB, AK12, BAL_SCHILD, AUGA2, _552C),  Arrays.asList(SMG11, P2_26,_57USG, M45_MEUSOC, P9, LFP586, GSH18, PMM, P12), Rekrut.ANGREIFER_GADGETS));
-		_o.add(new Rekrut(ANGREIFER, "Rekrut Grün",Arrays.asList(L85A2, M590A1, AR33, G36C, R4C, _556XI, M1014,F2, _417, SG_CQB, AK12, BAL_SCHILD, AUGA2, _552C),  Arrays.asList(SMG11, P2_26,_57USG, M45_MEUSOC, P9, LFP586, GSH18, PMM, P12), Rekrut.ANGREIFER_GADGETS));
-		_o.add(new Rekrut(ANGREIFER, "Rekrut Rot",Arrays.asList(L85A2, M590A1, AR33, G36C, R4C, _556XI, M1014,F2, _417, SG_CQB, AK12, BAL_SCHILD, AUGA2, _552C),  Arrays.asList(SMG11, P2_26,_57USG, M45_MEUSOC, P9, LFP586, GSH18, PMM, P12), Rekrut.ANGREIFER_GADGETS));
-		
+		_o.add(new Rekrut("Rekrut Blau", 1));
+		_o.add(new Rekrut("Rekrut Rot", 1));
+		_o.add(new Rekrut("Rekrut Gelb", 1));
+		_o.add(new Rekrut("Rekrut Orange", 1));
+		_o.add(new Rekrut("Rekrut Grün", 1));
 //		Verteidiger
 		//Doc, Mute, Castle, Vigil, Caveira bekommen BP_Cam
 		_o.add(new Operator(VERTEIDIGER, "Smoke", FMG9, M590A1, Arrays.asList(SMG11, P2_26), Arrays.asList(KON_GRANATE, STA_DRAHT), SMK, Ctu.SAS));
@@ -107,12 +106,14 @@ public class R6HelperModel implements Serializable {
 		_o.add(new Operator(VERTEIDIGER, "Lesion", T5SMG, SIX12SD, Arrays.asList(Q929), Arrays.asList(KON_GRANATE, STA_DRAHT), LSN, Ctu.SDU));
 		_o.add(new Operator(VERTEIDIGER, "Ela", SCORPION, FO12, Arrays.asList(RG15), Arrays.asList(KON_GRANATE, STA_DRAHT), ELA, Ctu.GROM));
 		_o.add(new Operator(VERTEIDIGER, "Vigil", Arrays.asList(BOSG122, K1A), Arrays.asList(SMG12, C75), Arrays.asList(KON_GRANATE, STA_DRAHT), Faehigkeit.KEINE, Ctu._707SBM));
+		_o.add(new Operator(VERTEIDIGER, "Alibi", Arrays.asList(MX4, ACS12), Arrays.asList(BAILIFF410, KREATOS), Arrays.asList(KON_GRANATE, MOBI), Faehigkeit.PRISM, Ctu.GIS));
+		_o.add(new Operator(VERTEIDIGER, "Maestro", Arrays.asList(ALDA556, ACS12), Arrays.asList(BAILIFF410, KREATOS), Arrays.asList(KON_GRANATE, STA_DRAHT), Faehigkeit.EVILEYE, Ctu.GIS));
 //		
-		_o.add(new Rekrut(VERTEIDIGER, "Rekrut Blau", Arrays.asList(FMG9, M590A1, MP5K, UMP45, M1014, P90, MP5, SG_CQB, SASG12, _9X19VSN, MP7, M870, _416), Arrays.asList(SMG11,P2_26,M45_MEUSOC, _57USG, LFP586, P9, GSH18, PMM, P12), Arrays.asList(KON_GRANATE, MOBI, STA_DRAHT, C4)));
-		_o.add(new Rekrut(VERTEIDIGER, "Rekrut Gelb", Arrays.asList(FMG9, M590A1, MP5K, UMP45, M1014, P90, MP5, SG_CQB, SASG12, _9X19VSN, MP7, M870, _416), Arrays.asList(SMG11,P2_26,M45_MEUSOC, _57USG, LFP586, P9, GSH18, PMM, P12), Arrays.asList(KON_GRANATE, MOBI, STA_DRAHT, C4)));
-		_o.add(new Rekrut(VERTEIDIGER, "Rekrut Grün", Arrays.asList(FMG9, M590A1, MP5K, UMP45, M1014, P90, MP5, SG_CQB, SASG12, _9X19VSN, MP7, M870, _416), Arrays.asList(SMG11,P2_26,M45_MEUSOC, _57USG, LFP586, P9, GSH18, PMM, P12), Arrays.asList(KON_GRANATE, MOBI, STA_DRAHT, C4)));
-		_o.add(new Rekrut(VERTEIDIGER, "Rekrut Orange", Arrays.asList(FMG9, M590A1, MP5K, UMP45, M1014, P90, MP5, SG_CQB, SASG12, _9X19VSN, MP7, M870, _416), Arrays.asList(SMG11,P2_26,M45_MEUSOC, _57USG, LFP586, P9, GSH18, PMM, P12), Arrays.asList(KON_GRANATE, MOBI, STA_DRAHT, C4)));
-		_o.add(new Rekrut(VERTEIDIGER, "Rekrut Rot", Arrays.asList(FMG9, M590A1, MP5K, UMP45, M1014, P90, MP5, SG_CQB, SASG12, _9X19VSN, MP7, M870, _416), Arrays.asList(SMG11,P2_26,M45_MEUSOC, _57USG, LFP586, P9, GSH18, PMM, P12), Arrays.asList(KON_GRANATE, MOBI, STA_DRAHT, C4)));
+		_o.add(new Rekrut("Rekrut Blau"));
+		_o.add(new Rekrut("Rekrut Rot"));
+		_o.add(new Rekrut("Rekrut Orange"));
+		_o.add(new Rekrut("Rekrut Gelb"));
+		_o.add(new Rekrut("Rekrut Grün"));
 		
 		operatoren = Collections.unmodifiableList(_o);
 		
