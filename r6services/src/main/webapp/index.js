@@ -1,50 +1,5 @@
-
-		/**
-		 * Nur zu Testzwecken
-		 */
-		function getJsonSynchron() {
-//			return r6helperdata;
-			
-//			return {"gegnerteam": [
-//		        {
-//		            "primärwaffe": {
-//		                "name": "SR-25",
-//		                "typ": "DMR"
-//		            },
-//		            "name": "Blackbeard",
-//		            "lifepoints": 100,
-//		            "sekundärwaffe": {
-//		                "name": "Desert Eagle",
-//		                "typ": "PISTOLE"
-//		            },
-//		            "gadgets": ["Sprengladung"]
-//		        },
-//		        {
-//		            "name": "Ash",
-//		            "lifepoints": 100
-//		        },
-//		        {
-//		            "name": "Lion",
-//		            "lifepoints": 100
-//		        },
-//		        {
-//		            "name": "Ying",
-//		            "lifepoints": 100,
-//		            "sekundärwaffe": {
-//		                "name": "Q-929",
-//		                "typ": "PISTOLE"
-//		            }
-//		        },
-//		        {
-//		            "name": "Rekrut Blau",
-//		            "lifepoints": 100
-//		        }
-//		    ]};
-		}
-		
 		function init() {
-			//parseJSON(getJsonSynchron());
-			
+			//alert(getCookie("last"));
 			getAndParseJSON();
 			
 			// Nur aktivieren, wenn das JSON direkt vom Server geholt werden kann:
@@ -52,9 +7,6 @@
 		}
 		
 		function getAndParseJSON() {
-//			let url = "https://www.dropbox.com/s/kvdxxjv92u9v3d0/r6helper.json?dl=1";
-//			let url = "file:////Users/lasse_kelling/Dropbox/R6/r6helper.json";
-//			let url = "http://192.168.2.10:8080/r6/service/data/all";
 			let url = "/r6/service/data/all";
 			
 			fetch(url)
