@@ -60,6 +60,7 @@ public class PlayerService {
         byte[] bytes = null;
         try {
             bytes = Files.readAllBytes(infile);
+            log.info("Liefere Daten zu Spieler: " + playername);
         }
         catch (NoSuchFileException ex) {
             log.info("Datei {} existiert noch nicht, liefere leeres JSON.", FILENAME);
@@ -102,6 +103,7 @@ public class PlayerService {
         try {
             java.nio.file.Path outfile = Paths.get(FILENAME);
             Files.write(outfile, Arrays.asList(json), StandardCharsets.UTF_8);
+            log.info("Datei des Spielers: " + playername + " geändert.");
         }
         catch (IOException ex) {
             log.error("Fehler beim Beschreiben der Datei " + FILENAME, ex);

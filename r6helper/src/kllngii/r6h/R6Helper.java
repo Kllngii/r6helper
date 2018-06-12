@@ -106,8 +106,10 @@ public class R6Helper extends KllngiiView {
 	
 	//R6helper-Toxic:
 	//FIXME Toxicspieler werden nicht in das Model gespeichert.
+	
+	private Thread worker;
     private final Logger log = Logger.getLogger(getClass());
-
+    
     private final boolean readWrite;
     private JFrame frame;
 
@@ -211,7 +213,12 @@ public class R6Helper extends KllngiiView {
      * Initialize the contents of the frame.
      */
 	private void initialize() {
-    	
+    	try {
+			inaktiv();
+		} catch (InterruptedException e2) {
+			log.error("Der Bildschirmschoner konnte nicht unterbrochen werden!");
+			e2.printStackTrace();
+		}
         spielerlisteController = new SpielerlisteController(readWrite, model);
         toxiclisteController = new ToxiclisteController(readWrite, model);
 
@@ -349,7 +356,7 @@ public class R6Helper extends KllngiiView {
                 log.info("windowClosing...");
                 e.getWindow().dispose();
                 einstellungen.shutdown();
-                
+                worker.interrupt();
             		speichereInJSON();
             		System.exit(0);
             }
@@ -1098,22 +1105,33 @@ public class R6Helper extends KllngiiView {
      * Der {@link R6Helper} soll durch diese Methode nicht den Bildschirmschoner aktivieren
      * @throws InterruptedException 
      */
-    @SuppressWarnings("unused")
+    
 	private void inaktiv() throws InterruptedException {
-    	
+    	Runnable task = () -> {
     	Point start = MouseInfo.getPointerInfo().getLocation();
-    	while(true) {
+    	while(true && !worker.isInterrupted()) {
 	    	long time = System.currentTimeMillis();
-	    	while(true) {
+	    	while(true && !worker.isInterrupted()) {
 	    		 Point current = MouseInfo.getPointerInfo().getLocation();
 	    		if(start.getLocation() == current.getLocation()) {
 	    			if(System.currentTimeMillis() <= time+120000) {
 	    				break;
 	    			}
-	    			Thread.sleep(10);
+	    			try {
+						Thread.sleep(10);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
 	    		}
 	    		start = MouseInfo.getPointerInfo().getLocation();
-	    		Thread.sleep(10);
+	    		try {
+	    			if(!worker.isInterrupted())
+	    				Thread.sleep(10);
+	    			else
+	    				break;
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 	    	}
 	    	
 	    	Point end = MouseInfo.getPointerInfo().getLocation();
@@ -1127,6 +1145,10 @@ public class R6Helper extends KllngiiView {
 				e.printStackTrace();
 			}
     	}
+    	};
+    	worker = new Thread(task);
+    	worker.setName("Wachhalter");
+    	worker.start();
     }
 
 }

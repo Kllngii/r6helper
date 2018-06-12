@@ -13,6 +13,15 @@ public class Spieler {
 	private static final String KEY_KD = "kd";
 	
 	private final String name;
+	private String dbname;
+	public String getDbname() {
+		return dbname;
+	}
+
+	public void setDbname(String dbname) {
+		this.dbname = dbname;
+	}
+
 	private int hs;
 	private int ace;
 	private int k;
