@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import javafx.scene.control.TextInputDialog;
 import kllngii.r6h.model.Rang;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -17,15 +18,7 @@ public class DBRequest {
 	
 	private final Logger log = Logger.getLogger(getClass());
 	
-	public static void main(String[] args) {
-		DBRequest requ = new DBRequest();
-		List<String> spieler = new ArrayList<String>();
-		spieler.add("Klln911gii");
-		spieler.add("Feurigel14");
-		requ.comparePlayers(spieler);
-	}
-	
-	private DBValues setValues(String jsonString) {
+	private DBValues setPlayerValues(String jsonString) {
 		JSONObject json = new JSONObject(jsonString);
 		DBValues player = new DBValues();
 		
@@ -159,10 +152,22 @@ public class DBRequest {
 	 * @param playername Spielername
 	 * @return Das JSON des Spielers
 	 */
-	public String getPlayer(String playername) {
+	public String getPlayerName(String playername) {
 		JSONArray js = new JSONArray(getSearchDataFromServer(playername));
 		JSONObject json = js.getJSONObject(0);
 		String id = json.getString("id");
+		if(id == null || id == "") {
+			try {
+				throw new DBError();
+			} catch (DBError e) {
+				try {
+					throw new IOException();
+				} catch (IOException e1) {
+					//Aufgeben ist eh egal...
+					e1.printStackTrace();
+				}
+			}
+		}
 		return getPlayerDataFromServer(id);
 	}
 	
@@ -214,9 +219,18 @@ public class DBRequest {
 	 *Methode um Spieler zu vergleichen
 	 * @param player Eine Liste von Spielernamen
 	 */
-	public void comparePlayers(List<String> player) {
+	public List<DBValues> comparePlayers(List<String> player, boolean write) {
+		List<DBValues> team = new ArrayList<>();
 		for(String p : player) {
-			printSpieler(setValues(getPlayer(p)));
+			DBValues value = setPlayerValues(getPlayerName(p));
+			team.add(value);
+			if(write)
+				printSpieler(value);
 		}
+		return team;
+	}
+	public DBValues getPlayerData(String player) {
+		String id = getPlayerName(player);
+		return setPlayerValues(id);
 	}
 }
