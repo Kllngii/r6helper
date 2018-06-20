@@ -81,21 +81,21 @@ import kllngii.r6h.spieler.SpielerlisteController;
 import kllngii.r6h.toxic.ToxiclisteController;
 
 public class R6Helper extends KllngiiView {
+	
 	//Sonstiges:
 	//TODO Mehrere Channel einführen, um PW geschützt getrennt Programm zu nutzen
-	//TODO Optional: Fenster auch auf Java FX umstellbar
-	//FIXME Wenn der R6Helper kein Internet hat startet der Frame nicht.
+	//TODO Optional: Fenster auch auf Java FX umstellbar -> Branch feature/JavaFX
+	//FIXME Wenn der R6Helper den Server nicht findet startet der Server nicht
 	
 	//R6helper-Gegenerteam:
-	//TODO Drohnen/Kamera Counter
-	//TODO Rangrechner, der Durchschnitt ausrechnet
+	//TODO Drohnen/Kamera Counter -> BulletProof, BlackEye, Schockdrohne, Böses Auge und Yoai beachten
+	//TODO Rangrechner, der Team-Durchschnitt ausrechnet
 	
 	//Einstellungen:
 	//TODO FTP implementieren
 	
 	//R6helper-Team:
 	//FIXME RO Modus nicht voll funktionsfähig
-	//FIXME Frame soll sich unabhängig von der Verfügbarkeit der Json aufbauen
 	//TODO Win Counter
 	//TODO Top3 anzeigen
 	//TODO Top3 sortierbar nach Aces/Wins/Headshots/etc.
@@ -103,7 +103,8 @@ public class R6Helper extends KllngiiView {
 	//R6helper-Toxic:
 	//FIXME Toxicspieler werden nicht in das Model gespeichert.
 	
-	private Thread worker;
+	//R6Helper-DB:
+	//TODO R6DB nutzen, um den Spieler um eine R6Values zu ergänzen
     private final Logger log = Logger.getLogger(getClass());
     
     private final boolean readWrite;
