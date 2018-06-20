@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<defs>
+		<style>
+		</style>
+		<symbol xmlns="http://www.w3.org/2000/svg" fill="none" strake="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow" viewBox="0 0 24 24" id="arrow">
+			<line x1="5" y1="12" x2="19" y2="12"/>
+			<polyline points="12 5 19 12 12 19"/>
+		</symbol>
+	</defs>
+	<use xmlns="http://www.w3.org/2000/svg" id="arrow" xlink:href="#arrow" xmlns:xlink="http://www.w3.org/1999/xlink" class="svg-symbol"/>
+</svg>

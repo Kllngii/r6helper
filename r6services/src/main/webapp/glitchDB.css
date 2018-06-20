@@ -1,0 +1,133 @@
+@charset "UTF-8";
+.searchbar {
+    -ms-flex-align: stretch;
+    align-items: stretch;
+    -ms-flex-pack: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 60vw;
+    margin: 0 auto
+}
+
+.searchbar, .searchbar__box {
+    display: -ms-flexbox;
+    display: flex;
+    min-width: 0;
+    border-radius: 5px
+}
+
+.searchbar__box {
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+    background: rgba(12, 13, 13, .9);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .12), 0 2px 4px 0 rgba(0, 0, 0, .08)
+}
+
+.searchbar__input {
+    min-width: 0;
+    -ms-flex: auto;
+    flex: auto;
+    color: #e4e5e7;
+    font-size: 1.125em;
+    transition: all .2s ease-in-out;
+    -moz-transition: none
+}
+
+.searchbar__input::-webkit-input-placeholder {
+    color: #6f7376;
+    opacity: 1;
+    transition: all .3s ease-in-out;
+    text-overflow: ellipsis
+}
+
+.searchbar__input:-ms-input-placeholder {
+    color: #6f7376;
+    opacity: 1;
+    transition: all .3s ease-in-out;
+    text-overflow: ellipsis
+}
+
+.searchbar__input::placeholder {
+    color: #6f7376;
+    opacity: 1;
+    transition: all .3s ease-in-out;
+    text-overflow: ellipsis
+}
+
+.searchbar__input:not(:placeholder-shown) + .searchbar__submit {
+    cursor: pointer
+}
+
+.searchbar__input:not(:placeholder-shown) + .searchbar__submit svg {
+    color: #e4e5e7
+}
+
+.searchbar__input:hover {
+    outline: 0;
+    color: #e4e5e7
+}
+
+.searchbar__input:hover::-webkit-input-placeholder {
+    color: #e4e5e7
+}
+
+.searchbar__input:hover:-ms-input-placeholder {
+    color: #e4e5e7
+}
+
+.searchbar__input:hover::placeholder {
+    color: #e4e5e7
+}
+
+.searchbar__input:hover + .searchbar__submit svg {
+    color: #e4e5e7
+}
+
+.searchbar__input:focus {
+    outline: 0;
+    color: #e4e5e7
+}
+
+.searchbar__input:focus::-webkit-input-placeholder {
+    color: #e4e5e7
+}
+
+.searchbar__input:focus:-ms-input-placeholder {
+    color: #e4e5e7
+}
+
+.searchbar__input:focus::placeholder {
+    color: #e4e5e7
+}
+
+.searchbar__input:focus + .searchbar__submit svg {
+    color: #e4e5e7
+}
+
+.searchbar__submit {
+    color: #6f7376;
+    padding-left: 1em;
+    padding-right: 1em
+}
+
+@supports(-ms-ime-align:auto) {
+    .searchbar__submit {
+        cursor: pointer
+    }
+}
+
+.searchbar__submit svg {
+    height: 1.5em;
+    width: 1.5em;
+    transition: all .2s ease-in-out;
+    -moz-transition: all .05s ease-in-out;
+    transform-origin: center center
+}
+
+.searchbar__submit:hover svg {
+    opacity: 1
+}
+
+.searchbar__submit:focus {
+    outline: 0
+}

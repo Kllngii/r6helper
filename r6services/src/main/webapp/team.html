@@ -12,24 +12,29 @@
 		</script>
 	</head>
 	<body onload="init()">
-		<img src="img/dust.jpg" class="page__dust"/>
-		<img src="img/background.jpg" class="page__image"/>
-		<p style="text-align: right">
-			Stand: <span id="zeitstempel"></span>
-		</p>
+		<div class="site">
+			<img src="img/dust.jpg" class="page__dust"/>
+			<img src="img/background.jpg" class="page__image"/>
+			<p style="text-align: right">
+				Stand: <span id="zeitstempel"></span>
+			</p>
 		
 	
-		<table contenteditable="false" id="table">
-			<tr id="header" align="center" class="head">
-				<td><p> Name </p></td>
-				<td><p> Kills </p></td>
-				<td><p> Tode </p></td>
-				<td><p> Knifes </p></td>
-				<td><p> Ace </p></td>
-				<td><p> KD </p></td>
-				<td><p> Headshot </p></td>
-			</tr>
-		</table>
-		<iframe id="footer" src="footer.html" height="100"  width="400" draggable="false" style="border: none;"></iframe>
+			<table contenteditable="false" id="table">
+				<tr id="header" align="center" class="head">
+					<td><p> Name </p></td>
+					<td><p> Kills </p></td>
+					<td><p> Tode </p></td>
+					<td><p> Knifes </p></td>
+					<td><p> Ace </p></td>
+					<td><p> KD </p></td>
+					<td><p> Headshot </p></td>
+				</tr>
+			</table>
+		</div>
+		<div class="black">
+			<iframe id="footer" src="footer.html" height="100"  width="400" draggable="false" style="border: none;"></iframe>
+		</div>
+		
 	</body>
 </html>
