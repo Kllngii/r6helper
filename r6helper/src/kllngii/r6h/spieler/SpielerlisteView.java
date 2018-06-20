@@ -85,6 +85,10 @@ public class SpielerlisteView extends KllngiiView {
             rowSpec.append("30dlu");
             rowSpec.append(", p, $pgap");  // "Spieler in das Team aufnehmen"
             rowSpec.append(", p, $lgap, p");
+            rowSpec.append(", p, $pgap"); // "Top3"
+            rowSpec.append(", p, $lgap, p"); // Spieler 1 
+            rowSpec.append(", p, $lgap, p"); // Spieler 2
+            rowSpec.append(", p, $lgap, p"); // Spieler 3
             
             StringBuilder cols = new StringBuilder();
             cols.append("left:[pref, 100px], 6dlu");
@@ -94,6 +98,7 @@ public class SpielerlisteView extends KllngiiView {
             cols.append(", [60px, pref], 6dlu");
             cols.append(", [60px, pref], 6dlu");
             cols.append(", [30px, pref]");
+     
 
             builder.rows(rowSpec.toString())
                    .columns(cols.toString());
@@ -186,7 +191,14 @@ public class SpielerlisteView extends KllngiiView {
             builder.add(createPlayerButton).xy(3, row);
             builder.add(createAndAddPlayerButton).xy(5, row);
             builder.add(clearButton).xy(7, row);
-        }        
+        }
+        //Top 3 bauen
+        row += 2;
+        builder.addTitle("Top3").xyw(1, row, numCols);
+        
+        row += 2;
+        
+        
         
         root.add(builder.build());
     }
