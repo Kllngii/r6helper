@@ -1,6 +1,5 @@
 package kllngii.r6h;
 
-import java.awt.AWTException;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -9,9 +8,6 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Image;
-import java.awt.MouseInfo;
-import java.awt.Point;
-import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
@@ -213,12 +209,6 @@ public class R6Helper extends KllngiiView {
      * Initialize the contents of the frame.
      */
 	private void initialize() {
-    	try {
-			inaktiv();
-		} catch (InterruptedException e2) {
-			log.error("Der Bildschirmschoner konnte nicht unterbrochen werden!");
-			e2.printStackTrace();
-		}
         spielerlisteController = new SpielerlisteController(readWrite, model);
         toxiclisteController = new ToxiclisteController(readWrite, model);
 
@@ -356,9 +346,8 @@ public class R6Helper extends KllngiiView {
                 log.info("windowClosing...");
                 e.getWindow().dispose();
                 einstellungen.shutdown();
-                worker.interrupt();
-            		speichereInJSON();
-            		System.exit(0);
+            	speichereInJSON();
+            	System.exit(0);
             }
         });
         log.info("Frame fertig gebaut.");
@@ -1099,56 +1088,6 @@ public class R6Helper extends KllngiiView {
     private long timerEnd(long time1) {
     	long time2 = System.currentTimeMillis() - time1;
     	 return time2;
-    }
-    //TODO Funktion benutzen, um Bildschirmschoner zu umgehen
-    /**
-     * Der {@link R6Helper} soll durch diese Methode nicht den Bildschirmschoner aktivieren
-     * @throws InterruptedException 
-     */
-    
-	private void inaktiv() throws InterruptedException {
-    	Runnable task = () -> {
-    	Point start = MouseInfo.getPointerInfo().getLocation();
-    	while(true && !worker.isInterrupted()) {
-	    	long time = System.currentTimeMillis();
-	    	while(true && !worker.isInterrupted()) {
-	    		 Point current = MouseInfo.getPointerInfo().getLocation();
-	    		if(start.getLocation() == current.getLocation()) {
-	    			if(System.currentTimeMillis() <= time+120000) {
-	    				break;
-	    			}
-	    			try {
-						Thread.sleep(10);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-	    		}
-	    		start = MouseInfo.getPointerInfo().getLocation();
-	    		try {
-	    			if(!worker.isInterrupted())
-	    				Thread.sleep(10);
-	    			else
-	    				break;
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-	    	}
-	    	
-	    	Point end = MouseInfo.getPointerInfo().getLocation();
-	    	
-			Robot robot;
-			try {
-				robot = new Robot();
-				robot.mouseMove(end.x + 1, end.y);
-			    robot.mouseMove(end.x, end.y);	
-			} catch (AWTException e) {
-				e.printStackTrace();
-			}
-    	}
-    	};
-    	worker = new Thread(task);
-    	worker.setName("Wachhalter");
-    	worker.start();
     }
 
 }

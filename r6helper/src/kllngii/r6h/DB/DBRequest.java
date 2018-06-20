@@ -8,7 +8,6 @@ import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import javafx.scene.control.TextInputDialog;
 import kllngii.r6h.model.Rang;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
