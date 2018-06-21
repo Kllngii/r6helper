@@ -14,11 +14,14 @@ import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.OPTIONS;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
 import org.apache.commons.lang3.StringUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,28 +62,7 @@ public class DataService {
     @Path("all")
     @Produces("application/json")
     public String getAll(@Context HttpServletResponse response) {
-        accessControlAllowOrigin(response);
-        
-        java.nio.file.Path infile = Paths.get(FILENAME);
-        byte[] bytes = null;
-        try {
-            bytes = Files.readAllBytes(infile);
-        }
-        catch (NoSuchFileException ex) {
-            log.info("Datei {} existiert noch nicht, liefere leeres JSON.", FILENAME);
-            return EMPTY_JSON;
-        }
-        catch (IOException ex) {
-            throw new InternalServerErrorException(ex);
-        }
-        
-        String json;
-        if (bytes == null || bytes.length <= 0)
-            json = EMPTY_JSON;
-        else
-            json = new String(bytes, StandardCharsets.UTF_8);
-        
-        return json;
+        return get(response);
     }
     
     
@@ -116,5 +98,66 @@ public class DataService {
             log.error("Fehler beim Beschreiben der Datei " + FILENAME, ex);
             throw new InternalServerErrorException(ex);
         }
+    }
+    
+    
+    @GET
+    @Path("repo")
+    @Produces("application/json")
+    public String getRepo(@Context HttpServletResponse response) {
+        String json = get(response);
+        
+        JSONObject jObj = new JSONObject(json);
+        JSONArray jTeam = jObj.getJSONArray("spielerrepo");
+        return jTeam.toString(3);
+    }
+    
+    
+    private String get(@Context HttpServletResponse response) {
+    	accessControlAllowOrigin(response);
+        
+        java.nio.file.Path infile = Paths.get(FILENAME);
+        byte[] bytes = null;
+        try {
+            bytes = Files.readAllBytes(infile);
+        }
+        catch (NoSuchFileException ex) {
+            log.info("Datei {} existiert noch nicht, liefere leeres JSON.", FILENAME);
+            return EMPTY_JSON;
+        }
+        catch (IOException ex) {
+            throw new InternalServerErrorException(ex);
+        }
+        
+        String json;
+        if (bytes == null || bytes.length <= 0)
+            json = EMPTY_JSON;
+        else
+            json = new String(bytes, StandardCharsets.UTF_8);
+        return json;
+    }
+    
+    
+    @GET
+    @Path("repo/{playername}")
+    @Produces("application/json")
+    public String getRepoPlayer(@PathParam("playername") String playername, @Context HttpServletResponse response) {
+    	
+    	String json = get(response);
+    	JSONObject jObj = new JSONObject(json);
+        JSONArray jTeam = jObj.getJSONArray("spielerrepo");
+        
+        int index = -1;
+        for( int i=0; i < jTeam.length(); i++ ) {
+            if( playername.equals( jTeam.getJSONObject(i).get("name") ) ) {
+                index = i;
+            }
+        }
+        if(index == -1) {
+        	log.warn("Spieler wurde nicht gefunden! " + playername);
+        	return "{\"error\":\"nicht gefunden\"}";
+        }
+        JSONObject jPlayer = jTeam.getJSONObject(index);
+        return jPlayer.toString(3);
     }
 }
