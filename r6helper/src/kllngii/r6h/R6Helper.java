@@ -53,14 +53,12 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.jgoodies.forms.builder.FormBuilder;
 import com.jgoodies.looks.plastic.PlasticLookAndFeel;
-import com.jgoodies.looks.plastic.PlasticXPLookAndFeel;
 import com.jgoodies.looks.plastic.theme.ExperienceRoyale;
 import com.jgoodies.validation.view.ValidationResultViewFactory;
 
@@ -105,6 +103,7 @@ public class R6Helper extends KllngiiView {
 	
 	//R6Helper-DB:
 	//TODO R6DB nutzen, um den Spieler um eine R6Values zu ergänzen
+	
     private final Logger log = Logger.getLogger(getClass());
     
     private final boolean readWrite;
@@ -173,12 +172,13 @@ public class R6Helper extends KllngiiView {
 
         PlasticLookAndFeel.setPlasticTheme(new ExperienceRoyale());  // ganz gut, farbig
         
-        try {
-            UIManager.setLookAndFeel(new PlasticXPLookAndFeel());
-        } catch (Exception ex) {
-            // Aufgeben...
-            throw new RuntimeException(ex);
-        }
+//        try {
+//        	//TODO neue LookAndFeels testen
+//            UIManager.setLookAndFeel(new PlasticXPLookAndFeel());
+//        } catch (Exception ex) {
+//            // Aufgeben...
+//            throw new RuntimeException(ex);
+//        }
 
         final boolean _readWrite = readWrite;
         EventQueue.invokeLater(new Runnable() {
@@ -191,7 +191,7 @@ public class R6Helper extends KllngiiView {
     }
 
     /**
-     * Create the application.
+     * Erstelle Application
      */
     public R6Helper(boolean readWrite) {
         this.readWrite = readWrite;
@@ -207,7 +207,7 @@ public class R6Helper extends KllngiiView {
     }
 
     /**
-     * Initialize the contents of the frame.
+     * Initialisiere den Frame
      */
 	private void initialize() {
         spielerlisteController = new SpielerlisteController(readWrite, model);
@@ -356,7 +356,6 @@ public class R6Helper extends KllngiiView {
     
     private Container createGegnerTabContent() {
         final Container root = new Box(BoxLayout.X_AXIS);
-
         final Container leftColumn = new Box(BoxLayout.Y_AXIS);
         root.add(leftColumn);
         
