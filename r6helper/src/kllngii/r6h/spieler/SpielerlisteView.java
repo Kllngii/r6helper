@@ -1,6 +1,7 @@
 package kllngii.r6h.spieler;
 
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -196,13 +197,40 @@ public class SpielerlisteView extends KllngiiView {
         row += 2;
         builder.addTitle("Top3").xyw(1, row, numCols);
         
-        row += 2;
+        row += 3;
+        List<Spieler> top3 = createTop3();
+        
+        for(Spieler sp : top3) {
+            JLabel nameLabel = new JLabel(sp.getName());
+            builder.add(nameLabel).xy(1, row);
+            Integer i = new Integer(sp.getPoints());
+            String pointString = i.toString();
+            pointString = pointString + "KP";
+            JLabel pointsLabel = new JLabel(pointString);
+            log.info("Punktzahl des Spielers: " + pointString);
+            log.info("Reihe des Spielers: " + row);
+            builder.add(pointsLabel).xy(3, row);
+            row += 3;
+        }
         
         
         
         root.add(builder.build());
     }
-    private void addHeadshot(Spieler spieler, int row, FormBuilder builder) {
+    /**
+     * 
+     * @param top3 Die Liste, die befüllt wird
+     */
+    private List<Spieler> createTop3() {
+    	List<Spieler> top3 = new ArrayList<>(model.getSpielerRepo());
+    	Collections.sort(top3, (Spieler s1, Spieler s2) -> {
+    		return s2.getPoints() - s1.getPoints();
+    	});
+    	
+    	return top3.subList(0, Math.min(top3.size(), 3));
+	}
+
+	private void addHeadshot(Spieler spieler, int row, FormBuilder builder) {
     		if (readWrite) {
             // Statistik heraufzählen können über Button
             final JButton countHSUpBtn = new JButton(String.valueOf(spieler.getHeadshots()));
@@ -292,6 +320,8 @@ public class SpielerlisteView extends KllngiiView {
 		}
     }
     private void refreshKD(Spieler spieler) {
+    	//Refresh aufrufen, um auch die Top3 Punkte zu aktualisieren
+    	refresh();
     	kdlist.get(spieler).setText(String.valueOf(spieler.getKD()));
     }
     private void refreshKills(Spieler spieler) {
