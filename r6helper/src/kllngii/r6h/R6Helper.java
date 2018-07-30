@@ -161,7 +161,7 @@ public class R6Helper extends KllngiiView {
     }
 
     /**
-     * Launch the application.
+     * Startpunkt der Anwendung
      */
     public static void main(String[] args) {
         // Nur-Lese-Modus kann über den ersten Parameter
@@ -245,6 +245,8 @@ public class R6Helper extends KllngiiView {
         	catch (ClassNotFoundException | NoSuchMethodException  | InvocationTargetException | IllegalAccessException e1) {
         		log.warn("Klasse für ICON auf Mac nicht gefunden!", e1);
         	}
+    		System.setProperty("apple.laf.useScreenMenuBar", "true");
+    		System.setProperty("com.apple.mrj.application.apple.menu.about.name", "R6Helper");
         }
         else
         	log.warn("Icon wurde nicht gefunden! " + Toolkit.getDefaultToolkit().getImage("icon.jpg"));
