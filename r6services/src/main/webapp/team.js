@@ -1,6 +1,7 @@
 		function init() {
 			getAndParseJSON();
-			//setInterval(getAndParseJSON, 1000);
+			setCookie("last", "team", 20);
+			setInterval(getAndParseJSON, 1000);
 		}
 		
 		function getAndParseJSON() {

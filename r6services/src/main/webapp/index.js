@@ -1,7 +1,7 @@
 		function init() {
-			//alert(getCookie("last"));
+			setCookie("last", "index", 20);
+			console.log(getCookie("last"));
 			getAndParseJSON();
-			
 			// Nur aktivieren, wenn das JSON direkt vom Server geholt werden kann:
 			setInterval(getAndParseJSON, 1000);
 		}

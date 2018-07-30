@@ -17,7 +17,7 @@
 		            return c.substring(name.length, c.length);
 		        }
 		    }
-		    return "";
+		    return null;
 		}
 		function checkCookie(c) {
 		    var cookie = getCookie(c);
@@ -30,11 +30,5 @@
 		function cookieWarning() {
 			alert("Fehler bei den Cookies!");
 			console.error("Fehler mit den Cookies!")
-			throw CookieError;
 		}
-		throw { 
-		    name:        "CookieError", 
-		    message:     "Fehler! Konnte nicht mit Cookies arbeiten!", 
-		    toString:    function(){return this.name + ": " + this.message;} 
-		};
 		
