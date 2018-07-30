@@ -3,6 +3,7 @@ package kllngii.r6h.DB;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
@@ -102,7 +103,10 @@ public class DBRequest {
 		Request request = new Request.Builder()
 			      .url(url)
 			      .get()
-			      .addHeader("x-app-id", "5e23d930-edd3-4240-b9a9-723c673fb649")
+			      .addHeader("x-app-id", "b0815d12-ce26-462f-85ec-b866f24db0f0")
+			      //neue Header, damit es weiter funktioniert
+			      .addHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/11.1.2 Safari/605.1.15")
+			      .addHeader("Referer", url)
 			      .build();
 		try (Response response = client.newCall(request).execute()) {
 			if (! response.isSuccessful())
@@ -132,7 +136,11 @@ public class DBRequest {
 		Request request = new Request.Builder()
 	      .url(url)
 	      .get()
-	      .addHeader("x-app-id", "5e23d930-edd3-4240-b9a9-723c673fb649")
+	      //x-app-id immer wieder überprüfen!
+	      .addHeader("x-app-id", "b0815d12-ce26-462f-85ec-b866f24db0f0")
+	      //neue Header, damit es weiter funktioniert
+	      .addHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/11.1.2 Safari/605.1.15")
+	      .addHeader("Referer", "https://r6db.com/search/PS4/" + name + "/")
 	      .build();
 		try (Response response = client.newCall(request).execute()) {
 			if (! response.isSuccessful())

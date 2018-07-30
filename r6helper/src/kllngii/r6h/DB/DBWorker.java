@@ -9,7 +9,7 @@ import javafx.scene.control.TextInputDialog;
 import javafx.stage.Stage;
 import kllngii.r6h.spieler.Spieler;
 
-public class DBWorker extends Application{
+public class DBWorker extends Application {
 	public List<Spieler> getDBNames(List<Spieler> team) {
 		//TODO Bessere Lösung finden
 		for(Spieler sp : team) {
@@ -35,6 +35,7 @@ public class DBWorker extends Application{
 	public static void main(String[] args) {
 		launch(args);
 	}
+	
 	@SuppressWarnings("unused")
 	@Override
 	public void start(Stage primaryStage) throws Exception {
