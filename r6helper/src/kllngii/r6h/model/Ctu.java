@@ -17,6 +17,7 @@ public enum Ctu {
 	CTU,
 	CBRN,
 	GIS,
+	GSUTR,
 	;
 	
 }

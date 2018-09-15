@@ -24,6 +24,7 @@ public enum Waffe {
 	V308("V.308", Waffentyp.STURM, Ctu.CBRN),
 	SPEAR("SPEAR.308", Waffentyp.STURM, Ctu.CBRN),
 	ALDA556("ALDA 5.56", Waffentyp.STURM, Ctu.GIS),
+	M4("M4", Waffentyp.STURM, Ctu.GSUTR),
 //	Shotguns	
 	M590A1("M590A1", Waffentyp.SHOTGUN, Ctu.SAS),
 	M1014("M1014", Waffentyp.SHOTGUN, Ctu.FBI),
@@ -48,6 +49,7 @@ public enum Waffe {
 	OTS03("OTS-03", Waffentyp.DMR, Ctu.SPETZNAS),
 	CAMRS("CamRS", Waffentyp.DMR, Ctu.JTF2),
 	SR25("SR-25", Waffentyp.DMR, Ctu.NAVYSEALS),
+	AR1550("Ar-15.50", Waffentyp.DMR, Ctu.GSUTR),
 
 //	Pistolen u. Revolver
 	P9("P9", Waffentyp.PISTOLE, Ctu.GIGN),
@@ -66,17 +68,21 @@ public enum Waffe {
 	Q929("Q-929", Waffentyp.PISTOLE, Ctu.SDU),
 	RG15("RG15", Waffentyp.PISTOLE, Ctu.GROM),
 	KREATOS("Kreatos .357", Waffentyp.PISTOLE, Ctu.GIS),
+	_1911TACOPS("1911 TacOPS", Waffentyp.PISTOLE, Ctu.GSUTR),
+	P10C("P-10C", Waffentyp.PISTOLE, Ctu.GSUTR),
 
 //	Reihenfeuerwaffen
 	BEARING9("Bearing 9", Waffentyp.REIHEN, Ctu.SAT),
 	SMG11("SMG 11", Waffentyp.REIHEN, Ctu.SAS),
 	C75("C75", Waffentyp.REIHEN, Ctu._707SBM),
 	SMG12("SMG-12", Waffentyp.REIHEN, Ctu._707SBM),
+	SPSMG9("SPSMG9", Waffentyp.REIHEN, Ctu.GSUTR),
 	
 //	Schilder
 	AUSF_SCHILD("Ausfahrbarer Schild", Waffentyp.SCHILD, Ctu.GIGN),
 	BLSCHILD("Blitz-Schild", Waffentyp.SCHILD, Ctu.GSG9),
 	BAL_SCHILD("Ballistischer Schild", Waffentyp.SCHILD, Ctu.CTU),
+	ELEK_SCHILD("Elektrischer Einsatzschild", Waffentyp.SCHILD, Ctu.GSUTR),
 	
 //	LMGs
 	_6P41("6P41", Waffentyp.LMG, Ctu.SPETZNAS),

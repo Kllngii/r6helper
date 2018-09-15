@@ -19,6 +19,7 @@ public enum Faehigkeit {
 	DKB(2, "Handy-Hack"),
 	LION(2, "EE-Eins-Drohne"),
 	FNKA(3, "Adrenalinschub"),
+	MVRCK(5, "Durchbruchbrenner"),
 	
 	SMK(3, "Smoke"),
 	MTE(4, "Störsender"),
