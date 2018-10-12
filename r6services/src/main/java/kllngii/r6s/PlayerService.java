@@ -44,10 +44,6 @@ public class PlayerService {
     /**
      * Beispiel für die URL:
      * /player/mickymaus?verbose=true
-     * 
-     * @param playername
-     * @param _verbose
-     * @return
      */
     @GET
     @Path("{playername}")
