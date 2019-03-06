@@ -2,7 +2,6 @@ package kllngii.r6h.model;
 
 public enum WebTyp {
 	R6MAP("R6Maps"),
-	R6DB("R6DB"),
 	R6HELPER("R6Helper"),
 	;
 	private String name;

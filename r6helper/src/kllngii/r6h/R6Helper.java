@@ -528,23 +528,11 @@ public class R6Helper extends KllngiiView {
             URL url = null;
             if(chooseWeb.getSelectedItem() == WebTyp.R6HELPER) {
             		try {
-            			if(readWrite) {
-            				url = new URL("http://192.168.2.10:8080/r6/");
-            			}
-            			else {
+            			if(readWrite)
+            				//FIXME Wenn der 192.168.2.10er Server genutzt wird, crasht es hier
+            				url = new URL("http://localhost:8080/r6/");
+            			else
             				url = new URL("http://www.mine.kelling.de:8080/r6/");
-            			}
-            			log.info("Knopf gedrückt - URL: "+url);
-            			Desktop.getDesktop().browse(url.toURI());
-				}
-            		catch (IOException | URISyntaxException e) {
-            			logFehler("Website kann nicht geöffnet werden!");
-            			e.printStackTrace();
-				}
-            }
-            if(chooseWeb.getSelectedItem() == WebTyp.R6DB) {
-            		try {
-            			url = new URL(kllngii.r6h.model.R6DB.createUrl(webText.getText()));
             			log.info("Knopf gedrückt - URL: "+url);
             			Desktop.getDesktop().browse(url.toURI());
 				}
