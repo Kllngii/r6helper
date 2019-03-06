@@ -86,7 +86,7 @@ public class R6Helper extends KllngiiView {
 	//FIXME Wenn der R6Helper den Server nicht findet startet der Server nicht
 	
 	//R6helper-Gegenerteam:
-	//TODO Drohnen/Kamera Counter -> BulletProof, BlackEye, Schockdrohne, Böses Auge und Yoai beachten
+	//TODO Drohnen/Kamera Counter -> BulletProof, BlackEye, Schockdrohne, Böses Auge und Yokai beachten
 	//TODO Rangrechner, der Team-Durchschnitt ausrechnet
 	
 	//Einstellungen:

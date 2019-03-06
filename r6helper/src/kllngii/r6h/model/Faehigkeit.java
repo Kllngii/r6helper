@@ -3,7 +3,7 @@ package kllngii.r6h.model;
 public enum Faehigkeit {
     /** Für Rekruten */
     KEINE(),
-    
+    //TODO Anzahl Ladungen bei Nomad, Kai, Gridlock und Mozzie nochmals überprüfen
 	EMP(3, "EMP"),
 	ASH(2, "Ash-Rakete"),
 	EXO(2, "Exotherme-Sprengladung"),
@@ -20,6 +20,8 @@ public enum Faehigkeit {
 	LION(2, "EE-Eins-Drohne"),
 	FNKA(3, "Adrenalinschub"),
 	MVRCK(5, "Durchbruchbrenner"),
+	NMD(3, "Lufthieb-Stoßgranate"),
+	GRDLCK(2, "Trax-Stacheln"),
 	
 	SMK(3, "Smoke"),
 	MTE(4, "Störsender"),
@@ -38,7 +40,8 @@ public enum Faehigkeit {
 	LSN(7, "GU"),
 	PRISM(3, "Prisma"),
 	EVILEYE(1, "Böses Auge"),
-	
+	KAID(3, "Rtila-Elektrokralle"),
+	MZZIE(2, "Schädlingswerfer"),
 	;
 	private final int anzahl;
 	private final String name;
