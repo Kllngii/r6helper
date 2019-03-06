@@ -13,8 +13,6 @@ import org.apache.commons.net.ftp.FTPReply;
 public class FTPZugriff {
 	
 	/**
-	 * @return Bei Fehler den <code>reply</code> Parameter, ansonsten null
-	 * 
 	 * @param server IP-Adresse des Servers
 	 * @param login Gibt an, ob Login erforderlich
 	 * @param username Benutzername auf dem Server
@@ -76,8 +74,6 @@ public class FTPZugriff {
 
 	}
 	/**
-	 * @return null oder <code>reply</code> Fehlercode
-	 * 
 	 * @param server IP-Adresse des Servers
 	 * @param login Gibt an, ob Login erforderlich
 	 * @param username Benutzername auf dem Server
