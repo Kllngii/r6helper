@@ -49,7 +49,6 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
-import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
@@ -503,9 +502,6 @@ public class R6Helper extends KllngiiView {
         JComboBox<WebTyp> chooseWeb = new JComboBox<WebTyp>(WebTyp.values());
         JButton btnWeb = new JButton("R6 Programme");
         JComboBox<R6Map> comboWeb = new JComboBox<R6Map>(R6Map.values());
-        JTextField webText = new JTextField();
-        webText.setToolTipText("Spielername");
-        webText.setText("Spielername");
         if (Desktop.isDesktopSupported()) {
             btnWeb.setEnabled(true);
         } else {
@@ -514,7 +510,6 @@ public class R6Helper extends KllngiiView {
         menu.add(chooseWeb).xy(1, 1);
         menu.add(btnWeb).xy(1, 3);
         menu.add(comboWeb).xy(1, 5);
-        menu.add(webText).xy(1, 7);
         btnWeb.addActionListener((ActionEvent evt) -> {
             URL url = null;
             if(chooseWeb.getSelectedItem() == WebTyp.R6HELPER) {
