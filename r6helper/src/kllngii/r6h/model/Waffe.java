@@ -14,6 +14,7 @@ public enum Waffe {
 	AK12("Ak-12", Waffentyp.STURM, Ctu.SPETZNAS),
 	AUGA2("Aug A2", Waffentyp.STURM, Ctu.GSG9),
 	_552C("552 Commando", Waffentyp.STURM, Ctu.GSG9),
+	_416("M-416C", Waffentyp.STURM, Ctu.GSG9),
 	MK17CQB("MK17-CQB", Waffentyp.STURM, Ctu.NAVYSEALS),
 	PARA308("Para-308", Waffentyp.STURM, Ctu.BOPE),
 	TYPE89("Type-89", Waffentyp.STURM, Ctu.SAT),
@@ -25,6 +26,10 @@ public enum Waffe {
 	SPEAR("SPEAR.308", Waffentyp.STURM, Ctu.CBRN),
 	ALDA556("ALDA 5.56", Waffentyp.STURM, Ctu.GIS),
 	M4("M4", Waffentyp.STURM, Ctu.GSUTR),
+	AK74M("AK-74M", Waffentyp.STURM, Ctu.GIGR),
+	ARX200("ARX200", Waffentyp.STURM, Ctu.GIGR),
+	F90("F90", Waffentyp.STURM, Ctu.SASR),
+	COMMANDO9("Commando 9", Waffentyp.STURM, Ctu.SASR),
 //	Shotguns	
 	M590A1("M590A1", Waffentyp.SHOTGUN, Ctu.SAS),
 	M1014("M1014", Waffentyp.SHOTGUN, Ctu.FBI),
@@ -43,6 +48,8 @@ public enum Waffe {
 	BOSG122("BOSG.12.2", Waffentyp.SHOTGUN, Ctu._707SBM),
 	ACS12("ACS12", Waffentyp.SHOTGUN, Ctu.GIS),
 	BAILIFF410("BaiLiff .410", Waffentyp.SHOTGUN, Ctu.GIS),
+	TCSG12("TCSG12", Waffentyp.SHOTGUN, Ctu.GIGR),
+	SUPERSHORTY("Super Shorty", Waffentyp.SHOTGUN, Ctu.SASR),
 	
 //	DMRs	
 	_417("417", Waffentyp.DMR, Ctu.GIGN),
@@ -70,6 +77,8 @@ public enum Waffe {
 	KREATOS("Kreatos .357", Waffentyp.PISTOLE, Ctu.GIS),
 	_1911TACOPS("1911 TacOPS", Waffentyp.PISTOLE, Ctu.GSUTR),
 	P10C("P-10C", Waffentyp.PISTOLE, Ctu.GSUTR),
+	_44MagSemiAuto(".44 Mag Semi Auto", Waffentyp.PISTOLE, Ctu.GIGR),
+	SDP9MM("SDP 9mm", Waffentyp.PISTOLE, Ctu.SASR),
 
 //	Reihenfeuerwaffen
 	BEARING9("Bearing 9", Waffentyp.REIHEN, Ctu.SAT),
@@ -86,7 +95,7 @@ public enum Waffe {
 	
 //	LMGs
 	_6P41("6P41", Waffentyp.LMG, Ctu.SPETZNAS),
-	M249("M249", Waffentyp.LMG, Ctu.BOPE),
+	M249("M249", Waffentyp.LMG, Ctu.CTU),
 	G8A1("G8A1", Waffentyp.LMG, Ctu.GSG9),
 	T95("T-95", Waffentyp.LMG, Ctu.SDU),
 	LMGE("LMG-E", Waffentyp.LMG, Ctu.GROM),
@@ -100,7 +109,6 @@ public enum Waffe {
 	_9X19VSN("9X19VSN", Waffentyp.MP, Ctu.SPETZNAS),
 	MP7("MP-7", Waffentyp.MP, Ctu.GSG9),
 	MPX("MP-X", Waffentyp.MP,Ctu.NAVYSEALS),
-	_416("M-416C", Waffentyp.MP, Ctu.GSG9),
 	_9mmC1("9mm-C1", Waffentyp.MP, Ctu.JTF2),
 	M12("M12", Waffentyp.MP, Ctu.BOPE),
 	MP5SD("MP5SD", Waffentyp.MP, Ctu.SAT),
@@ -109,6 +117,8 @@ public enum Waffe {
 	SCORPION("Scorpion EVO 3 A1", Waffentyp.MP, Ctu.GROM),
 	K1A("K1-A", Waffentyp.MP, Ctu._707SBM),
 	MX4("Mx4", Waffentyp.MP, Ctu.GIS),
+	AUGA3("AUG A3", Waffentyp.MP, Ctu.GIGR),
+	P10RONI("P10 Roni", Waffentyp.MP, Ctu.SASR),
 	;
 	
 	

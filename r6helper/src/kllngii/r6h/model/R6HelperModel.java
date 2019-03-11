@@ -74,7 +74,10 @@ public class R6HelperModel implements Serializable {
 		_o.add(new Operator(ANGREIFER, "Dokkaebi", Arrays.asList(BOSG122, MK14EBR), Arrays.asList(C75, SMG12), Arrays.asList(RAU_GRANATE, CLAYMORE), Faehigkeit.DKB, Ctu._707SBM));
 		_o.add(new Operator(ANGREIFER, "Lion", Arrays.asList(V308, _417, SG_CQB), Arrays.asList(LFP586, P9), Arrays.asList(STU_GRANATE, CLAYMORE), Faehigkeit.LION, Ctu.CBRN));
 		_o.add(new Operator(ANGREIFER, "Finka", Arrays.asList(SPEAR, SASG12, _6P41), Arrays.asList(PMM, GSH18), Arrays.asList(SPRENGLADUNG, SPL_GRANATE), Faehigkeit.FNKA, Ctu.CBRN));
+//		
 		_o.add(new Operator(ANGREIFER, "Maverick", Arrays.asList(M4, AR1550), Arrays.asList(_1911TACOPS), Arrays.asList(STU_GRANATE, CLAYMORE), Faehigkeit.MVRCK, Ctu.GSUTR));
+		_o.add(new Operator(ANGREIFER, "Nomad", Arrays.asList(AK74M, ARX200), Arrays.asList(_44MagSemiAuto), Arrays.asList(CLAYMORE, SPRENGLADUNG), Faehigkeit.NMD, Ctu.GIGR));
+		_o.add(new Operator(ANGREIFER, "Gridlock", Arrays.asList(F90, M249), Arrays.asList(SUPERSHORTY, SDP9MM), Arrays.asList(RAU_GRANATE, SPRENGLADUNG), Faehigkeit.GRDLCK, Ctu.SASR));
 //		
 		_o.add(new Rekrut("Rekrut Blau", 1));
 		_o.add(new Rekrut("Rekrut Rot", 1));
@@ -108,6 +111,8 @@ public class R6HelperModel implements Serializable {
 		_o.add(new Operator(VERTEIDIGER, "Maestro", Arrays.asList(ALDA556, ACS12), Arrays.asList(BAILIFF410, KREATOS), Arrays.asList(KON_GRANATE, STA_DRAHT), Faehigkeit.EVILEYE, Ctu.GIS));
 //		
 		_o.add(new Operator(VERTEIDIGER, "Clash", Arrays.asList(ELEK_SCHILD), Arrays.asList(P10C, SPSMG9), Arrays.asList(STA_DRAHT, KON_GRANATE), Faehigkeit.KEINE, Ctu.GSUTR));
+		_o.add(new Operator(VERTEIDIGER, "Kaid", Arrays.asList(AUGA3, TCSG12), Arrays.asList(_44MagSemiAuto), Arrays.asList(STA_DRAHT, KON_GRANATE), Faehigkeit.KAID, Ctu.GIGR));
+		_o.add(new Operator(VERTEIDIGER, "Mozzie", Arrays.asList(COMMANDO9, P10RONI), Arrays.asList(SUPERSHORTY, SDP9MM), Arrays.asList(STA_DRAHT, C4), Faehigkeit.MZZIE, Ctu.SASR));
 		
 		_o.add(new Rekrut("Rekrut Blau"));
 		_o.add(new Rekrut("Rekrut Rot"));
