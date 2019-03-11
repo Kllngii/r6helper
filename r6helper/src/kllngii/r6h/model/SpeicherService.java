@@ -27,7 +27,6 @@ import org.json.JSONObject;
 
 import kllngii.r6h.Konst;
 import kllngii.r6h.spieler.Spieler;
-import kllngii.r6h.toxic.Toxic;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -125,12 +124,6 @@ public class SpeicherService {
         // Gegnerteam
         json.put("gegnerteamAngreifer", model.isGegnerteamAngreifer());
         final List<Operator> gegnerteam = model.isGegnerteamAngreifer() ? model.getSelectedAngreifer() : model.getSelectedVerteidiger();
-        final List<Toxic> toxicspieler = model.getToxic();
-        JSONArray tox = new JSONArray();
-        for(Toxic t : toxicspieler) {
-        	tox.put(toJson(t));
-        }
-        json.put("toxicteam", tox);
         
         JSONArray geg = new JSONArray();
         for (Operator gegner : gegnerteam)
@@ -174,14 +167,7 @@ public class SpeicherService {
                 Operator gegner = operator(model, (JSONObject) gegnerObject);
                 model.toggleSelected(gegner);
             }
-        }
-        if (json.has("toxicteam")) {
-        	for(Object toxicObject : json.getJSONArray("toxicteam")) {
-        		Toxic t = Toxic.fromJSON((JSONObject) toxicObject);
-        		model.getToxic().add(t);
-        	}
-        }
-        
+        }     
         if (json.has("spielerrepo")) {
             Set<String> spielernamen = new HashSet<>();
             if (json.has("team")) {
@@ -275,13 +261,6 @@ public class SpeicherService {
         trg.put("typ", w.getTyp());
         return trg;
     }
-    private JSONObject toJson(Toxic c) {
-    	JSONObject trg = new JSONObject();
-    	trg.put("name", c.getName());
-    	trg.put("grund", c.getGrund());
-    	return trg;
-    }
-
 
     private List<String> getErrors(JSONObject json) {
         List<String> errors = new ArrayList<>(3);

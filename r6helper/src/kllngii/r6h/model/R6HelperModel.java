@@ -12,7 +12,6 @@ import java.util.Collections;
 import java.util.List;
 
 import kllngii.r6h.spieler.Spieler;
-import kllngii.r6h.toxic.Toxic;
 
 public class R6HelperModel implements Serializable {
 	
@@ -29,7 +28,6 @@ public class R6HelperModel implements Serializable {
 	private final List<Operator> verteidiger;
 	private final List<Operator> selectedAngreifer;
 	private final List<Operator> selectedVerteidiger;
-	private List<Toxic> spielerToxic;
 	
 	/** 
 	 * Alle Spieler, die mindestens einmal mit uns R6 gespielt haben;
@@ -48,7 +46,6 @@ public class R6HelperModel implements Serializable {
 	    
 		selectedAngreifer = new ArrayList<>();
 		selectedVerteidiger = new ArrayList<>();
-		spielerToxic = new ArrayList<>();
 		//FIXME Aktuelle Gadgets stimmen nicht! -> Alles nochmal prüfen
 		
 		List<Operator> _o = new ArrayList<>();
@@ -229,13 +226,5 @@ public class R6HelperModel implements Serializable {
 	}
 	public void increaseKamerasZerstört() {
 		kamerasZerstört++;
-	}
-
-	public List<Toxic> getToxic() {
-		return spielerToxic;
-	}
-
-	public void setToxic(List<Toxic> spielerToxic) {
-		this.spielerToxic = spielerToxic;
 	}
 }

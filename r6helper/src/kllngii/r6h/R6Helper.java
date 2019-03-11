@@ -54,6 +54,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -76,7 +77,6 @@ import kllngii.r6h.model.Waffentyp;
 import kllngii.r6h.model.WebTyp;
 import kllngii.r6h.spieler.Spieler;
 import kllngii.r6h.spieler.SpielerlisteController;
-import kllngii.r6h.toxic.ToxiclisteController;
 
 public class R6Helper extends KllngiiView {
 	
@@ -115,7 +115,6 @@ public class R6Helper extends KllngiiView {
     private R6HelperModel model = new R6HelperModel();
     
     private SpielerlisteController spielerlisteController;
-    private ToxiclisteController toxiclisteController;
     
     private JPanel panel_angriff;
     private JPanel panel_verteidigung;
@@ -211,7 +210,6 @@ public class R6Helper extends KllngiiView {
      */
 	private void initialize() {
         spielerlisteController = new SpielerlisteController(readWrite, model);
-        toxiclisteController = new ToxiclisteController(readWrite, model);
 
         frame = new JFrame();
         frame.setTitle("R6 Helper");
@@ -272,13 +270,6 @@ public class R6Helper extends KllngiiView {
         tabbedPaneScroller = new JScrollPane(teamTabRoot);
         tabbedPaneScroller.setPreferredSize(tabDimension);
         tabbedPane.addTab("Team", teamTabRoot);
-        linksRechtsRoot.add(tabbedPane);
-        
-        // Toxic Spieler
-        JComponent toxicTabRoot = toxiclisteController.getView().getRoot();
-        tabbedPaneScroller = new JScrollPane(toxicTabRoot);
-        tabbedPaneScroller.setPreferredSize(tabDimension);
-        tabbedPane.addTab("Toxic", toxicTabRoot);
         linksRechtsRoot.add(tabbedPane);
         //// Rechts: Menu ////
         
