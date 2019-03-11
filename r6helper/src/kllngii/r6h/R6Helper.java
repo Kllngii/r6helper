@@ -667,13 +667,13 @@ public class R6Helper extends KllngiiView {
     private void showWaffentyp() {
         EnumSet<Waffentyp> interessierendeTypen;
         List<Operator> selectedOperators;
-
+        //TODO Immer nur die gebrauchten Felder anzeigen
         if (rdbtnAngreifer.isSelected()) {
             interessierendeTypen = EnumSet.of(Waffentyp.PISTOLE, Waffentyp.REIHEN, Waffentyp.SHOTGUN, Waffentyp.STURM,
                     Waffentyp.DMR, Waffentyp.LMG);
             selectedOperators = model.getSelectedAngreifer();
         } else {
-            interessierendeTypen = EnumSet.of(Waffentyp.PISTOLE, Waffentyp.REIHEN, Waffentyp.SHOTGUN, Waffentyp.MP);
+            interessierendeTypen = EnumSet.of(Waffentyp.PISTOLE, Waffentyp.REIHEN, Waffentyp.SHOTGUN, Waffentyp.MP, Waffentyp.STURM);
             selectedOperators = model.getSelectedVerteidiger();
         }
 
