@@ -52,7 +52,9 @@ public class StatsHelper {
 			url += "xbl&";
 			break;
 		}
-		return (url + key + "=" + val);
+		url = url + key + "=" + val;
+		log.info(url);
+		return url;
 	}
 	/**
 	 * 
@@ -74,7 +76,9 @@ public class StatsHelper {
 			url += StatsKonst.NAMESPACE_XBOX;
 			break;
 		}
-		return (url + "/r6playerprofile/playerprofile/progressions?profile_ids=" + profileId);
+		url = url + "/r6playerprofile/playerprofile/progressions?profile_ids=" + profileId;
+		log.info(url);
+		return url;
 	}
 	/**
 	 * 
@@ -97,7 +101,9 @@ public class StatsHelper {
 			url += StatsKonst.NAMESPACE_XBOX;
 			break;
 		}
-		return (url + "/playerstats2/statistics?populations=" + profileId + "&statistics=" + stat);
+		url = url + "/playerstats2/statistics?populations=" + profileId + "&statistics=" + stat;
+		log.info(url);
+		return url;
 	}
 	/**
 	 * 
@@ -122,6 +128,8 @@ public class StatsHelper {
 			url += StatsKonst.NAMESPACE_XBOX;
 			break;
 		}
-		return (url + "/r6karma/players?board_id=pvp_ranked&profile_ids=" + profileId + "&region_id=" + region + "&season_id=" + season);
+		url = url + "/r6karma/players?board_id=pvp_ranked&profile_ids=" + profileId + "&region_id=" + region + "&season_id=" + season;
+		log.info(url);
+		return url;
 	}
 }

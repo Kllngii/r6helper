@@ -1,7 +1,9 @@
 package kllngii.r6s.konst;
 
 public class StatsKonst {
-	public static String contentType = "application/json";
+	public static final String contentType = "application/json";
+	public static final String contentTypeWithCharset = "application/json; charset=utf-8";
+	public static final String ubiAppId = "39baebad-39e5-4552-8c25-2c9b919064e2";
 	public static final int PLATFORM_PS4 = 0, PLATFORM_XBOX = 1, PLATFORM_PC = 2;
 	public static final String NAMESPACE_PS4 = "05bfb3f7-6c21-4c42-be1f-97a33fb5cf66/sandboxes/OSBOR_PS4_LNCH_A",
 			NAMESPACE_PC = "5172a557-50b5-4665-b7db-e3f2e8c5041d/sandboxes/OSBOR_PC_LNCH_A", 
@@ -43,6 +45,7 @@ public class StatsKonst {
 	public static String statsCustom[] = {
 			"custompvp_timeplayed"
 	};
+	//TODO Entschlüsseln, welche Kombination welchem Gadget entspricht
 	public static String statsGadgets[] = {
 			"gadgetpve_chosen,gadgetpve_gadgetdestroy",
 			"gadgetpve_kills",
@@ -53,6 +56,7 @@ public class StatsKonst {
 			"gadgetpvp_mostused"
 	};
 	//TODO Zweck unklar -> evtl. gamemode und operator ersetzen
+	@Deprecated
 	public static String statsGamemode[] = {
 			"gamemodeoperatorpvp_matchlost",
 			"gamemodeoperatorpvp_matchplayed",
@@ -127,6 +131,7 @@ public class StatsKonst {
 			"generalpvp_timeplayed",
 			"generalpvp_totalxp"
 	};
+	//TODO Braucht Update für die neueren Operator
 	public static String statsOperatorPvp[] = {
 			"operatorpvp_ash_bonfirekill",
 			"operatorpvp_ash_bonfirewallbreached",
@@ -198,6 +203,7 @@ public class StatsKonst {
 			"plantbombpvp_timeplayed",
 			"plantbombpvp_totalxp"
 	};
+	//TODO Ungenutzte Stats einordnen
 	/*,karma_rank,";
 	 * progression_level,progression_renown,progression_xp,"
 	+  rankedpvp_death,rankedpvp_kdratio,"
