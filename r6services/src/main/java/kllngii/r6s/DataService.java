@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.websocket.server.ServerEndpoint;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.InternalServerErrorException;

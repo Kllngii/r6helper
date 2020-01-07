@@ -91,8 +91,10 @@ public class R6StatsService {
 		}
 		
 		String json;
-		if (bytes == null || bytes.length <= 0)
+		if (bytes == null || bytes.length <= 0) {
 		    json = "{}";
+		    log.error("Fehler! - Dies sollte eigentlich nicht passieren");
+		}
 		else
 		    json = new String(bytes, StandardCharsets.UTF_8);
 		

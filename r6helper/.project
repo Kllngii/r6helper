@@ -3,6 +3,7 @@
 	<name>r6helper</name>
 	<comment></comment>
 	<projects>
+		<project>r6services</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
