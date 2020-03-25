@@ -40,7 +40,7 @@ public class StatsHelper {
 	 * @return Die URL des Aufrufs
 	 */
 	public String getIdUrl(int platform, String key, String val) {
-		String url = "https://public-ubiservices.ubi.com/v2/profiles?platformType=";
+		String url = StatsKonst.profileURL;
 		switch(platform) {
 		case StatsKonst.PLATFORM_PS4:
 			url += "psn&";
@@ -64,7 +64,7 @@ public class StatsHelper {
 	 * @return Die URL des Aufrufs
 	 */
 	public String getLevelUrl(int platform, String profileId) {
-		String url = "https://public-ubiservices.ubi.com/v1/spaces/";
+		String url = StatsKonst.publicUbiServicesURL;
 		switch(platform) {
 		case StatsKonst.PLATFORM_PS4:
 			url += StatsKonst.NAMESPACE_PS4;
@@ -89,7 +89,7 @@ public class StatsHelper {
 	 * @return Die URL des Aufrufs
 	 */
 	public String getStatsUrl(int platform, String profileId, String stat) {
-		String url = "https://public-ubiservices.ubi.com/v1/spaces/";
+		String url = StatsKonst.publicUbiServicesURL;
 		switch(platform) {
 		case StatsKonst.PLATFORM_PS4:
 			url += StatsKonst.NAMESPACE_PS4;
@@ -116,7 +116,7 @@ public class StatsHelper {
 	 * @return Die URL des Aufrufs
 	 */
 	public String getRankUrl(int platform, String profileId, String region, int season) {
-		String url = "https://public-ubiservices.ubi.com/v1/spaces/";
+		String url = StatsKonst.publicUbiServicesURL;
 		switch(platform) {
 		case StatsKonst.PLATFORM_PS4:
 			url += StatsKonst.NAMESPACE_PS4;

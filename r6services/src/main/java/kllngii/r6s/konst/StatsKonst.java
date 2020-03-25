@@ -1,6 +1,9 @@
 package kllngii.r6s.konst;
 
 public class StatsKonst {
+	public static final String publicUbiServicesURL = "https://public-ubiservices.ubi.com/v3/spaces/";
+	public static final String profileURL = "https://public-ubiservices.ubi.com/v3/profiles?platformType=";
+	public static final String sessionURL = "https://public-ubiservices.ubi.com/v3/profiles/sessions";
 	public static final String contentType = "application/json";
 	public static final String contentTypeWithCharset = "application/json; charset=utf-8";
 	public static final String ubiAppId = "39baebad-39e5-4552-8c25-2c9b919064e2";

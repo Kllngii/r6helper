@@ -40,6 +40,7 @@ public class StatsMarshaller {
 	}
 	public void inital() {
 		logIn();
+		log.info("LoginJSON: " + loginJson);
 		JSONObject j = new JSONObject(loginJson);
 		
 		if(j.has("ticket") && j.getString("ticket") != null)
@@ -52,7 +53,7 @@ public class StatsMarshaller {
 			log.warn("SessionId wurde in der JSON nicht gefunden! LoginJSON=" + loginJson);
 		
 		log.info(statsVars.getToken());
-		auth = "Ubi_v1 t=" + statsVars.getToken();
+		auth = "Ubi_v3 t=" + statsVars.getToken();
 	}
 	public String getStats(int platform, String username, String region) {
 		String id = getPlayerID(platform, username);
@@ -102,7 +103,9 @@ public class StatsMarshaller {
 	            if (responseCount(response) >= 3) {
 	                return null;
 	            }
-	            String credential = Credentials.basic("fionn@kelling.de", "1Leopold");
+//	            String credential = Credentials.basic("email", "password");
+	            String credential = "Basic Zmlvbm5Aa2VsbGluZy5kZToxTGVvcG9sZA==";
+	            log.info("Creds: " + credential);
 	            return response.request().newBuilder().header("Authorization", credential).build();
 	        }
 	    });
@@ -115,7 +118,7 @@ public class StatsMarshaller {
 		RequestBody body = RequestBody.create(JSON_TYPE, "");
 		Request request = new Request.Builder()
 				.addHeader("Ubi-AppId", StatsKonst.ubiAppId)
-				.url("https://uplayconnect.ubi.com/ubiservices/v2/profiles/sessions")
+				.url(StatsKonst.sessionURL)
 				.post(body)
 				.build();
 		
