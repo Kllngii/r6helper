@@ -1,7 +1,7 @@
 # Readme für R6Helper
 
-*Version 1.4.0-SNAPSHOT*
+*Version 1.4.1-SNAPSHOT*
 
-Für Rainbow Six Sieges ersten Teil von Operation Para Bellum
+Für Rainbow Six Sieges zweiten Teil von Operation Void Edge
 
-_Y3.S2.H1_
+_Y5.S1.H2_
