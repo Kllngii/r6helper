@@ -1,7 +1,7 @@
 package kllngii.r6s.konst;
 
 public class StatsKonst {
-	public static final String publicUbiServicesURL = "https://public-ubiservices.ubi.com/v3/spaces/";
+	public static final String publicUbiServicesURL = "https://public-ubiservices.ubi.com/v1/spaces/";
 	public static final String profileURL = "https://public-ubiservices.ubi.com/v3/profiles?platformType=";
 	public static final String sessionURL = "https://public-ubiservices.ubi.com/v3/profiles/sessions";
 	public static final String contentType = "application/json";

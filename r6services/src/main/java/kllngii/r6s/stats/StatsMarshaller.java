@@ -1,7 +1,11 @@
 package kllngii.r6s.stats;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.time.Instant;
 import java.util.Date;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import javax.ejb.EJB;
@@ -27,11 +31,11 @@ public class StatsMarshaller {
 	@EJB
 	StatsVars statsVars = new StatsVars();
 	StatsHelper helper = new StatsHelper();
-	
+
 	private Logger log = Logger.getLogger(getClass());
 	private String auth;
 	private String loginJson = null;
-	
+
 	public boolean isInitialized() {
 		return statsVars.isInitalized();
 	}
@@ -42,7 +46,7 @@ public class StatsMarshaller {
 		logIn();
 		log.info("LoginJSON: " + loginJson);
 		JSONObject j = new JSONObject(loginJson);
-		
+
 		if(j.has("ticket") && j.getString("ticket") != null)
 			statsVars.setToken(j.getString("ticket"));
 		else
@@ -51,9 +55,24 @@ public class StatsMarshaller {
 			statsVars.setUbiSessionId(j.getString("sessionId"));
 		else
 			log.warn("SessionId wurde in der JSON nicht gefunden! LoginJSON=" + loginJson);
-		
+		if(j.has("sessionKey"))
+			statsVars.setUbiSessionKey(j.getString("sessionKey"));
+		else
+			log.warn("SessionKey wurde in der JSON nicht gefunden! LoginJSON=" + loginJson);
+		if(j.has("expiration") && j.has("serverTime")) {
+			String expString = j.getString("expiration");
+			String curString = j.getString("serverTime");
+			Instant exp = Instant.parse(expString);
+			Instant current = Instant.parse(curString);
+			log.info("Ablaufdatum: " + exp.toString());
+			log.info("Zeit des Servers: " + current.toString());
+			//5min vor Ablauf des Tokens neuen Token anfordern.
+			long time = System.currentTimeMillis() + exp.toEpochMilli()-current.toEpochMilli()-300000;
+			Executors.newSingleThreadScheduledExecutor().schedule(() -> inital(), time, TimeUnit.MILLISECONDS);
+			log.info("Neuer Token wird um " + Instant.ofEpochMilli(time).toString() + " angefordert.");
+		}
 		log.info(statsVars.getToken());
-		auth = "Ubi_v3 t=" + statsVars.getToken();
+		auth = "Ubi_v1 t=" + statsVars.getToken();
 	}
 	public String getStats(int platform, String username, String region) {
 		String id = getPlayerID(platform, username);
@@ -68,7 +87,7 @@ public class StatsMarshaller {
 			log.info("Season: " + i + s);
 			rankArray.put(new JSONObject(s));
 		}
-		
+
 		playerJson.put("rank", rankArray);
 		playerJson.put("stats-operator-pvp", getListedStats(StatsKonst.statsOperatorPvp, platform, id));
 		playerJson.put("stats-general-pvp", getListedStats(StatsKonst.statsGeneralPvp, platform, id));
@@ -98,31 +117,30 @@ public class StatsMarshaller {
 	private void logIn() {
 		Builder c = new OkHttpClient.Builder();
 		c.authenticator(new Authenticator() {
-	        @Override
-	        public Request authenticate(Route route, Response response) throws IOException {
-	            if (responseCount(response) >= 3) {
-	                return null;
-	            }
-//	            String credential = Credentials.basic("email", "password");
-	            String credential = "Basic Zmlvbm5Aa2VsbGluZy5kZToxTGVvcG9sZA==";
-	            log.info("Creds: " + credential);
-	            return response.request().newBuilder().header("Authorization", credential).build();
-	        }
-	    });
-	    c.connectTimeout(10, TimeUnit.SECONDS);
-	    c.writeTimeout(10, TimeUnit.SECONDS);
-	    c.readTimeout(30, TimeUnit.SECONDS);
-	    
-	    OkHttpClient cli = c.build();
-	    final MediaType JSON_TYPE = MediaType.parse(StatsKonst.contentTypeWithCharset);
+			@Override
+			public Request authenticate(Route route, Response response) throws IOException {
+				if (responseCount(response) >= 3) {
+					return null;
+				}
+				//	            String credential = Credentials.basic("user", "password");
+				String credential = "Basic Zmlvbm5Aa2VsbGluZy5kZToxTGVvcG9sZA==";
+				return response.request().newBuilder().header("Authorization", credential).build();
+			}
+		});
+		c.connectTimeout(10, TimeUnit.SECONDS);
+		c.writeTimeout(10, TimeUnit.SECONDS);
+		c.readTimeout(30, TimeUnit.SECONDS);
+
+		OkHttpClient cli = c.build();
+		final MediaType JSON_TYPE = MediaType.parse(StatsKonst.contentTypeWithCharset);
 		RequestBody body = RequestBody.create(JSON_TYPE, "");
 		Request request = new Request.Builder()
 				.addHeader("Ubi-AppId", StatsKonst.ubiAppId)
 				.url(StatsKonst.sessionURL)
 				.post(body)
 				.build();
-		
-	    try {
+
+		try {
 			Response re = cli.newCall(request).execute();
 			loginJson = re.body().string();
 		} catch (IOException e) {
@@ -130,13 +148,13 @@ public class StatsMarshaller {
 		}
 	}
 	private int responseCount(Response response) {
-	    int result = 1;
-	    while ((response = response.priorResponse()) != null) {
-	        result++;
-	    }
-	    return result;
+		int result = 1;
+		while ((response = response.priorResponse()) != null) {
+			result++;
+		}
+		return result;
 	}
-	
+
 	private String getPlayerID(int platform, String spieler) {
 		String fallback = "3a5c255c-5402-4d8a-b977-43cbfb09c6df";
 		OkHttpClient cli = new OkHttpClient();
@@ -150,7 +168,17 @@ public class StatsMarshaller {
 		try {
 			Response rs = cli.newCall(rq).execute();
 			JSONObject json = new JSONObject(rs.body().string());
-			return json.getJSONArray("profiles").getJSONObject(0).getString("profileId");
+			if(json.has("profiles"))
+				return json.getJSONArray("profiles").getJSONObject(0).getString("profileId");
+			else {
+				log.warn("JSON enthält keinen profiles Array!");
+				if(json.has("message"))
+					log.warn(json.getString("message"));
+				else
+					log.warn("JSON: " + json.toString());
+				//return Klln911gii's Profile
+				return "3a5c255c-5402-4d8a-b977-43cbfb09c6df";
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -169,7 +197,15 @@ public class StatsMarshaller {
 		try {
 			Response rs = cli.newCall(rq).execute();
 			JSONObject json = new JSONObject(rs.body().string());
-			return json.getJSONArray("player_profiles").getJSONObject(0).toString();
+			if(json.has("player_profiles"))
+				return json.getJSONArray("player_profiles").getJSONObject(0).toString();
+			else {
+				log.warn("JSON enthält keinen player_profiles Array!");
+				if(json.has("message"))
+					log.warn(json.getString("message"));
+				else
+					log.warn("JSON: " + json.toString());
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -190,7 +226,15 @@ public class StatsMarshaller {
 			String s = rs.body().string();
 			log.info(stat + ": " + s);
 			JSONObject json = new JSONObject(s);
-			return json.getJSONObject("results").getJSONObject(id).toString();
+			if(json.has("results"))
+				return json.getJSONObject("results").getJSONObject(id).toString();
+			else {
+				log.warn("JSON enthält kein results Objekt!");
+				if(json.has("message"))
+					log.warn(json.getString("message"));
+				else
+					log.warn("JSON: " + json.toString());
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -209,7 +253,15 @@ public class StatsMarshaller {
 		try {
 			Response rs = cli.newCall(rq).execute();
 			JSONObject json = new JSONObject(rs.body().string());
-			return json.getJSONObject("players").getJSONObject(id).toString(0);
+			if(json.has("players"))
+				return json.getJSONObject("players").getJSONObject(id).toString(0);
+			else {
+				log.warn("JSON enthält keinen players Objekt!");
+				if(json.has("message"))
+					log.warn(json.getString("message"));
+				else
+					log.warn("JSON: " + json.toString());
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

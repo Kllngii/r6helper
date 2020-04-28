@@ -12,6 +12,7 @@ public class StatsVars {
 	
 	private boolean initalized = false;
 	private String ubiSessionId = null;
+	private String ubiSessionKey = null;
 	private String token = "";
 	private String loginJSON = null;
 	private HashMap<String, Long> last = new HashMap<>();
@@ -45,6 +46,12 @@ public class StatsVars {
 	}
 	public void setLast(HashMap<String, Long> last) {
 		this.last = last;
+	}
+	public String getUbiSessionKey() {
+		return ubiSessionKey;
+	}
+	public void setUbiSessionKey(String ubiSessionKey) {
+		this.ubiSessionKey = ubiSessionKey;
 	}
 	
 	

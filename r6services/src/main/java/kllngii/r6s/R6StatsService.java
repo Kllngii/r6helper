@@ -15,6 +15,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
 import org.apache.log4j.Logger;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import kllngii.r6s.konst.StatsKonst;
 import kllngii.r6s.stats.StatsMarshaller;
@@ -30,7 +32,18 @@ public class R6StatsService {
 	@EJB
 	StatsVars statsVars;
 	
-	
+	@GET
+	@Path("multiple")
+	@Produces("application/json")
+	public String getStatsOfMultiple(@QueryParam("names") String names) {
+		String[] player = names.split(",");
+		JSONObject json = new JSONObject();
+		JSONArray arr = new JSONArray();
+		for(String p : player)
+			arr.put(getStats(p, "true"));
+		json.put("players", arr);
+		return json.toString();
+	}
 	@GET
 	@Produces("application/json")
 	public String getStats(@QueryParam("playername") String name, @QueryParam("forceUpdate") String fUpdate) { 
@@ -42,10 +55,12 @@ public class R6StatsService {
 			log.warn("Falscher Aufruf! playername=" + name);
 			return "{\"ERROR\":\"Es wurde kein korreter QueryParameter angegeben!\"}";
 		}
-		if(fUpdate != null && ( fUpdate.toLowerCase() != "true" || fUpdate.toLowerCase() != "false" )) {
-			log.warn("Falscher Aufruf! forceupdate=" + fUpdate);
-			return "{\"ERROR\":\"Es wurde kein korrekter QueryParameter angegeben!\"}";
-		}
+		//FIXME WTF
+//		if(fUpdate != null && ( fUpdate.toLowerCase() != "true" || fUpdate.toLowerCase() != "false" )) {
+//			log.warn("Falscher Aufruf! forceupdate=" + fUpdate);
+//			log.info("true".equals(fUpdate));
+//			return "{\"ERROR\":\"Es wurde kein korrekter QueryParameter angegeben!\"}";
+//		}
 		/* *** Initalisieren *** */
 		if(!s.isInitialized()) {
 			log.info("Initialisiere!");
@@ -117,7 +132,6 @@ public class R6StatsService {
 	@GET
 	@Produces("application/json")
 	public String initailize() {
-		//TODO Auth abfragen
 		s.inital();
 		s.setInitalized(true);
 		log.info("Werde initialisiert!");
