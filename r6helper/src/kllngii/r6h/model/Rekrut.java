@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
-
+//FIXME Der Rekrut wurde komplett verändert und hat jetzt andere Ausrüstungen
 public class Rekrut extends Operator {
 	
     private static final long serialVersionUID = -5375903106008752408L;

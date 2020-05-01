@@ -1,7 +1,7 @@
 package kllngii.r6h.model;
 
 public enum Rang {
-	
+//	FIXME Ränge an neues System anpassen
 	KUPFER_IV("Kupfer 4", 1),
 	KUPFER_III("Kupfer 3", 2),
 	KUPFER_II("Kupfer 2", 3),

@@ -96,12 +96,7 @@ public class R6Helper extends KllngiiView {
 	//TODO Win Counter
 	//TODO Top3 anzeigen
 	//TODO Top3 sortierbar nach Aces/Wins/Headshots/etc.
-	
-	//R6helper-Toxic:
-	//FIXME Toxicspieler werden nicht in das Model gespeichert.
-	
-	//R6Helper-DB:
-	//TODO R6DB nutzen, um den Spieler um eine R6Values zu ergänzen
+	//TODO Mithilfe des R6services Kills von den Ubi-Server holen
 	
     private final Logger log = Logger.getLogger(getClass());
     

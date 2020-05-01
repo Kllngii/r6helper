@@ -89,7 +89,6 @@ public class DataService {
         accessControlAllowOrigin(response);
         
         json = StringUtils.defaultIfBlank(json, EMPTY_JSON);
-        log.info("Neue JSON-Daten: {}", json);
         
         try {
             java.nio.file.Path outfile = Paths.get(FILENAME);

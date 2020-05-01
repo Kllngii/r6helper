@@ -1,6 +1,7 @@
 package kllngii.r6h.model;
 
 public enum R6Map {
+	//FIXME Neue Maps aufnehmen
 ////	Hauptspiel Maps:	////
 	Bank("/#bank/1/all", "Bank"),
 	Barlett("/#bartlett/1/all", "Barlett Universität"),

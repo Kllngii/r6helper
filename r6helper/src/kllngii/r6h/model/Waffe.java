@@ -57,7 +57,7 @@ public enum Waffe {
 	CAMRS("CamRS", Waffentyp.DMR, Ctu.JTF2),
 	SR25("SR-25", Waffentyp.DMR, Ctu.NAVYSEALS),
 	AR1550("Ar-15.50", Waffentyp.DMR, Ctu.GSUTR),
-
+	CSRX300("CSRX 300", Waffentyp.DMR, Ctu.NIGHT),
 //	Pistolen u. Revolver
 	P9("P9", Waffentyp.PISTOLE, Ctu.GIGN),
 	LFP586("LFP 586", Waffentyp.PISTOLE, Ctu.GIGN),

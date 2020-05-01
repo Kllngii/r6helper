@@ -11,6 +11,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import javax.swing.plaf.basic.BasicSplitPaneUI.KeyboardUpLeftHandler;
+
 import kllngii.r6h.spieler.Spieler;
 
 public class R6HelperModel implements Serializable {
@@ -78,7 +80,13 @@ public class R6HelperModel implements Serializable {
 		_o.add(new Operator(ANGREIFER, "Maverick", Arrays.asList(M4, AR1550), Arrays.asList(_1911TACOPS), Arrays.asList(STU_GRANATE, CLAYMORE), Faehigkeit.MVRCK, Ctu.GSUTR));
 		_o.add(new Operator(ANGREIFER, "Nomad", Arrays.asList(AK74M, ARX200), Arrays.asList(_44MagSemiAuto), Arrays.asList(CLAYMORE, SPRENGLADUNG), Faehigkeit.NMD, Ctu.GIGR));
 		_o.add(new Operator(ANGREIFER, "Gridlock", Arrays.asList(F90, M249), Arrays.asList(SUPERSHORTY, SDP9MM), Arrays.asList(RAU_GRANATE, SPRENGLADUNG), Faehigkeit.GRDLCK, Ctu.SASR));
+		_o.add(new Operator(ANGREIFER, "Nøkk", Arrays.asList(FMG9, SIX12SD), Arrays.asList(_57USG, D50), Arrays.asList(SPL_GRANATE, SPRENGLADUNG), KEINE, Ctu.JAEGR));
+		_o.add(new Operator(ANGREIFER, "Amaru", Arrays.asList(G8A1, SUPERNOVA), Arrays.asList(ITA12S, SMG11), Arrays.asList(CLAYMORE, STU_GRANATE), KEINE, Ctu.APCA));
 //		
+		_o.add(new Operator(ANGREIFER, "Kali", Arrays.asList(CSRX300), Arrays.asList(P2_26, C75), Arrays.asList(CLAYMORE, SPRENGLADUNG), KEINE, Ctu.NIGHT));
+//		FIXME Waffen und gadgets überprüfen
+		_o.add(new Operator(ANGREIFER, "Iana", Arrays.asList(G36C, ARX200), Arrays.asList(MK19MM), Arrays.asList(SPL_GRANATE, RAU_GRANATE), KEINE, Ctu.REU));
+		//		
 		_o.add(new Rekrut("Rekrut Blau", 1));
 		_o.add(new Rekrut("Rekrut Rot", 1));
 		_o.add(new Rekrut("Rekrut Gelb", 1));
@@ -113,7 +121,12 @@ public class R6HelperModel implements Serializable {
 		_o.add(new Operator(VERTEIDIGER, "Clash", Arrays.asList(ELEK_SCHILD), Arrays.asList(P10C, SPSMG9), Arrays.asList(STA_DRAHT, KON_GRANATE), Faehigkeit.KEINE, Ctu.GSUTR));
 		_o.add(new Operator(VERTEIDIGER, "Kaid", Arrays.asList(AUGA3, TCSG12), Arrays.asList(_44MagSemiAuto), Arrays.asList(STA_DRAHT, KON_GRANATE), Faehigkeit.KAID, Ctu.GIGR));
 		_o.add(new Operator(VERTEIDIGER, "Mozzie", Arrays.asList(COMMANDO9, P10RONI), Arrays.asList(SUPERSHORTY, SDP9MM), Arrays.asList(STA_DRAHT, C4), Faehigkeit.MZZIE, Ctu.SASR));
-		
+		_o.add(new Operator(VERTEIDIGER, "Warden", Arrays.asList(M590A1, MPX), Arrays.asList(P10C, SMG12), Arrays.asList(MOBI, C4), Faehigkeit.KEINE, Ctu.SECRET));
+		_o.add(new Operator(VERTEIDIGER, "Goyo", Arrays.asList(VECTOR45, TCSG12), Arrays.asList(P229), Arrays.asList(KON_GRANATE, C4), Faehigkeit.GYO, Ctu.FUERZAS));
+//		
+		_o.add(new Operator(VERTEIDIGER, "Wamai", Arrays.asList(AUGA2, MP5K), Arrays.asList(KREATOS, P12), Arrays.asList(MOBI, STA_DRAHT), Faehigkeit.WMAI, Ctu.NIGHT));
+		_o.add(new Operator(VERTEIDIGER, "Oryx", Arrays.asList(MP5, SPAS12), Arrays.asList(BAILIFF410, KREATOS), Arrays.asList(STA_DRAHT, BP_CAM), Faehigkeit.KEINE, Ctu.SELBST));
+//		
 		_o.add(new Rekrut("Rekrut Blau"));
 		_o.add(new Rekrut("Rekrut Rot"));
 		_o.add(new Rekrut("Rekrut Orange"));

@@ -29,6 +29,8 @@
 		}
 		function zeigeTeam(json) {
 			document.getElementById("zeitstempel").innerHTML = new Date().toLocaleTimeString("de-DE");
+			var save = $('#table .head').detach();
+			$('#table').empty().append(save);
 			for (let team of json.spielerrepo) {
 				$('#table').append(`<tr>
 						<td><p class="name" >0</p></td>

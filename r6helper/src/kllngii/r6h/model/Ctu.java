@@ -23,7 +23,16 @@ public enum Ctu {
 	GSUTR(3, 3, "Grim Sky Urban Tactical Response Team"),
 	GIGR(3, 4, "Groupe d'Intervention de La Gendarmerie Royale"),
 	
-	SASR(4, 1, "Special Air Service Regiment")
+	SASR(4, 1, "Special Air Service Regiment"),
+	JAEGR(4, 2, "Jaegerkorps"),
+	SECRET(4, 2, "Secret Service"),
+	APCA(4, 3, "Asociación de patrullero cultural Arqueológico"),
+	FUERZAS(4, 3, "Fuerzas Especiales"),
+	NIGHT(4, 4, "Nighthaven Special Intervention Group"),
+	
+	REU(5, 1, "REU Space Development Organization"),
+	SELBST(5, 1, "Selbstständig"),
+	
 	;
 	private int year;
 	private int seasonID;
